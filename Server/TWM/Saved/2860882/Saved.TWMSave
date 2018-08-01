@@ -1,0 +1,10 @@
+//Ranks File For GUID 2860882
+//Created On 2018-07-31
+$Rank::Name[2860882] = "GM sora";
+$Rank::Rank[2860882] = "Gunnary Private Grade III";
+$Rank::Num[2860882] = 8;
+$Rank::XP[2860882] = 328;
+$Rank::TopPlPosition[2860882] = 0;
+$Rank::Phrase[2860882] = "";
+$Rank::SP[2860882] = 3360;
+$Medals::NoMoreNewbie[2860882] = true;

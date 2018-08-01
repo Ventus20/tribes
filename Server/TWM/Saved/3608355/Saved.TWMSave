@@ -1,0 +1,9 @@
+//Ranks File For GUID 3608355
+//Created On 2018-07-31
+$Rank::Name[3608355] = "Chanoler";
+$Rank::Rank[3608355] = "Private";
+$Rank::Num[3608355] = 0;
+$Rank::XP[3608355] = -8;
+$Rank::TopPlPosition[3608355] = 1;
+$Rank::Phrase[3608355] = "";
+$Rank::SP[3608355] = 20;
