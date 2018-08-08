@@ -44,57 +44,35 @@ $DamageType::ForceFieldPowerup = 35;
 $DamageType::Crash            = 36;
 $DamageType::Debris = 37;
 
-$DamageType::Drown = 38;
-
 $DamageType::Meteor = 50;
 $DamageType::Cursing = 51;
 $DamageType::Idiocy = 52;
 $DamageType::SuperChaingun = 53;
 $DamageType::KillerFog = 54;
 
-$DamageType::Flak = 55;
-$DamageType::Sniper = 56;                     // NOTE: This value is referenced directly in code.  DO NOT CHANGE!
-$DamageType::MG = 57;
-$DamageType::Bazooka = 58;
-$DamageType::Artillery = 59;
-$DamageType::MG42 = 60;
-$DamageType::Pistol = 61;
-$DamageType::nuke = 62;
-$DamageType::melee = 63;
-$DamageType::rifle = 64;
-$DamageType::Shotgun = 65;
-$DamageType::AT4 = 66;
-$DamageType::RPG = 67;
-$DamageType::Shotdown = 68;
-$DamageType::ACCG = 69;
-$DamageType::MP5 = 70;
-$DamageType::DepthCharge = 71;
-$DamageType::TankChaingunH = 72;
-$DamageType::Infected = 73;
-$DamageType::Zombie = 74;
-$DamageType::ZAcid = 75;
-$DamageType::ZombieL = 76;
-$DamageType::PBC = 77;
-$DamageType::Burn = 78;
-$DamageType::SRifle = 79;
-$DamageType::ShotDown = 80;
-$DamageType::Phaser = 81;
-$DamageType::PhotonLaser = 82;
-$DamageType::AntiZpulse = 83;
-$DamageType::LaserRifle = 84;
-$DamageType::BazookaII = 85;
-$DamageType::BRifle = 86;
-$DamageType::HArtil = 87;
-$DamageType::Spiker = 88;
-$DamageType::Poison = 89;
-$DamageType::Shreder = 90;
-$DamageType::ShrederScap = 91;
-$DamageType::NukeWind = 92;
-$DamageType::PBCTurret = 93;
-$DamageType::TankShell = 94;
-$DamageType::Vulcan = 95;
-
-$DamageType::illegalpack = 96;
+$DamageType::Zombie = 55;
+$DamageType::ZAcid = 56;
+$DamageType::Fire = 57;
+$DamageType::ZombieL = 58;
+$DamageType::Pistol = 59;
+$DamageType::Melee = 60;
+$DamageType::S3 = 61;
+$DamageType::W1700 = 62;
+$DamageType::G41 = 63;
+$DamageType::R700 = 64;
+$DamageType::MP26 = 65;
+$DamageType::Pg700 = 66;
+$DamageType::FellOff = 67;
+$DamageType::M1 = 68;
+$DamageType::RP432 = 69;
+$DamageType::BladeOfVengance = 70;
+$DamageType::RPG = 71;
+$DamageType::GravBolt = 72;
+$DamageType::LaserRifle = 73;
+$DamageType::Burn = 74;
+$DamageType::SA2400 = 75;
+$DamageType::deserteagle = 76;
+$DamageType::FissionBomb = 77;
 
 // DMM -- added so MPBs that blow up under water get a message
 $DamageType::Water                      = 97;
@@ -104,19 +82,6 @@ $DamageType::NexusCamping		= 98;
 
 // MES -- added so CTRL-K can get a distinctive message
 $DamageType::Suicide			= 99;
-
-$DamageType::deserteagle			= 100; //Deadly Pistol Force XD
-$DamageType::Radiation			= 101; //Pain?
-$DamageType::HelicopterCGMount			= 102; //Pain?
-$DamageType::PGC			= 103;
-$DamageType::VoltGun			= 104;
-$DamageType::Zappy			= 105;
-$DamageType::ALSWP			= 106;
-$DamageType::Photon			= 107;
-
-$DamageType::StMine			= 108;
-$DamageType::NlMine			= 109;
-$DamageType::FellOff			= 110;
 
 // Etc, etc.
 
@@ -157,73 +122,38 @@ $DamageTypeText[33] = 'lighting';
 $DamageTypeText[35] = 'ForceField';
 $DamageTypeText[36] = 'Crash';
 
-$DamageTypeText[38] = 'Drown';
-
 $DamageTypeText[50] = 'Meteor';
 $DamageTypeText[51] = 'Cursing';
 $DamageTypeText[52] = 'Idiocy';
 $DamageTypeText[53] = 'SuperChaingun';
 $DamageTypeText[54] = 'KillerFog';
 
-$DamageTypeText[55] = 'Flak';
-$DamageTypeText[56] = 'Sniper';
-$DamageTypeText[57] = 'MG';
-$DamageTypeText[58] = 'Bazooka';
-$DamageTypeText[59] = 'Artillery';
-$DamageTypeText[60] = 'MG42';
-$DamageTypeText[61] = 'pistol';
-$DamageTypeText[62] = 'nuke';
-$DamageTypeText[63] = 'melee';
-$DamageTypeText[64] = 'rifle';
-$DamageTypeText[65] = 'shotgun';
-$DamageTypeText[66] = 'AT4';
-$DamageTypeText[67] = 'RPG';
-$DamageTypeText[68] = 'Shotdown';
-$DamageTypeText[69] = 'ACCG';
-$DamageTypeText[70] = 'MP5';
-$DamageTypeText[71] = 'DepthCharge';
-$DamageTypeText[72] = 'TankChaingunH';
-$DamageTypeText[73] = 'Infected';
-$DamageTypeText[74] = 'Zombie';
-$DamageTypeText[75] = 'ZAcid';
-$DamageTypeText[76] = 'ZombieL';
-$DamageTypeText[77] = 'PBC';
-$DamageTypeText[78] = 'Burn';
-$DamageTypeText[79] = 'SRifle';
-$DamageTypeText[80] = 'ShotDown';
-$DamageTypeText[81] = 'Phaser';
-$DamageTypeText[82] = 'PhotonLaser';
-$DamageTypeText[83] = 'AntiZpulse';
-$DamageTypeText[84] = 'LaserRifle';
-$DamageTypeText[85] = 'BazookaII';
-$DamageTypeText[86] = 'BRifle';
-$DamageTypeText[87] = 'HArtil';
-$DamageTypeText[88] = 'Spiker';
-$DamageTypeText[89] = 'Poison';
-$DamageTypeText[90] = 'Shreder';
-$DamageTypeText[91] = 'ShrederScap';
-$DamageTypeText[92] = 'NukeWind';
-$DamageTypeText[93] = 'PBCTurret';
-$DamageTypeText[94] = 'TankShell';
-$DamageTypeText[95] = 'Vulcan';
-
-$DamageTypeText[96] = 'illegalpack';
+$DamageTypeText[55] = 'Zombie';
+$DamageTypeText[56] = 'ZAcid';
+$DamageTypeText[57] = 'Fire';
+$DamageTypeText[58] = 'ZombieL';
+$DamageTypeText[59] = 'Pistol';
+$DamageTypeText[60] = 'Melee';
+$DamageTypeText[61] = 'S3';
+$DamageTypeText[62] = 'W1700';
+$DamageTypeText[63] = 'G41';
+$DamageTypeText[64] = 'R700';
+$DamageTypeText[65] = 'MP26';
+$DamageTypeText[66] = 'Pg700';
+$DamageTypeText[67] = 'FellOff';
+$DamageTypeText[68] = 'M1';
+$DamageTypeText[69] = 'RP432';
+$DamageTypeText[70] = 'BladeOfVengance';
+$DamageTypeText[71] = 'RPG';
+$DamageTypeText[72] = 'GravBolt';
+$DamageTypeText[73] = 'LaserRifle';
+$DamageTypeText[74] = 'Burn';
+$DamageTypeText[75] = 'SA2400';
+$DamageTypeText[76] = 'deserteagle';
+$DamageTypeText[77] = 'FissionBomb';
 
 $DamageTypeText[98] = 'nexus camping';
 $DamageTypeText[99] = 'suicide';
-
-$DamageTypeText[100] = 'deserteagle';
-$DamageTypeText[101] = 'Radiation';
-$DamageTypeText[102] = 'HelicopterCGMount';
-$DamageTypeText[103] = 'PGC';
-$DamageTypeText[104] = 'VoltGun';
-$DamageTypeText[105] = 'Zappy';
-$DamageTypeText[106] = 'ALSWP';
-$DamageTypeText[107] = 'Photon';
-
-$DamageTypeText[108] = 'StMine';
-$DamageTypeText[109] = 'NlMine';
-$DamageTypeText[110] = 'FellOff';
 
 
 // ##### PLEASE DO NOT REORDER THE DAMAGE PROFILE TABLES BELOW #####
@@ -254,7 +184,7 @@ datablock SimDataBlock(ShrikeDamageProfile)
    shieldDamageScale[$DamageType::Mine] 			= 3.0;
    shieldDamageScale[$DamageType::Missile] 			= 3.0;
    shieldDamageScale[$DamageType::Mortar] 			= 2.0;
-   shieldDamageScale[$DamageType::Plasma] 			= 0.3;
+   shieldDamageScale[$DamageType::Plasma] 			= 1.0;
    shieldDamageScale[$DamageType::BomberBombs] 		= 3.0;
    shieldDamageScale[$DamageType::TankChaingun] 	= 3.0;
    shieldDamageScale[$DamageType::TankMortar] 		= 2.0;
@@ -268,16 +198,6 @@ datablock SimDataBlock(ShrikeDamageProfile)
    shieldDamageScale[$DamageType::Explosion] 		= 3.0;
    shieldDamageScale[$DamageType::Lightning] 		= 10.0;
    shieldDamageScale[$DamageType::Debris] = 1.0;
-   shieldDamageScale[$DamageType::Flak] 			= 3.0;
-   shieldDamageScale[$DamageType::Sniper] 		= 0.2;
-   shieldDamageScale[$DamageType::MG] 		= 1.75;
-   shieldDamageScale[$DamageType::Bazooka] 		= 1.5;
-   shieldDamageScale[$DamageType::Artillery] 		= 1.5;
-   shieldDamageScale[$DamageType::MG42] 			= 1.75;
-   shieldDamageScale[$DamageType::pistol] 		= 2.0;
-   shieldDamageScale[$DamageType::nuke]			= 0.5;
-   shieldDamageScale[$DamageType::melee] 			= 0.0;
-   shieldDamageScale[$DamageType::rifle]			= 0.75;
 
    damageScale[$DamageType::Blaster] 				= 1.0;
    damageScale[$DamageType::Bullet] 				= 1.0;
@@ -296,13 +216,12 @@ datablock SimDataBlock(ShrikeDamageProfile)
    damageScale[$DamageType::Mine] 					= 4.0;
    damageScale[$DamageType::Missile] 				= 2.0;
    damageScale[$DamageType::Mortar] 				= 2.0;
-   damageScale[$DamageType::Plasma] 				= 0.3;
+   damageScale[$DamageType::Plasma] 				= 0.5;
    damageScale[$DamageType::BomberBombs] 			= 2.0;
-   damageScale[$DamageType::TankChaingun] 			= 1.5;
+   damageScale[$DamageType::TankChaingun] 			= 2.0;
    damageScale[$DamageType::TankMortar] 			= 2.0;
    damageScale[$DamageType::MissileTurret] 			= 1.5;
-   damageScale[$DamageType::AT4] 					= 2.0;
-   damageScale[$DamageType::MortarTurret] 			= 0.5;
+   damageScale[$DamageType::MortarTurret] 			= 2.0;
    damageScale[$DamageType::PlasmaTurret] 			= 2.0;
    damageScale[$DamageType::SatchelCharge] 			= 3.5;
    damageScale[$DamageType::Default] 				= 1.0;
@@ -311,31 +230,13 @@ datablock SimDataBlock(ShrikeDamageProfile)
    damageScale[$DamageType::Explosion] 				= 2.0;
    damageScale[$DamageType::Lightning] 				= 10.0;
    damageScale[$DamageType::Debris] = 0.75;
-   damageScale[$DamageType::Flak] 				= 2.0;
-   damageScale[$DamageType::Sniper] 				= 0.2;
-   damageScale[$DamageType::MG] 				= 0.2;
-   damageScale[$DamageType::Bazooka] 				= 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.25;
-   damageScale[$DamageType::pistol] = 0.15;
-   damageScale[$DamageType::nuke] = 0.5;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.125;
-   damageScale[$DamageType::shotgun] = 0.08;
-   damageScale[$DamageType::RPG] = 1.0;
-   damageScale[$DamageType::ACCG] = 1.0;
-   damageScale[$DamageType::MP5] = 0.18;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] 			= 1.3;
-   damageScale[$DamageType::PBC] 					= 1.5;
-   damageScale[$DamageType::SRifle] = 0.125;
 };
 
 //**** THUNDERSWORD BOMBER ****
 datablock SimDataBlock(BomberDamageProfile)
 {
    shieldDamageScale[$DamageType::Blaster] 			= 1.0;
-   shieldDamageScale[$DamageType::Bullet] 			= 2.0;
+   shieldDamageScale[$DamageType::Bullet] 			= 1.0;
    shieldDamageScale[$DamageType::ELF] 				= 1.0;
    shieldDamageScale[$DamageType::ELFturret] 			= 1.0;
    shieldDamageScale[$DamageType::ShockLance] 		= 0.5;
@@ -351,7 +252,7 @@ datablock SimDataBlock(BomberDamageProfile)
    shieldDamageScale[$DamageType::Mine] 			= 3.0;
    shieldDamageScale[$DamageType::Missile] 			= 3.0;
    shieldDamageScale[$DamageType::Mortar] 			= 2.0;
-   shieldDamageScale[$DamageType::Plasma] 			= 0.3;
+   shieldDamageScale[$DamageType::Plasma] 			= 1.0;
    shieldDamageScale[$DamageType::BomberBombs] 		= 3.0;
    shieldDamageScale[$DamageType::TankChaingun] 	= 3.0;
    shieldDamageScale[$DamageType::TankMortar] 		= 2.0;
@@ -364,19 +265,9 @@ datablock SimDataBlock(BomberDamageProfile)
    shieldDamageScale[$DamageType::Ground] 			= 1.0;
    shieldDamageScale[$DamageType::Explosion] 		= 3.0;
    shieldDamageScale[$DamageType::Lightning] 		= 10.0;
-   shieldDamageScale[$DamageType::Flak] 			= 3.0;
-   shieldDamageScale[$DamageType::Sniper] 			= 0.2;
-   shieldDamageScale[$DamageType::MG] 		= 1.0;
-   shieldDamageScale[$DamageType::Bazooka] 		= 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 1.0;
-   shieldDamageScale[$DamageType::pistol] 		= 1.25;
-   shieldDamageScale[$DamageType::nuke]			= 0.3;
-   shieldDamageScale[$DamageType::melee] 			= 0.0;
-   shieldDamageScale[$DamageType::rifle]			= 1.0;
 
    damageScale[$DamageType::Blaster] 				= 0.75;
-   damageScale[$DamageType::Bullet] 				= 1.0;
+   damageScale[$DamageType::Bullet] 				= 0.75;
    damageScale[$DamageType::ELF] 					= 0.0;
    damageScale[$DamageType::ELFturret] 					= 1.0;
    damageScale[$DamageType::ShockLance] 			= 0.50;
@@ -391,13 +282,12 @@ datablock SimDataBlock(BomberDamageProfile)
    damageScale[$DamageType::Grenade] 				= 0.75;
    damageScale[$DamageType::Mine] 					= 4.0;
    damageScale[$DamageType::Missile] 				= 1.5;
-   damageScale[$DamageType::Mortar] 				= 0.5;
-   damageScale[$DamageType::Plasma] 				= 0.3;
+   damageScale[$DamageType::Mortar] 				= 2.0;
+   damageScale[$DamageType::Plasma] 				= 0.5;
    damageScale[$DamageType::BomberBombs] 			= 2.0;
    damageScale[$DamageType::TankChaingun] 			= 2.0;
    damageScale[$DamageType::TankMortar] 			= 2.0;
    damageScale[$DamageType::MissileTurret] 			= 1.5;
-   damageScale[$DamageType::AT4] 					= 1.0;
    damageScale[$DamageType::MortarTurret] 			= 2.0;
    damageScale[$DamageType::PlasmaTurret] 			= 2.0;
    damageScale[$DamageType::SatchelCharge] 			= 3.5;
@@ -406,31 +296,13 @@ datablock SimDataBlock(BomberDamageProfile)
    damageScale[$DamageType::Ground] 				= 1.0;
    damageScale[$DamageType::Explosion] 				= 2.0;
    damageScale[$DamageType::Lightning] 				= 10.0;
-   damageScale[$DamageType::Flak] 				= 2.0;
-   damageScale[$DamageType::Sniper] 				= 0.2;
-   damageScale[$DamageType::MG] 				= 0.2;
-   damageScale[$DamageType::Bazooka] 				= 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.25;
-   damageScale[$DamageType::pistol] = 0.15;
-   damageScale[$DamageType::nuke] = 0.5;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.125;
-   damageScale[$DamageType::shotgun] = 0.08;
-   damageScale[$DamageType::RPG] = 1.0;
-   damageScale[$DamageType::ACCG] = 1.0;
-   damageScale[$DamageType::MP5] = 0.18;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] 			= 1.3;
-   damageScale[$DamageType::PBC] 					= 1.5;
-   damageScale[$DamageType::SRifle] = 0.125;
 };
 
 //**** HAVOC TRANSPORT ****
 datablock SimDataBlock(HavocDamageProfile)
 {
    shieldDamageScale[$DamageType::Blaster] 			= 1.0;
-   shieldDamageScale[$DamageType::Bullet] 			= 1.75;
+   shieldDamageScale[$DamageType::Bullet] 			= 1.0;
    shieldDamageScale[$DamageType::ELF] 				= 1.0;
    shieldDamageScale[$DamageType::ELFturret] 				= 1.0;
    shieldDamageScale[$DamageType::ShockLance] 		= 0.5;
@@ -459,19 +331,9 @@ datablock SimDataBlock(HavocDamageProfile)
    shieldDamageScale[$DamageType::Ground] 			= 1.0;
    shieldDamageScale[$DamageType::Explosion] 		= 3.0;
    shieldDamageScale[$DamageType::Lightning] 		= 10.0;
-   shieldDamageScale[$DamageType::Flak] 			= 3.0;
-   shieldDamageScale[$DamageType::Sniper] 			= 0.2;
-   shieldDamageScale[$DamageType::MG] 		= 1.0;
-   shieldDamageScale[$DamageType::Bazooka] 		= 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 1.0;
-   shieldDamageScale[$DamageType::pistol] 		= 2.0;
-   shieldDamageScale[$DamageType::nuke]			= 0.3;
-   shieldDamageScale[$DamageType::melee] 			= 0.0;
-   shieldDamageScale[$DamageType::rifle]			= 1.0;
 
    damageScale[$DamageType::Blaster] 				= 0.75;
-   damageScale[$DamageType::Bullet] 				= 1.75;
+   damageScale[$DamageType::Bullet] 				= 0.75;
    damageScale[$DamageType::ELF] 					= 0.0;
    damageScale[$DamageType::ELFturret] 					= 1.0;
    damageScale[$DamageType::ShockLance] 			= 0.50;
@@ -492,8 +354,7 @@ datablock SimDataBlock(HavocDamageProfile)
    damageScale[$DamageType::TankChaingun] 			= 2.0;
    damageScale[$DamageType::TankMortar] 			= 2.0;
    damageScale[$DamageType::MissileTurret] 			= 1.5;
-   damageScale[$DamageType::AT4] 					= 1.0;
-   damageScale[$DamageType::MortarTurret] 			= 0.5;
+   damageScale[$DamageType::MortarTurret] 			= 2.0;
    damageScale[$DamageType::PlasmaTurret] 			= 2.0;
    damageScale[$DamageType::SatchelCharge] 			= 3.5;
    damageScale[$DamageType::Default] 				= 1.0;
@@ -501,24 +362,6 @@ datablock SimDataBlock(HavocDamageProfile)
    damageScale[$DamageType::Ground] 				= 1.0;
    damageScale[$DamageType::Explosion] 				= 2.0;
    damageScale[$DamageType::Lightning] 				= 10.0;
-   damageScale[$DamageType::Flak] 				= 2.0;
-   damageScale[$DamageType::Sniper] 				= 0.2;
-   damageScale[$DamageType::MG] 				= 0.2;
-   damageScale[$DamageType::Bazooka] 				= 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.25;
-   damageScale[$DamageType::pistol] = 0.15;
-   damageScale[$DamageType::nuke] = 0.5;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.125;
-   damageScale[$DamageType::shotgun] = 0.08;
-   damageScale[$DamageType::RPG] = 1.0;
-   damageScale[$DamageType::ACCG] = 1.0;
-   damageScale[$DamageType::MP5] = 0.18;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] 			= 1.3;
-   damageScale[$DamageType::PBC] 					= 1.5;
-   damageScale[$DamageType::SRifle] = 0.125;
 };
 
 //**** WILDCAT GRAV CYCLE ****
@@ -540,12 +383,12 @@ datablock SimDataBlock(WildcatDamageProfile)
    shieldDamageScale[$DamageType::Mine] 			= 4.0;
    shieldDamageScale[$DamageType::Missile] 			= 4.0;
    shieldDamageScale[$DamageType::Mortar] 			= 2.0;
-   shieldDamageScale[$DamageType::Plasma] 			= 10.0;
+   shieldDamageScale[$DamageType::Plasma] 			= 2.0;
    shieldDamageScale[$DamageType::BomberBombs] 		= 2.5;
    shieldDamageScale[$DamageType::TankChaingun] 	= 3.0;
    shieldDamageScale[$DamageType::TankMortar] 		= 2.0;
    shieldDamageScale[$DamageType::MissileTurret] 	= 4.0;
-   shieldDamageScale[$DamageType::MortarTurret] 	= 1.0;
+   shieldDamageScale[$DamageType::MortarTurret] 	= 2.0;
    shieldDamageScale[$DamageType::PlasmaTurret] 	= 2.0;
    shieldDamageScale[$DamageType::SatchelCharge] 	= 3.0;
    shieldDamageScale[$DamageType::Default] 			= 1.0;
@@ -553,19 +396,9 @@ datablock SimDataBlock(WildcatDamageProfile)
    shieldDamageScale[$DamageType::Ground] 			= 1.0;
    shieldDamageScale[$DamageType::Explosion] 		= 2.0;
    shieldDamageScale[$DamageType::Lightning] 		= 5.0;
-   shieldDamageScale[$DamageType::Flak] 			= 0.25;
-   shieldDamageScale[$DamageType::Sniper] 			= 0.2;
-   shieldDamageScale[$DamageType::MG] 		= 1.0;
-   shieldDamageScale[$DamageType::Bazooka] 		= 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 1.0;
-   shieldDamageScale[$DamageType::pistol] 		= 1.0;
-   shieldDamageScale[$DamageType::nuke]			= 1.0;
-   shieldDamageScale[$DamageType::melee] 			= 0.0;
-   shieldDamageScale[$DamageType::rifle]			= 1.25;
 
    damageScale[$DamageType::Blaster] = 1.5;
-   damageScale[$DamageType::Bullet] = 0.75;
+   damageScale[$DamageType::Bullet] = 1.2;
    damageScale[$DamageType::ELF] = 0.0;
    damageScale[$DamageType::ELFturret] = 1.0;
    damageScale[$DamageType::ShockLance] = 0.50;
@@ -580,12 +413,11 @@ datablock SimDataBlock(WildcatDamageProfile)
    damageScale[$DamageType::Mine] = 4.0;
    damageScale[$DamageType::Missile] = 1.2;
    damageScale[$DamageType::Mortar] = 1.0;
-   damageScale[$DamageType::Plasma] = 5.0;
+   damageScale[$DamageType::Plasma] = 1.5;
    damageScale[$DamageType::BomberBombs] = 2.0;
-   damageScale[$DamageType::TankChaingun] = 0.75;
+   damageScale[$DamageType::TankChaingun] = 2.0;
    damageScale[$DamageType::TankMortar] = 1.0;
    damageScale[$DamageType::MissileTurret] = 1.2;
-   damageScale[$DamageType::AT4] = 2.0;
    damageScale[$DamageType::MortarTurret] = 1.0;
    damageScale[$DamageType::PlasmaTurret] = 1.0;
    damageScale[$DamageType::SatchelCharge] = 2.2;
@@ -594,31 +426,13 @@ datablock SimDataBlock(WildcatDamageProfile)
    damageScale[$DamageType::Ground] = 1.0;
    damageScale[$DamageType::Explosion] = 1.0;
    damageScale[$DamageType::Lightning]	= 5.0;
-   damageScale[$DamageType::Flak] = 0.2;
-   damageScale[$DamageType::Sniper] = 0.05;
-   damageScale[$DamageType::MG] = 0.25;
-   damageScale[$DamageType::Bazooka] = 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.25;
-   damageScale[$DamageType::pistol] = 0.25;
-   damageScale[$DamageType::nuke] = 1.0;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.35;
-   damageScale[$DamageType::shotgun] = 0.5;
-   damageScale[$DamageType::RPG] = 1.35;
-   damageScale[$DamageType::ACCG] = 1.5;
-   damageScale[$DamageType::MP5] = 0.25;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] = 1.0;
-   damageScale[$DamageType::PBC] = 1.0;
-   damageScale[$DamageType::SRifle] = 0.35;
 };
 
 //**** BEOWULF TANK ****
 datablock SimDataBlock(TankDamageProfile)
 {
    shieldDamageScale[$DamageType::Blaster] = 0.6;
-   shieldDamageScale[$DamageType::Bullet] = 1.0;
+   shieldDamageScale[$DamageType::Bullet] = 0.75;
    shieldDamageScale[$DamageType::ELF] = 1.0;
    shieldDamageScale[$DamageType::ELFturret] = 1.0;
    shieldDamageScale[$DamageType::ShockLance] = 0.5;
@@ -626,16 +440,16 @@ datablock SimDataBlock(TankDamageProfile)
    shieldDamageScale[$DamageType::ShrikeBlaster] = 1.75;
    shieldDamageScale[$DamageType::BellyTurret] = 1.25;
    shieldDamageScale[$DamageType::AATurret] = 0.8;
-   shieldDamageScale[$DamageType::IndoorDepTurret] = 0.0;
+   shieldDamageScale[$DamageType::IndoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::OutdoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::Disc] = 0.8;
    shieldDamageScale[$DamageType::Grenade] = 0.8;
    shieldDamageScale[$DamageType::Mine] = 3.25;
    shieldDamageScale[$DamageType::Missile] = 2.0;
    shieldDamageScale[$DamageType::Mortar] = 1.7;
-   shieldDamageScale[$DamageType::Plasma] = 0.25;
+   shieldDamageScale[$DamageType::Plasma] = 1.0;
    shieldDamageScale[$DamageType::BomberBombs] = 1.5;
-   shieldDamageScale[$DamageType::TankChaingun] = 0.2;
+   shieldDamageScale[$DamageType::TankChaingun] = 1.5;
    shieldDamageScale[$DamageType::TankMortar] = 1.8;
    shieldDamageScale[$DamageType::MissileTurret] = 1.25;
    shieldDamageScale[$DamageType::MortarTurret] = 1.0;
@@ -646,19 +460,9 @@ datablock SimDataBlock(TankDamageProfile)
    shieldDamageScale[$DamageType::Ground] = 0.75;
    shieldDamageScale[$DamageType::Explosion] = 2.0;
    shieldDamageScale[$DamageType::Lightning] = 10.0;
-   shieldDamageScale[$DamageType::Flak] = 0.2;
-   shieldDamageScale[$DamageType::Sniper] = 0.1;
-   shieldDamageScale[$DamageType::MG] = 1.0;
-   shieldDamageScale[$DamageType::Bazooka] = 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 1.0;
-   shieldDamageScale[$DamageType::pistol] = 1.0;
-   shieldDamageScale[$DamageType::nuke] = 0.25;
-   shieldDamageScale[$DamageType::melee] = 0.0;
-   shieldDamageScale[$DamageType::rifle] = 0.0;
 
    damageScale[$DamageType::Blaster] = 0.75;
-   damageScale[$DamageType::Bullet] = 0.15;
+   damageScale[$DamageType::Bullet] = 0.75;
    damageScale[$DamageType::ELF] = 0.0;
    damageScale[$DamageType::ELFturret] =1.0;
    damageScale[$DamageType::ShockLance] = 0.50;
@@ -666,20 +470,19 @@ datablock SimDataBlock(TankDamageProfile)
    damageScale[$DamageType::ShrikeBlaster] = 2.0;
    damageScale[$DamageType::BellyTurret] = 1.0;
    damageScale[$DamageType::AATurret] = 1.0;
-   damageScale[$DamageType::IndoorDepTurret] = 0.0;
+   damageScale[$DamageType::IndoorDepTurret] = 1.0;
    damageScale[$DamageType::OutdoorDepTurret] = 1.0;
    damageScale[$DamageType::Disc] = 1.0;
-   damageScale[$DamageType::Grenade] = 0.25;
+   damageScale[$DamageType::Grenade] = 1.0;
    damageScale[$DamageType::Mine] = 2.25;
    damageScale[$DamageType::Missile] = 1.25;
    damageScale[$DamageType::Mortar] = 1.4;
-   damageScale[$DamageType::Plasma] = 0.05;
+   damageScale[$DamageType::Plasma] = 0.5;
    damageScale[$DamageType::BomberBombs] = 1.0;
-   damageScale[$DamageType::TankChaingun] = 0.2;
+   damageScale[$DamageType::TankChaingun] = 0.75;
    damageScale[$DamageType::TankMortar] = 1.6;
    damageScale[$DamageType::MissileTurret] = 1.25;
-   damageScale[$DamageType::AT4] = 1;
-   damageScale[$DamageType::MortarTurret] = 0.5;
+   damageScale[$DamageType::MortarTurret] = 1.0;
    damageScale[$DamageType::PlasmaTurret] = 1.0;
    damageScale[$DamageType::SatchelCharge] = 2.0;
    damageScale[$DamageType::Default] = 1.0;
@@ -687,117 +490,6 @@ datablock SimDataBlock(TankDamageProfile)
    damageScale[$DamageType::Ground] = 0.75;
    damageScale[$DamageType::Explosion] = 1.0;
    damageScale[$DamageType::Lightning]	= 10.0;
-   damageScale[$DamageType::Flak] = 0.2;
-   damageScale[$DamageType::Sniper] = 0.0;
-   damageScale[$DamageType::MG] = 0.0;
-   damageScale[$DamageType::Bazooka] = 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.0;
-   damageScale[$DamageType::pistol] = 0.0;
-   damageScale[$DamageType::nuke] = 0.2;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.0;
-   damageScale[$DamageType::shotgun] = 0.0;
-   damageScale[$DamageType::RPG] = 0.8;
-   damageScale[$DamageType::ACCG] = 0.8;
-   damageScale[$DamageType::MP5] = 0.0;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] = 0.5;
-   damageScale[$DamageType::PBC] = 0.4;
-   damageScale[$DamageType::SRifle] = 0;
-};
-
-//**** SUBMARINE ****
-datablock SimDataBlock(SubDamageProfile)
-{
-   shieldDamageScale[$DamageType::Blaster] = 0.6;
-   shieldDamageScale[$DamageType::Bullet] = 1.0;
-   shieldDamageScale[$DamageType::ELF] = 1.0;
-   shieldDamageScale[$DamageType::ELFturret] = 1.0;
-   shieldDamageScale[$DamageType::ShockLance] = 0.5;
-   shieldDamageScale[$DamageType::Laser] = 1.0;
-   shieldDamageScale[$DamageType::ShrikeBlaster] = 1.75;
-   shieldDamageScale[$DamageType::BellyTurret] = 1.25;
-   shieldDamageScale[$DamageType::AATurret] = 0.8;
-   shieldDamageScale[$DamageType::IndoorDepTurret] = 0.0;
-   shieldDamageScale[$DamageType::OutdoorDepTurret] = 1.0;
-   shieldDamageScale[$DamageType::Disc] = 0.8;
-   shieldDamageScale[$DamageType::Grenade] = 0.8;
-   shieldDamageScale[$DamageType::Mine] = 3.25;
-   shieldDamageScale[$DamageType::Missile] = 2.0;
-   shieldDamageScale[$DamageType::Mortar] = 1.7;
-   shieldDamageScale[$DamageType::Plasma] = 0.25;
-   shieldDamageScale[$DamageType::BomberBombs] = 1.5;
-   shieldDamageScale[$DamageType::TankChaingun] = 0.2;
-   shieldDamageScale[$DamageType::TankMortar] = 1.8;
-   shieldDamageScale[$DamageType::MissileTurret] = 1.25;
-   shieldDamageScale[$DamageType::MortarTurret] = 1.0;
-   shieldDamageScale[$DamageType::PlasmaTurret] = 1.25;
-   shieldDamageScale[$DamageType::SatchelCharge] = 2.0;
-   shieldDamageScale[$DamageType::Default] = 1.0;
-   shieldDamageScale[$DamageType::Impact] = 0.75;
-   shieldDamageScale[$DamageType::Ground] = 0.75;
-   shieldDamageScale[$DamageType::Explosion] = 2.0;
-   shieldDamageScale[$DamageType::Lightning] = 10.0;
-   shieldDamageScale[$DamageType::Flak] = 0.2;
-   shieldDamageScale[$DamageType::Sniper] = 0.1;
-   shieldDamageScale[$DamageType::MG] = 1.0;
-   shieldDamageScale[$DamageType::Bazooka] = 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 1.0;
-   shieldDamageScale[$DamageType::pistol] = 1.0;
-   shieldDamageScale[$DamageType::nuke] = 0.25;
-   shieldDamageScale[$DamageType::melee] = 0.0;
-   shieldDamageScale[$DamageType::rifle] = 0.0;
-
-   damageScale[$DamageType::Blaster] = 0.75;
-   damageScale[$DamageType::Bullet] = 0.15;
-   damageScale[$DamageType::ELF] = 0.0;
-   damageScale[$DamageType::ELFturret] =1.0;
-   damageScale[$DamageType::ShockLance] = 0.50;
-   damageScale[$DamageType::Laser] = 1.0;
-   damageScale[$DamageType::ShrikeBlaster] = 2.0;
-   damageScale[$DamageType::BellyTurret] = 1.0;
-   damageScale[$DamageType::AATurret] = 1.0;
-   damageScale[$DamageType::IndoorDepTurret] = 0.0;
-   damageScale[$DamageType::OutdoorDepTurret] = 1.0;
-   damageScale[$DamageType::Disc] = 1.0;
-   damageScale[$DamageType::Grenade] = 0.25;
-   damageScale[$DamageType::Mine] = 2.25;
-   damageScale[$DamageType::Missile] = 1.25;
-   damageScale[$DamageType::Mortar] = 1.4;
-   damageScale[$DamageType::Plasma] = 0.15;
-   damageScale[$DamageType::BomberBombs] = 1.0;
-   damageScale[$DamageType::TankChaingun] = 0.2;
-   damageScale[$DamageType::TankMortar] = 1.6;
-   damageScale[$DamageType::MissileTurret] = 1.25;
-   damageScale[$DamageType::AT4] = 0.3;
-   damageScale[$DamageType::MortarTurret] = 0.5;
-   damageScale[$DamageType::PlasmaTurret] = 1.0;
-   damageScale[$DamageType::SatchelCharge] = 2.0;
-   damageScale[$DamageType::Default] = 1.0;
-   damageScale[$DamageType::Impact] = 0.75;
-   damageScale[$DamageType::Ground] = 0.75;
-   damageScale[$DamageType::Explosion] = 1.0;
-   damageScale[$DamageType::Lightning]	= 10.0;
-   damageScale[$DamageType::Flak] = 0.2;
-   damageScale[$DamageType::Sniper] = 0.0;
-   damageScale[$DamageType::MG] = 0.0;
-   damageScale[$DamageType::Bazooka] = 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.0;
-   damageScale[$DamageType::pistol] = 0.0;
-   damageScale[$DamageType::nuke] = 0.2;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.0;
-   damageScale[$DamageType::shotgun] = 0.0;
-   damageScale[$DamageType::RPG] = 0.8;
-   damageScale[$DamageType::ACCG] = 0.2;
-   damageScale[$DamageType::MP5] = 0.0;
-   damageScale[$DamageType::DepthCharge] = 1.0;
-   damageScale[$DamageType::TankChaingunH] = 0.2;
-   damageScale[$DamageType::PBC] = 3.0;
-   damageScale[$DamageType::SRifle] = 0;
 };
 
 //**** JERICHO MPB ****
@@ -812,14 +504,14 @@ datablock SimDataBlock(MPBDamageProfile)
    shieldDamageScale[$DamageType::ShrikeBlaster] = 1.75;
    shieldDamageScale[$DamageType::BellyTurret] = 1.25;
    shieldDamageScale[$DamageType::AATurret] = 0.8;
-   shieldDamageScale[$DamageType::IndoorDepTurret] = 0.0;
+   shieldDamageScale[$DamageType::IndoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::OutdoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::Disc] = 0.8;
    shieldDamageScale[$DamageType::Grenade] = 0.8;
    shieldDamageScale[$DamageType::Mine] = 3.25;
    shieldDamageScale[$DamageType::Missile] = 2.0;
    shieldDamageScale[$DamageType::Mortar] = 0.8;
-   shieldDamageScale[$DamageType::Plasma] = 0.25;
+   shieldDamageScale[$DamageType::Plasma] = 1.0;
    shieldDamageScale[$DamageType::BomberBombs] = 1.5;
    shieldDamageScale[$DamageType::TankChaingun] = 1.5;
    shieldDamageScale[$DamageType::TankMortar] = 1.4;
@@ -832,19 +524,9 @@ datablock SimDataBlock(MPBDamageProfile)
    shieldDamageScale[$DamageType::Ground] = 0.5;
    shieldDamageScale[$DamageType::Explosion] = 2.0;
    shieldDamageScale[$DamageType::Lightning] = 10.0;
-   shieldDamageScale[$DamageType::Flak] = 0.15;
-   shieldDamageScale[$DamageType::Sniper] = 0.2;
-   shieldDamageScale[$DamageType::MG] = 2.0;
-   shieldDamageScale[$DamageType::Bazooka] = 1.5;
-   shieldDamageScale[$DamageType::Artillery] = 1.5;
-   shieldDamageScale[$DamageType::MG42] = 2.0;
-   shieldDamageScale[$DamageType::pistol] = 2.0;
-   shieldDamageScale[$DamageType::nuke] = 0.25;
-   shieldDamageScale[$DamageType::melee] = 0.0;
-   shieldDamageScale[$DamageType::rifle] = 0.5;
 
    damageScale[$DamageType::Blaster] = 0.75;
-   damageScale[$DamageType::Bullet] = 0.5;
+   damageScale[$DamageType::Bullet] = 0.75;
    damageScale[$DamageType::ELF] = 0.0;
    damageScale[$DamageType::ELFturret] = 0.0;
    damageScale[$DamageType::ShockLance] = 0.50;
@@ -852,20 +534,19 @@ datablock SimDataBlock(MPBDamageProfile)
    damageScale[$DamageType::ShrikeBlaster] = 2.0;
    damageScale[$DamageType::BellyTurret] = 1.0;
    damageScale[$DamageType::AATurret] = 1.0;
-   damageScale[$DamageType::IndoorDepTurret] = 0.0;
+   damageScale[$DamageType::IndoorDepTurret] = 1.0;
    damageScale[$DamageType::OutdoorDepTurret] = 1.0;
    damageScale[$DamageType::Disc] = 1.0;
    damageScale[$DamageType::Grenade] = 1.0;
    damageScale[$DamageType::Mine] = 2.25;
    damageScale[$DamageType::Missile] = 1.25;
    damageScale[$DamageType::Mortar] = 1.0;
-   damageScale[$DamageType::Plasma] = 0.2;
+   damageScale[$DamageType::Plasma] = 0.5;
    damageScale[$DamageType::BomberBombs] = 1.0;
-   damageScale[$DamageType::TankChaingun] = 0.6;
+   damageScale[$DamageType::TankChaingun] = 0.75;
    damageScale[$DamageType::TankMortar] = 1.0;
    damageScale[$DamageType::MissileTurret] = 1.25;
-   damageScale[$DamageType::AT4] = 0.75;
-   damageScale[$DamageType::MortarTurret] = 0.5;
+   damageScale[$DamageType::MortarTurret] = 1.0;
    damageScale[$DamageType::PlasmaTurret] = 1.0;
    damageScale[$DamageType::SatchelCharge] = 2.0;
    damageScale[$DamageType::Default] = 1.0;
@@ -873,24 +554,6 @@ datablock SimDataBlock(MPBDamageProfile)
    damageScale[$DamageType::Ground] = 0.5;
    damageScale[$DamageType::Explosion] = 1.0;
    damageScale[$DamageType::Lightning]	= 10.0;
-   damageScale[$DamageType::Flak] = 0.15;
-   damageScale[$DamageType::Sniper] = 0.2;
-   damageScale[$DamageType::MG] = 0.1;
-   damageScale[$DamageType::Bazooka] = 1.5;
-   damageScale[$DamageType::Artillery] = 1.5;
-   damageScale[$DamageType::MG42] = 0.2;
-   damageScale[$DamageType::pistol] = 0.1;
-   damageScale[$DamageType::nuke] = 0.2;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.15;
-   damageScale[$DamageType::shotgun] = 0.05;
-   damageScale[$DamageType::RPG] = 0.75;
-   damageScale[$DamageType::ACCG] = 0.5;
-   damageScale[$DamageType::MP5] = 0.1;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] = 0.6;
-   damageScale[$DamageType::PBC] = 0.75;
-   damageScale[$DamageType::SRifle] = 0.15;
 };
 
 //----------------------------------------------------------------------------
@@ -929,16 +592,6 @@ datablock SimDataBlock(TurretDamageProfile)
    shieldDamageScale[$DamageType::Ground] = 1.0;
    shieldDamageScale[$DamageType::Explosion] = 2.0;
    shieldDamageScale[$DamageType::Lightning]	= 5.0;
-   shieldDamageScale[$DamageType::Flak] = 0.2;
-   shieldDamageScale[$DamageType::Sniper] = 0.1;
-   shieldDamageScale[$DamageType::MG] = 0.75;
-   shieldDamageScale[$DamageType::Bazooka] = 3.0;
-   shieldDamageScale[$DamageType::Artillery] = 5.0;
-   shieldDamageScale[$DamageType::MG42] = 0.75;
-   shieldDamageScale[$DamageType::pistol] = 0.75;
-   shieldDamageScale[$DamageType::nuke] = 1.0;
-   shieldDamageScale[$DamageType::melee] = 0.0;
-   shieldDamageScale[$DamageType::rifle] = 1.0;
 
    damageScale[$DamageType::Blaster] = 0.8;
    damageScale[$DamageType::Bullet] = 0.9;
@@ -962,7 +615,6 @@ datablock SimDataBlock(TurretDamageProfile)
    damageScale[$DamageType::TankChaingun] = 1.25;
    damageScale[$DamageType::TankMortar] = 1.25;
    damageScale[$DamageType::MissileTurret] = 1.25;
-   damageScale[$DamageType::AT4] = 3.0;
    damageScale[$DamageType::MortarTurret] = 1.25;
    damageScale[$DamageType::PlasmaTurret] = 1.25;
    damageScale[$DamageType::SatchelCharge] = 1.5;
@@ -971,24 +623,6 @@ datablock SimDataBlock(TurretDamageProfile)
    damageScale[$DamageType::Ground] = 1.0;
    damageScale[$DamageType::Explosion] = 1.0;
    damageScale[$DamageType::Lightning]	= 5.0;
-   damageScale[$DamageType::Flak] = 0.2;
-   damageScale[$DamageType::Sniper] = 0.1;
-   damageScale[$DamageType::MG] = 0.75;
-   damageScale[$DamageType::Bazooka] = 3.0;
-   damageScale[$DamageType::Artillery] = 5.0;
-   damageScale[$DamageType::MG42] = 0.75;
-   damageScale[$DamageType::pistol] = 0.75;
-   damageScale[$DamageType::nuke] = 1.0;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 0.75;
-   damageScale[$DamageType::shotgun] = 0.5;
-   damageScale[$DamageType::RPG] = 1.75;
-   damageScale[$DamageType::ACCG] = 1.1;
-   damageScale[$DamageType::MP5] = 0.75;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::TankChaingunH] = 1.25;
-   damageScale[$DamageType::PBC] = 1.5;
-   damageScale[$DamageType::SRifle] = 0.75;
 };
 
 //----------------------------------------------------------------------------
@@ -998,7 +632,7 @@ datablock SimDataBlock(TurretDamageProfile)
 datablock SimDataBlock(StaticShapeDamageProfile)
 {
    shieldDamageScale[$DamageType::Blaster] = 0.8;
-   shieldDamageScale[$DamageType::Bullet] = 0.0;
+   shieldDamageScale[$DamageType::Bullet] = 1.0;
    shieldDamageScale[$DamageType::ELF] = 1.0;
    shieldDamageScale[$DamageType::ELFturret] = 1.0;
    shieldDamageScale[$DamageType::ShockLance] = 1.0;
@@ -1006,7 +640,7 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    shieldDamageScale[$DamageType::ShrikeBlaster] = 2.0;
    shieldDamageScale[$DamageType::BellyTurret] = 1.5;
    shieldDamageScale[$DamageType::AATurret] = 1.0;
-   shieldDamageScale[$DamageType::IndoorDepTurret] = 0.1;
+   shieldDamageScale[$DamageType::IndoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::OutdoorDepTurret] = 1.0;
    shieldDamageScale[$DamageType::Turret] = 1.0;
    shieldDamageScale[$DamageType::SentryTurret] = 1.0;
@@ -1015,7 +649,7 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    shieldDamageScale[$DamageType::Mine] = 2.0;
    shieldDamageScale[$DamageType::Missile] = 3.0;
    shieldDamageScale[$DamageType::Mortar] = 3.0;
-   shieldDamageScale[$DamageType::Plasma] = 10.0;
+   shieldDamageScale[$DamageType::Plasma] = 1.5;
    shieldDamageScale[$DamageType::BomberBombs] = 2.0;
    shieldDamageScale[$DamageType::TankChaingun] = 1.5;
    shieldDamageScale[$DamageType::TankMortar] = 3.0;
@@ -1026,21 +660,11 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    shieldDamageScale[$DamageType::Default] = 1.0;
    shieldDamageScale[$DamageType::Impact] = 1.25;
    shieldDamageScale[$DamageType::Ground] = 1.0;
-   shieldDamageScale[$DamageType::Explosion] = 1.0;
+   shieldDamageScale[$DamageType::Explosion] = 2.0;
    shieldDamageScale[$DamageType::Lightning]	= 5.0;
-   shieldDamageScale[$DamageType::Flak] = 0.2;
-   shieldDamageScale[$DamageType::Sniper] = 0.1;
-   shieldDamageScale[$DamageType::MG] = 0.75;
-   shieldDamageScale[$DamageType::Bazooka] = 3.0;
-   shieldDamageScale[$DamageType::Artillery] = 5.0;
-   shieldDamageScale[$DamageType::MG42] = 0.75;
-   shieldDamageScale[$DamageType::pistol] = 0.75;
-   shieldDamageScale[$DamageType::nuke] = 1.0;
-   shieldDamageScale[$DamageType::melee] = 0.1;
-   shieldDamageScale[$DamageType::rifle] = 1.0;
 
    damageScale[$DamageType::Blaster] = 1.0;
-   damageScale[$DamageType::Bullet] = 0.5;
+   damageScale[$DamageType::Bullet] = 1.0;
    damageScale[$DamageType::ELF] = 0.0;
    damageScale[$DamageType::ELFturret] = 1.0;
    damageScale[$DamageType::ShockLance] = 1.0;
@@ -1048,7 +672,7 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    damageScale[$DamageType::ShrikeBlaster] = 2.0;
    damageScale[$DamageType::BellyTurret] = 1.2;
    damageScale[$DamageType::AATurret] = 1.0;
-   damageScale[$DamageType::IndoorDepTurret] = 0.1;
+   damageScale[$DamageType::IndoorDepTurret] = 1.0;
    damageScale[$DamageType::OutdoorDepTurret] = 1.0;
    damageScale[$DamageType::SentryTurret] = 1.0;
    damageScale[$DamageType::Disc] = 1.15;
@@ -1056,13 +680,12 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    damageScale[$DamageType::Mine] = 2.0;
    damageScale[$DamageType::Missile] = 2.0;
    damageScale[$DamageType::Mortar] = 2.0;
-   damageScale[$DamageType::Plasma] = 1.5;
+   damageScale[$DamageType::Plasma] = 1.25;
    damageScale[$DamageType::BomberBombs] = 1.0;
    damageScale[$DamageType::TankChaingun] = 1.0;
    damageScale[$DamageType::TankMortar] = 2.0;
    damageScale[$DamageType::MissileTurret] = 2.0;
-   damageScale[$DamageType::AT4] = 2.0;
-   damageScale[$DamageType::MortarTurret] = 1.25;
+   damageScale[$DamageType::MortarTurret] = 2.0;
    damageScale[$DamageType::PlasmaTurret] = 2.0;
    damageScale[$DamageType::SatchelCharge] = 4.0;
    damageScale[$DamageType::Default] = 1.0;
@@ -1070,23 +693,6 @@ datablock SimDataBlock(StaticShapeDamageProfile)
    damageScale[$DamageType::Ground] = 1.0;
    damageScale[$DamageType::Explosion] = 1.0;
    damageScale[$DamageType::Lightning]	= 5.0;
-   damageScale[$DamageType::Flak] = 0.2;
-   damageScale[$DamageType::Sniper] = 0.1;
-   damageScale[$DamageType::MG] = 0.75;
-   damageScale[$DamageType::Bazooka] = 3.0;
-   damageScale[$DamageType::Artillery] = 5.0;
-   damageScale[$DamageType::MG42] = 0.75;
-   damageScale[$DamageType::pistol] = 0.75;
-   damageScale[$DamageType::nuke] = 1.0;
-   damageScale[$DamageType::melee] = 0.0;
-   damageScale[$DamageType::rifle] = 1.0;
-   damageScale[$DamageType::shotgun] = 0.5;
-   damageScale[$DamageType::RPG] = 2.0;
-   damageScale[$DamageType::ACCG] = 0.5;
-   damageScale[$DamageType::MP5] = 0.75;
-   damageScale[$DamageType::DepthCharge] = 0.0;
-   damageScale[$DamageType::PBC] = 1.0;
-   damageScale[$DamageType::SRifle] = 1;
 };
 
 //----------------------------------------------------------------------------
@@ -1112,13 +718,12 @@ datablock SimDataBlock(LightPlayerDamageProfile)
    damageScale[$DamageType::Mine] =		 		1.0;
    damageScale[$DamageType::Missile] =		 	1.0;
    damageScale[$DamageType::Mortar] =		 	1.3;
-   damageScale[$DamageType::Plasma] =		 	2.0;
+   damageScale[$DamageType::Plasma] =		 	1.0;
    damageScale[$DamageType::BomberBombs] =		3.0;
    damageScale[$DamageType::TankChaingun] =		1.7;
    damageScale[$DamageType::TankMortar] =		1.0;
    damageScale[$DamageType::MissileTurret] =	1.0;
-   damageScale[$DamageType::AT4] = 0.75;
-   damageScale[$DamageType::MortarTurret] =		1.2;
+   damageScale[$DamageType::MortarTurret] =		1.3;
    damageScale[$DamageType::PlasmaTurret] =		1.0;
    damageScale[$DamageType::SatchelCharge] =	3.0;
    damageScale[$DamageType::Default] =			1.0;
@@ -1126,24 +731,6 @@ datablock SimDataBlock(LightPlayerDamageProfile)
    damageScale[$DamageType::Ground] =			1.0;
    damageScale[$DamageType::Explosion] =		1.0;
    damageScale[$DamageType::Lightning]	=		1.0;
-   damageScale[$DamageType::Flak] = 			0.2;
-   damageScale[$DamageType::Sniper] = 			1.75;
-   damageScale[$DamageType::MG] = 				1.2;
-   damageScale[$DamageType::Bazooka] = 			0.4;
-   damageScale[$DamageType::Artillery] = 			1.0;
-   damageScale[$DamageType::MG42] = 			1.8;
-   damageScale[$DamageType::pistol] = 			1.2;
-   damageScale[$DamageType::nuke] = 			1.0;
-   damageScale[$DamageType::melee] = 1.0;
-   damageScale[$DamageType::rifle] = 1.2;
-   damageScale[$DamageType::shotgun] = 1.2;
-   damageScale[$DamageType::RPG] = 1.2;
-   damageScale[$DamageType::ACCG] = 1.75;
-   damageScale[$DamageType::MP5] = 1.2;
-   damageScale[$DamageType::DepthCharge] = 0.1;
-   damageScale[$DamageType::TankChaingunH] = 1.7;
-   damageScale[$DamageType::PBC] = 1.0;
-   damageScale[$DamageType::SRifle] = 1.2;
 };
 
 datablock SimDataBlock(MediumPlayerDamageProfile)
@@ -1164,13 +751,12 @@ datablock SimDataBlock(MediumPlayerDamageProfile)
    damageScale[$DamageType::Grenade] =		 	1.0;
    damageScale[$DamageType::Mine] =		 		0.9;
    damageScale[$DamageType::Missile] =		 	0.8;
-   damageScale[$DamageType::Mortar] =		 	1.2;
-   damageScale[$DamageType::Plasma] =		 	2.0;
+   damageScale[$DamageType::Mortar] =		 	1.0;
+   damageScale[$DamageType::Plasma] =		 	0.65;
    damageScale[$DamageType::BomberBombs] =		3.0;
    damageScale[$DamageType::TankChaingun] =		1.5;
    damageScale[$DamageType::TankMortar] =		0.85;
    damageScale[$DamageType::MissileTurret] =	0.8;
-   damageScale[$DamageType::AT4] = 0.6;
    damageScale[$DamageType::MortarTurret] =		1.0;
    damageScale[$DamageType::PlasmaTurret] =		0.65;
    damageScale[$DamageType::SatchelCharge] =	3.0;
@@ -1179,30 +765,12 @@ datablock SimDataBlock(MediumPlayerDamageProfile)
    damageScale[$DamageType::Ground] =		 	1.0;
    damageScale[$DamageType::Explosion] =		0.8;
    damageScale[$DamageType::Lightning]	=		1.2;
-   damageScale[$DamageType::Flak] = 			0.2;
-   damageScale[$DamageType::Sniper] = 			2.4;
-   damageScale[$DamageType::MG] = 				1.0;
-   damageScale[$DamageType::Bazooka] = 			0.6;
-   damageScale[$DamageType::Artillery] = 			1.0;
-   damageScale[$DamageType::MG42] = 			1.4;
-   damageScale[$DamageType::pistol] = 			1.2;
-   damageScale[$DamageType::nuke] = 			1.0;
-   damageScale[$DamageType::melee] = 1.75;
-   damageScale[$DamageType::rifle] = 1.0;
-   damageScale[$DamageType::shotgun] = 1.0;
-   damageScale[$DamageType::RPG] = 1.0;
-   damageScale[$DamageType::ACCG] = 1.1;
-   damageScale[$DamageType::MP5] = 1.0;
-   damageScale[$DamageType::DepthCharge] = 0.1;
-   damageScale[$DamageType::TankChaingunH] = 1.5;
-   damageScale[$DamageType::PBC] = 1.0;
-   damageScale[$DamageType::SRifle] = 1.0;
 };
 
 datablock SimDataBlock(HeavyPlayerDamageProfile)
 {
    damageScale[$DamageType::Blaster] =		 	0.7;
-   damageScale[$DamageType::Bullet] =		 	0.8;
+   damageScale[$DamageType::Bullet] =		 	0.6;
    damageScale[$DamageType::ELF] =		 		0.75;
    damageScale[$DamageType::ELFturret] =		 		0.75;
    damageScale[$DamageType::ShockLance] =		1.0;
@@ -1218,13 +786,12 @@ datablock SimDataBlock(HeavyPlayerDamageProfile)
    damageScale[$DamageType::Mine] =		 		0.8;
    damageScale[$DamageType::Missile] =			0.6;
    damageScale[$DamageType::Mortar] =			0.7;
-   damageScale[$DamageType::Plasma] =			0.75;
+   damageScale[$DamageType::Plasma] =			0.4;
    damageScale[$DamageType::BomberBombs] =		3.0;
    damageScale[$DamageType::TankChaingun] =		1.3;
    damageScale[$DamageType::TankMortar] =		0.7;
    damageScale[$DamageType::MissileTurret] =	0.6;
-   damageScale[$DamageType::AT4] = 0.7;
-   damageScale[$DamageType::MortarTurret] =		0.5;
+   damageScale[$DamageType::MortarTurret] =		0.6;
    damageScale[$DamageType::PlasmaTurret] =		0.4;
    damageScale[$DamageType::SatchelCharge] =	3.0;
    damageScale[$DamageType::Default] =		 	1.0;
@@ -1232,22 +799,4 @@ datablock SimDataBlock(HeavyPlayerDamageProfile)
    damageScale[$DamageType::Ground] =		 	1.0;
    damageScale[$DamageType::Explosion] =		0.6;
    damageScale[$DamageType::Lightning]	=		1.4;
-   damageScale[$DamageType::Flak] = 			0.2;
-   damageScale[$DamageType::Sniper] = 			0.6;
-   damageScale[$DamageType::MG] = 				0.6;
-   damageScale[$DamageType::Bazooka] = 			0.9;
-   damageScale[$DamageType::Artillery] = 			1.0;
-   damageScale[$DamageType::MG42] = 			0.8;
-   damageScale[$DamageType::pistol] = 			0.4;
-   damageScale[$DamageType::nuke] = 			1.0;
-   damageScale[$DamageType::melee] = 0.2;
-   damageScale[$DamageType::rifle] = 0.4;
-   damageScale[$DamageType::shotgun] = 0.6;
-   damageScale[$DamageType::RPG] = 0.8;
-   damageScale[$DamageType::ACCG] = 1.2;
-   damageScale[$DamageType::MP5] = 0.6;
-   damageScale[$DamageType::DepthCharge] = 0.1;
-   damageScale[$DamageType::TankChaingunH] = 1.6;
-   damageScale[$DamageType::PBC] = 1.0;
-   damageScale[$DamageType::SRifle] = 0.4;
 };

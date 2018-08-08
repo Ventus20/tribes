@@ -1,6 +1,0 @@
-// Rank Position 1
-$Rank::Top[1] = "GM sora";
-$Rank::TopXP[1] = 20;
-$Rank::TopRank[1] = "Private";
-$Rank::TopRankGUID[1] = 2860882;
-// 

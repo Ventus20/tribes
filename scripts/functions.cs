@@ -914,20 +914,57 @@ function setFlightCeiling(%val)
         %missionArea.FlightCeiling = %val;
 }
 
+// This function allows you to reload all modified
 function reload(%script)
 {
-	compile(%script); // Added by JackTL - Duh!!
+    compile(%script);
     exec(%script);
+
     %count = ClientGroup.getCount();
 
     for(%i = 0; %i < %count; %i++)
     {
         %cl = ClientGroup.getObject(%i);
 
-        if(!%cl.isAIControlled()) // no sending bots datablocks.. LOL
-            %cl.transmitDataBlocks(0); // all clients on server
+        // Prevent sending new datablocks to connecting players, they'll get them all anyway
+        if(!%cl.isAIControlled() && %cl.currentPhase > 2)
+            %cl.transmitDataBlocks(0);
     }
 }
+
+// Required for reload() to work properly - watch for this in console
+function GameConnection::dataBlocksDone( %client, %missionSequence )
+{
+   echo("Client "@%client@" ("@getTaggedString(%client.name)@") finished datablock load.");
+
+   if(%missionSequence != $missionSequence)
+      return;
+
+   if(%client.currentPhase != 1)
+      return;
+   %client.currentPhase = 2;
+
+   // only want to set this once... (targets will not be updated/sent until a
+   // client has this flag set)
+   if(!%client.getReceivedDataBlocks())
+   {
+      %client.setReceivedDataBlocks(true);
+      sendTargetsToClient(%client);
+   }
+
+   commandToClient(%client, 'MissionStartPhase2', $missionSequence);
+}
+
+// Allows you to retrieve all information about a clientID, best used for verbose logging on connection
+function getFullClientInfo(%client)
+{
+   echo("==================================== Client Info");
+   echo("Assigned Client ID: " @ %client @ " IP Address: " @ %client.getAddress());
+   echo("Connection Name: "@getTaggedString(%client.name)@" Real Name: "@%client.realname@" GUID: "@%client.guid@"\nSkin: "@getTaggedString(%client.skin)@" Voice: "@getTaggedString(%client.voiceTag)@" Pitch: "@%client.voicePitch);
+   echo("Auth Info: \n"@%client.getAuthInfo());
+   echo("==========================================================");
+}
+
 
 function isVehicle(%obj)
 {
@@ -951,6 +988,18 @@ function isPlayer(%obj)
         %className = %data.className;
 
         if(%className $= Armor)
+            return true;
+        else
+            return false;
+    }
+}
+
+function isStaticShape(%obj) {
+    if(isObject(%obj)) {
+        %data = %obj.getDataBlock();
+        %className = %data.className;
+
+        if(%className $= StaticShapeData)
             return true;
         else
             return false;

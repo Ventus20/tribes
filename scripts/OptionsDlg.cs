@@ -1718,15 +1718,6 @@ $RemapCount++;
 $RemapName[$RemapCount] = "Emote: Sucker Punched";
 $RemapCmd[$RemapCount] = "emoteSuckerPunched";
 $RemapCount++;
-$RemapName[$RemapCount] = "Toggle Flash Light";
-$RemapCmd[$RemapCount] = "toggleNightVision";
-$RemapCount++;
-$RemapName[$RemapCount] = "Slow Motion";
-$RemapCmd[$RemapCount] = "SlowMotion";
-$RemapCount++;
-$RemapName[$RemapCount] = "Restrain target";
-$RemapCmd[$RemapCount] = "doGrab";
-$RemapCount++;
 $quickPackExtrasBind = true;
 // End Construction
 

@@ -1,3 +1,4 @@
+$TeamDeployableMax[SpawnPointPack] = 9999;
 datablock ShapeBaseImageData(SpawnPointDeployableImage) {
 mass = 15;
 emap = true;
@@ -134,8 +135,8 @@ serverPlay3D(%item.deploySound,%deplObj.getTransform());
 $TeamDeployedCount[%plyr.team,%item.item]++;
 addDSurface(%item.surface,%deplObj);
 if (%plyr.packSet == 0) %deplobj.ispersonal=1;
-%plyr.unmountImage(%slot);
-%plyr.decInventory(%item.item,1);
+//%plyr.unmountImage(%slot);
+//%plyr.decInventory(%item.item,1);
 checkPowerObject(%deplObj);
 messageclient(%plyr.client,'MsgClient',"\c3Spawn point placed. Type /setspawn while pointing at it to set your spawn point.");
 return %deplObj;

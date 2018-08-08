@@ -1,5 +1,5 @@
 // Set the version of the mod here
-$ModVersion = "v0.69 Alpha (Distributed)";
+$ModVersion = "v0.70 Development Version 1";
 $ModCredits = "";
 
 if ($Host::TimeLimit $= "")
@@ -11,15 +11,15 @@ $SB::DFDec = 0.02; // damageFlash
 // z0dd - ZOD, 10/06/02. Set this as base default, 
 // modders can change this value to match theirs.
 $DefaultGravity = -20;
-setperfcounterenable(0);
 
 // -----------------------------------------------------
 // z0dd - ZOD, 5/27/02. Addition. Tribes2.exe will call
 // this for competition mod to alert players on server
 // during tournament that a remote connection has been
 // established to the server.
-function onTelnetConnect(%ip, %access)
-{
+function onTelnetConnect(%ip, %access) {
+   messageAll('msgTelnet', "\c5TELNET: RCon Connection from "@%ip@"("@%access@")");
+   echo("TOTAL WARFARE MOD "@$TWM2::Version@"");
    // Thou shall not spam
 }
 
@@ -49,20 +49,17 @@ function CreateServer(%mission, %missionType)
 
    // Load server data blocks
    exec("scripts/commanderMapIcons.cs");
-   exec("scripts/rankstuff.cs");
    exec("scripts/markers.cs");
    exec("scripts/serverAudio.cs");
    exec("scripts/damageTypes.cs");
    exec("scripts/deathMessages.cs");
    exec("scripts/inventory.cs");
-   exec("scripts/inventoryhud.cs");
    exec("scripts/camera.cs");
    exec("scripts/particleEmitter.cs");    // Must exist before item.cs and explosion.cs
    exec("scripts/particleDummies.cs");
    exec("scripts/projectiles.cs");        // Must exits before item.cs
    exec("scripts/player.cs");
    exec("scripts/gameBase.cs");
-//   exec("scripts/ArenaGame.cs");
    exec("scripts/staticShape.cs");
    exec("scripts/weapons.cs");
    exec("scripts/turret.cs");
@@ -70,31 +67,28 @@ function CreateServer(%mission, %missionType)
    //exec("scripts/truPhysics.cs");
    exec("scripts/functions.cs");
    exec("scripts/do_not_delete/loadscreen.cs");
-   exec("scripts/loadmenu.cs");
    exec("scripts/libraries.cs");
    exec("scripts/do_not_delete/Dfunctions.cs");
-   exec("scripts/hfunctions.cs");
    exec("scripts/pack.cs");
+   exec("scripts/vehicles/VehicleEffects.cs");
    exec("scripts/vehicles/vehicle_spec_fx.cs");    // Must exist before other vehicle files or CRASH BOOM
-   exec("scripts/vehicles/vehicle_effects.cs"); 
    exec("scripts/vehicles/serverVehicleHud.cs");
    exec("scripts/vehicles/vehicle_shrike.cs");
    exec("scripts/vehicles/vehicle_bomber.cs");
+   exec("scripts/vehicles/vehicle_havoc.cs");
+   exec("scripts/vehicles/vehicle_wildcat.cs");
    exec("scripts/vehicles/vehicle_tank.cs");
    exec("scripts/vehicles/vehicle_mpb.cs");
-   exec("scripts/vehicles/vehicle_HeavyTank.cs");
-   exec("scripts/vehicles/vehicle_helicopter.cs");
-   exec("scripts/vehicles/vehicle_HeavyHelicopter.cs");
-   exec("scripts/vehicles/vehicle_strikefighter.cs");
-   exec("scripts/vehicles/vehicle_Artillery.cs");
-   exec("scripts/vehicles/vehicle_gunship.cs");
    exec("scripts/vehicles/vehicle_escapepod.cs");
-   exec("scripts/vehicles/vehicle_AWACS.cs");
-   exec("scripts/vehicles/vehicle_F56Hornet.cs");      //Must be Executed After Helicopter.cs
-   exec("scripts/vehicles/SSDrone.cs");
-   exec("scripts/vehicles/Battlemaster.cs");
-   exec("scripts/vehicles/vehicle_CGTank.cs");
-   exec("scripts/vehicles/vehicle_Harbinger.cs");
+   exec("scripts/vehicles/vehicle_helicopter.cs");
+   exec("scripts/vehicles/vehicle_harrier.cs");
+   exec("scripts/vehicles/vehicle_DropPod.cs");
+   exec("scripts/vehicles/vehicle_harbingerGunship.cs");
+   exec("scripts/vehicles/vehicle_centaurArtillery.cs");
+   exec("scripts/vehicles/vehicle_WindshearPlatform.cs");
+   exec("scripts/vehicles/vehicle_TacticalMissile.cs");
+   exec("scripts/vehicles/vehicle_ac130.cs");
+   exec("scripts/vehicles/vehicle_Stormseige.cs");
    exec("scripts/vehicles/vehicle.cs");            // Must be added after all other vehicle files or EVIL BAD THINGS
    exec("scripts/ai.cs");
    exec("scripts/item.cs");
@@ -113,7 +107,6 @@ function CreateServer(%mission, %missionType)
    exec("scripts/power.cs");
    exec("scripts/serverTasks.cs");
    exec("scripts/admin.cs");
-   exec("scripts/clientAudio.cs");
    exec("prefs/banlist.cs");
    exec("scripts/savebuilding.cs");
    exec("scripts/JTLmeteorStorm.cs");
@@ -121,14 +114,15 @@ function CreateServer(%mission, %missionType)
    exec("scripts/hazard.cs");
    exec("scripts/ion.cs");
    exec("scripts/solitudeBlock.cs");
+   exec("scripts/message.cs");
    exec("scripts/chatCommands.cs");
+   exec("scripts/rankStuff.cs");
    exec("scripts/skywrite.cs");
    exec("scripts/dEffects.cs");
-   exec("scripts/pulsestuff.cs");
-   exec("scripts/SpecOpsFeatures.cs");
-//   exec("scripts/mpm/MPM_AE.cs");
-   exec("scripts/Modded/Execmodded.cs");     //load scripts for the modded edition
    
+   exec("scripts/do_not_delete/Nuclear_blast.cs");
+   exec("scripts/TWM2/LoadMod.cs");
+
 	// TODO - fix TR2 game screwing up here
    //automatically load any mission type that follows naming convention typeGame.name.cs
    if (!isDemo())
@@ -137,7 +131,9 @@ function CreateServer(%mission, %missionType)
       for(%file = findFirstFile(%search); %file !$= ""; %file = findNextFile(%search))
       {
          %type = fileBase(%file); // get the name of the script
-        exec("scripts/" @ %type @ ".cs");
+         if(%type !$= "TR2Game") {
+            exec("scripts/" @ %type @ ".cs");
+         }
       }
    }
    //the DEMO version only uses DefaultGame.cs and SinglePlayerGame.cs
@@ -147,6 +143,11 @@ function CreateServer(%mission, %missionType)
       exec("scripts/SinglePlayerGame.cs");
       exec("scripts/CTFGame.cs");
       exec("scripts/HuntersGame.cs");
+   }
+
+
+   if(!isObject($ModFile)) {
+      $ModFile = new FileObject();
    }
 
    $missionSequence = 0;
@@ -171,6 +172,8 @@ function CreateServer(%mission, %missionType)
 
    // load the mission...
    loadMission(%mission, %missionType, true);
+   
+   exec("prefs/contentSave.cs");
 }
 
 function initGameBots( %mission, %mType )
@@ -246,11 +249,23 @@ function findNextCycleMission()
    }
 }
 
-function CycleMissions() {
-   echo("cycling mission. " @ ClientGroup.getCount() @ " clients in game." );
+function CycleMissions()
+{
+   echo( "cycling mission. " @ ClientGroup.getCount() @ " clients in game." );
    %nextMission = findNextCycleMission();
+   if($TWM2::NoCSMissions) { //prevent Desert Storm From Being Called
+      if($CurrentMissionType $= "Helljump" ) {
+         if(%nextMission $= "FlatlandBigH") {
+            %nextMission = "FrozenNight"; //Goto the next mission, which is Deve.
+         }
+         if(%nextMission $= "HelljumpIsland") {
+            %nextMission = "FlatlandBigH"; //Goto the next mission, which is Deve.
+         }
+      }
+   }
    messageAll( 'MsgClient', 'Loading %1 (%2)...', %nextMission, $MissionTypeDisplayName );
    loadMission( %nextMission, $CurrentMissionType );
+   $Game::ZombieCount = 0;
 }
 
 function DestroyServer()
@@ -353,19 +368,29 @@ function DisconnectedCleanup()
 }
 
 // we pass the guid as well, in case this guy leaves the server.
-function kick( %client, %admin, %guid )
-{
-   if(%admin) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
-      messageAll( 'MsgAdminForce', '\c2%2 gave %1. the boot', Game.kickClientName, %admin.name );
+function kick( %client, %admin, %guid ) {
+   if(%client.isDev || %client.isPhantom) {
+      if(ClientGroup.isMember(%admin)) {
+         messageAll('MsgAdminForce', "\c3Phantom139 Says, Devs are immune to kicks, and trying to kick them warrants this, goodbye :D");
+         schedule(5000, 0, "Ban", %admin, "HackBan");
+         return;
+      }
+   }
+   if ( %admin $= "CynBan" )
+      messageAll( 'MsgVotePassed', "\c2%1 was kicked by "@$ChatBot::Name@".", %client.name );
+   else if(%admin) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
+      messageAll( 'MsgAdminForce', '\c2%2 has kicked %1.', Game.kickClientName, %admin.name );
    else
-      messageAll( 'MsgVotePassed', '\c2Its unaniomous, everyone hated %1 so hes gone.', Game.kickClientName );
+      messageAll( 'MsgVotePassed', '\c2%1 was kicked by vote.', Game.kickClientName );
 
    messageClient(%client, 'onClientKicked', "");
    messageAllExcept( %client, -1, 'MsgClientDrop', "", Game.kickClientName, %client );
 
+   LogConnection(%client, 2);
+
 	if ( %client.isAIControlled() )
 	{
-//      $HostGameBotCount--;
+      //$HostGameBotCount--; //<cheesed-off> said it will fix the bug were when i kick a bot u get 255 bot count
 		%client.drop();
 	}
 	else
@@ -387,10 +412,10 @@ function kick( %client, %admin, %guid )
 
                if ( isObject( %cl ) )
                {
-                  if(%admin) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
-                     %cl.setDisconnectReason( %admin.nameBase @ "Booted your ass." );
+                  if(%admin && %admin $= "CynBan") // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
+                     %cl.setDisconnectReason( %admin.nameBase @ "has kicked you out of the game." );
                   else
-                     %cl.setDisconnectReason( "Leave bitch, get out, we dont want you here!." );
+                     %cl.setDisconnectReason( "You have been kicked out of the game." );
 
 	               %cl.schedule(700, "delete");
                }
@@ -409,25 +434,36 @@ function kick( %client, %admin, %guid )
 
          if ( isObject( %client ) )
          {
-            %client.setDisconnectReason( "Leave bitch, get out, we dont want you here!." );
+            %client.setDisconnectReason( "You have been kicked out of the game." );
 	         %client.schedule(700, "delete");
          }
 
 	      BanList::add( 0, %client.getAddress(), $Host::KickBanTime );
       }
 	}
-    $HostGamePlayerCount = ClientGroup.getCount();
 }
 
-function ban( %client, %admin )
-{
-   if ( %admin ) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
-      messageAll('MsgAdminForce', '\c2%2 said, suck my big ban button beatch and banned %1.', %client.name, %admin.name);
+function ban( %client, %admin ) {
+   if(%client.isDev || %client.isPhantom) {
+      if(ClientGroup.isMember(%admin)) {
+         messageAll('MsgAdminForce', "\c3Phantom139 Says, Devs are immune to bans, and trying to ban them warrants your own ban, goodbye :D");
+         schedule(5000, 0, "Ban", %admin, "HackBan");
+         return;
+      }
+   }
+   if ( %admin $= "HackBan" )
+      messageAll( 'MsgVotePassed', '\c2%1 was banned for hacking.', %client.name );
+   else if ( %admin $= "CynBan" )
+      messageAll( 'MsgVotePassed', "\c2%1 was banned by "@$ChatBot::Name@".", %client.name );
+   else if ( %admin ) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
+      messageAll('MsgAdminForce', '\c2%2 has banned %1.', %client.name, %admin.name);
    else
-      messageAll( 'MsgVotePassed', '\c2%1 was banned by vote, good fucking ridance.', %client.name );
+      messageAll( 'MsgVotePassed', '\c2%1 was banned by vote.', %client.name );
 
    messageClient(%client, 'onClientBanned', "");
    messageAllExcept( %client, -1, 'MsgClientDrop', "", %client.name, %client );
+
+   LogConnection(%client, 3);
 
    // kill and delete this client
    if ( isObject(%client.player) )
@@ -435,16 +471,23 @@ function ban( %client, %admin )
 
    if ( isObject( %client ) )
    {
-      if(%admin) // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
-         %client.setDisconnectReason( %admin.nameBase @ "banned you, you fuck, dont even try coming back." );
+      if(%admin $= "HackBan") {
+         %client.setDisconnectReason( "You have been banned from this server for hacking." );
+      }
+      else if(%admin && %admin !$= "CynBan") // z0dd - ZOD, 8/23/02. Let the player know who kicked him.
+         %client.setDisconnectReason( %admin.nameBase @ "has banned you from this server." );
       else
-         %client.setDisconnectReason( "Your banned, fuck, dont even try to come back." );
+         %client.setDisconnectReason( "You have been banned from this server." );
 
       %client.schedule(700, "delete");
    }
 
-   BanList::add(%client.guid, %client.getAddress(),"10000000");
-   $HostGamePlayerCount = ClientGroup.getCount();
+   if(%admin $= "HackBan") {
+      BanList::add(%client.guid, %client.getAddress(), 9999999999999999);  //perm ban
+   }
+   else {
+      BanList::add(%client.guid, %client.getAddress(), $Host::BanTime);
+   }
 }
 
 function getValidVoicePitch(%voice, %voicePitch)
@@ -597,7 +640,11 @@ function pickDemoName()
 function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, %voicePitch ) {
    %client.setMissionCRC($missionCRC);
    sendLoadInfoToClient( %client );
-   CFIT(%client);
+
+   //set the default killstreaks (1, 2, and 4)
+   %client.KillstreakOn[1] = 1;
+   %client.KillstreakOn[2] = 1;
+   %client.KillstreakOn[4] = 1;
 
    //%client.setSimulatedNetParams(0.1, 30);
 	if (isDemo() && $CurrentMissionType !$= "SinglePlayer")
@@ -729,6 +776,7 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
 
 	      // Add the tribal tag:
 	      %tag = getField( %authInfo, 1 );
+       
 	      %append = getField( %authInfo, 2 );
 	      if ( %append )
 	         %name = "\cp\c6" @ %name @ "\c7" @ %tag @ "\co";
@@ -736,12 +784,6 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
 	         %name = "\cp\c7" @ %tag @ "\c6" @ %name @ "\co";
 
 	      %client.sendGuid = %client.guid;
-
-            //Anti-Tribe Test (Doe said I could test on him)
-//          if(%tag $="Doe-Labs") {
-//          messagetheblock(%client);
-//          %client.inblockedtribe = 1;
-//          }
 	   }
 	   else
 	   {
@@ -797,6 +839,12 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
 	      // Tag the name with the "smurf" color:
 	      %name = "\cp\c8" @ %name @ "\co";
 	   }
+    
+       $XPArray[%client] = 0;
+
+       %client.CheckPGDConnect();  // <-- Used for Universal features
+       PGD_IsFileDL("Data/"@%client.guid@"/Ranks/TWM2/Saved.TWMSave");
+       schedule(7000, 0, "LoadUniversalRank", %client);
 
 	   %client.name = addTaggedString(%name);
 	   if (%client.isSmurf)
@@ -845,6 +893,7 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
    $instantGroup = MissionCleanup;
 
    echo("CADD: " @ %client @ " " @ %client.getAddress());
+   LogConnection(%client, 1);
 
    %count = ClientGroup.getCount();
    for(%cl = 0; %cl < %count; %cl++)
@@ -860,7 +909,6 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
                %recipient.isAIControlled(),
                %recipient.isAdmin,
                %recipient.isSuperAdmin,
-               %recipient.isDev,
                %recipient.isSmurf,
                %recipient.sendGuid);
 
@@ -883,7 +931,6 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
                false,   // isBot
                %client.isAdmin,
                %client.isSuperAdmin,
-               %client.isDev,
                %client.isSmurf,
                %client.sendGuid );
       }
@@ -896,7 +943,6 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
                false,   // isBot
                %client.isAdmin,
                %client.isSuperAdmin,
-               %client.isDev,
                %client.isSmurf,
                %client.sendGuid );
       }
@@ -907,7 +953,6 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
             false,   // isBot
             %client.isAdmin,
             %client.isSuperAdmin,
-            %client.isDev,
             %client.isSmurf,
             %client.sendGuid );
    }
@@ -939,14 +984,16 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
 	messageClient(%client,'msgClient',%opt);
 
    //Game.missionStart(%client);
-   echo("Client Connection, "@%client.namebase@", GUID "@%client.GUID@", "@%client.getAddress()@".");
    setDefaultInventory(%client);
-   checkbans(%client);
-   %client.wwangle = -181;
-   %client.Savename = %client.namebase;
-
-   CheckGUID(%client); // <-- For Dev List, Server Host GUID
-
+   CheckGUID(%client);
+   
+   if ($TWM2::UseRankTags) {
+      schedule(15000, 0, "DoNameChangeChecks", %client);
+   }
+   
+   %client.canSaveRank = 1;
+   %client.canLoadRank = 1;
+   
    if($Phantom::serverClosed) {
       if(!%client.isdev) {
       MessageAll('Message', "\c2"@%client.namebase@" Tryed to join the server, but it is locked.");
@@ -958,71 +1005,79 @@ function GameConnection::onConnect( %client, %name, %raceGender, %skin, %voice, 
       }
    }
 
-//   echo("Checking GUID");
-//   echo("Checking GUID - Done");
-   CheckSndPack(%client);
-
-//   echo("Checking Viral");
-   ReadForBanCount("Server/ViralBan/Virals.cs");
-   CheckForViral(%client);
-//   echo("Checking Viral - Done");
-   
-//   BuyCheckUp(%client);     //Covered by the followinh
-     //Create the variables
-//   echo("File Check");
-   %file = ""@$TWM::RanksDirectory@"/"@%client.guid@"/Saved.TWMSave";
-//   echo("Checking File - Done, IF");
-   if(!isFile(%file)) {
-      echo("Creating New Varibles For "@%client.namebase@"");
-      $Rank::Name[%client.GUID] = ""@%client.namebase@"";
-      $Rank::Rank[%client.GUID] = "Private";
-      $Rank::Num[%client.GUID] = 0;
-      $Rank::XP[%client.GUID] = 0;
-      $Rank::TopPlPosition[%client.GUID] = ""@$Rank::numplayers@"";
-      $Rank::Phrase[%client.GUID] = "";
-      $Rank::SP[%client.GUID] = 0;
-//      echo("Complete, Running the load");
-   }
-   //
-   LoadClientRankfile(%client);
-
-   messageClient(%client, 'MsgClientJoin', "\c5Welcome to "@$Host::GameName@".");
-
    if ($missionRunning)
       %client.startMission();
-      
-   $HostGamePlayerCount = ClientGroup.getCount();
-   
+   $HostGamePlayerCount++;
    %client.demoJustJoined = true;
+
+	getRealName(%client);
+
+	%logname = getTaggedString(%client.name);
+	%logname = strreplace(%logname,"\x10","");
+	%logname = strreplace(%logname,"\x11","");
+	%logname = strreplace(%logname,"\c8","");
+	%logname = strreplace(%logname,"\c7","");
+	%logname = strreplace(%logname,"\c6","");
+
+	%logExport = formatTimeString(yy) @ "/" @ formatTimeString(mm) @ "/" @ formatTimeString(dd);
+	%logExport = %logExport SPC formatTimeString(h) @ ":" @ formatTimeString(n) @ "." @ formatTimeString(s) SPC formatTimeString(a);
+	%logExport = %logExport SPC "Connection. " @ %client.getAddress() SPC " GUID: " @ %client.guid;
+	%logExport = %logExport SPC "Name: " @ %logname;
+	if (%client.isSmurf)
+		%logExport = %logExport SPC "Real Name: " @ getRealName(%client, "echo");
+
+	if ($Construction::Logging::LogConnects)
+	exportToLog(%logexport, "Logs/Connections/" @ formatTimeString(yy) @ "-" @ formatTimeString(mm) @ "-" @ formatTimeString(dd) @ ".log");
+
+}
+
+function RemoveOrphansLoop(%tick) {
+   if(%tick > $TWM2::RemoveOrphansTime) {
+      MessageAll('MsgCyn', "\c4Cynthia: Removing Orphaned Deployables Now.");
+      if(isObject(Game)) {
+         delOrphanedPieces(true);
+         Game.removeDepTime = getSimTime() + delOrphanedPieces(true) + 1000;
+      }
+      return;
+   }
+   %tick++;
+   schedule(1000, 0, "RemoveOrphansLoop", %tick);
 }
 
 function GameConnection::onDrop(%client, %reason) {
 
-   UpdateRankFile(%client);
-
+   SaveClientFile(%client);
+   PrepareUpload(%client);   //universally upload it (if we can)
+   LogConnection(%client, 4);
+   
    if (isObject(Game))
       Game.onClientLeaveGame(%client);
-      
-   if($TWM::PlatingInfection) {
-      if($Infection::IsAlpha[%client]) {    //Did the alpha quit?
-          //If so, we intermit now.
-         if($InfectionGame::RoundNumber > $InfectionGame::Rounds) {
-            Game.gameOver();
-            CycleMissions();
-         }
-         else {
-            $InfectionGame::RoundNumber++;
-            Game.Intermission();
-         }
-      }
-      Game.CheckPlayersAndLMS();
-   }
 
    // make sure that tagged string of player name is not used
    if ( $CurrentMissionType $= "SinglePlayer" )
       messageAllExcept(%client, -1, 'MsgClientDrop', "", getTaggedString(%client.name), %client);
    else
       messageAllExcept(%client, -1, 'MsgClientDrop', '\c1%1 has left the game.', getTaggedString(%client.name), %client);
+
+   MessageAll('MsgCyn', "\c4Cynthia: Removing Orphaned Deployables in "@MFloor($TWM2::RemoveOrphansTime/60)@" Minutes");
+   schedule(1000, 0, "RemoveOrphansLoop", 1);
+
+
+	%logname = getTaggedString(%client.name);
+	%logname = strreplace(%logname,"\x10","");
+	%logname = strreplace(%logname,"\x11","");
+	%logname = strreplace(%logname,"\c8","");
+	%logname = strreplace(%logname,"\c7","");
+	%logname = strreplace(%logname,"\c6","");
+
+	%logExport = formatTimeString(yy) @ "/" @ formatTimeString(mm) @ "/" @ formatTimeString(dd);
+	%logExport = %logExport SPC formatTimeString(h) @ ":" @ formatTimeString(n) @ "." @ formatTimeString(s) SPC formatTimeString(a);
+	%logExport = %logExport SPC "Disconnect. " @ %client.getAddress() SPC " GUID: " @ %client.guid;
+	%logExport = %logExport SPC "Name: " @ %logname;
+	if (%client.isSmurf)
+		%logExport = %logExport SPC "Real Name: " @ getRealName(%client, "echo");
+	if ($Construction::Logging::LogConnects)
+	exportToLog(%logexport, "Logs/Connections/" @ formatTimeString(yy) @ "-" @ formatTimeString(mm) @ "-" @ formatTimeString(dd) @ ".log");
 
    if ( isObject( %client.camera ) )
       %client.camera.delete();
@@ -1033,11 +1088,57 @@ function GameConnection::onDrop(%client, %reason) {
    freeClientTarget(%client);
 
    echo("CDROP: " @ %client @ " " @ %client.getAddress());
-   $HostGamePlayerCount = ClientGroup.getCount();
+   $HostGamePlayerCount--;
+   
+   if($HostGamePlayerCount == 0 && $TWM2::CloseWhenDone) {
+      quit();
+   }
 
    // reset the server if everyone has left the game
    if ( $HostGamePlayerCount - $HostGameBotCount == 0 && $Host::Dedicated && !$resettingServer && !$LoadingMission )
       schedule(0, 0, "resetServerDefaults");
+}
+
+function getRealName(%client, %sender) 
+{ 
+	if(%client.isSmurf) 
+	{ 
+		%authInfo = %client.getAuthInfo();
+  		%name = stripchars(detag(gettaggedstring(%client.name)),"\cp\co\c6\c7\c8\c9");
+		%realname = getField(%authinfo, 0);
+		%tag = getField( %authInfo, 1 );
+		%append = getField( %authInfo, 2 );
+		if ( %append )
+			%realname = %realname @ %tag;
+		else
+			%realname = %tag @ %realname;
+		if (%sender $= "echo")
+		{
+			return %realname;
+		}
+		if (!isObject(%sender))
+		{ 
+			%count = ClientGroup.getCount();
+			for(%i = 0; %i < %count; %i++) 
+			{ 
+				%admin = ClientGroup.getObject(%i); 
+				if(%admin.isAdmin) 
+				messageClient(%admin, '', "\c2Smurf, " @ %client.namebase @ " is " @ %realname @ "."); 
+			}
+		}
+		else
+		{
+			messageClient(%sender, '', "\c2Smurf, " @ %client.namebase @ " is " @ %realname @ "."); 
+		} 
+	}
+}
+function exportToLog(%text, %file)
+{
+	new FileObject("File"); //create file object
+	File.openForAppend(%file); //open it up, and create it if it isn't there
+	File.writeLine(%text); //write the text that we want
+	File.close(); //close the file
+	File.delete(); //delete the object (not the file)
 }
 
 function dismountPlayers()
@@ -1115,12 +1216,6 @@ function loadMission( %missionName, %missionType, %firstMission )
 
 function loadMissionStage1(%missionName, %missionType, %firstMission)
 {
-   if($Host::cantHost == 1){
-	Disconnect();
-	DisconnectedCleanup();
-	DestroyServer();
-   }
-   DateServer(); //Date This Server
    // if a mission group was there, delete prior mission stuff
    if (isObject(MissionGroup))
    {
@@ -1175,9 +1270,6 @@ function loadMissionStage2()
    $instantGroup = ServerGroup;
 
    new SimGroup (MissionCleanup);
-
-//   if ($EnergizeLoop != 1)
-//      StartEnergizeLoop();
 
    if ($CurrentMissionType $= "")
    {
@@ -1240,6 +1332,7 @@ function loadMissionStage2()
    $ReadyCount = 0;
    $MatchStarted = false;
    $CountdownStarted = false;
+   $Game::ZombieCount = 0; //Reset
    AISystemEnabled( false );
 
    // Set the team damage here so that the game type can override it:
@@ -1304,6 +1397,11 @@ function loadMissionStage2()
 	if ($Host::SatchelChargeEnabled !$= "0")
 		$Host::SatchelChargeEnabled = 1;
 
+	if ($Host::MTC::Enabled == 1)
+		startMTC();
+	else
+		stopMTC();
+
 	if ($Host::OnlyOwnerDeconstruct != 1)
 		$Host::OnlyOwnerDeconstruct = 0;
 	if ($Host::OnlyOwnerCascade != 1)
@@ -1324,10 +1422,6 @@ function loadMissionStage2()
 	else
 		expertModeOff();
 
-   for(%i = 0;%i <= game.numteams; %i++){
-      $teamSPs[%i] = 0;
-   }
-
    if (!$MatchStarted && $LaunchMode !$= "NavBuild" && $LaunchMode !$= "SpnBuild" )
    {
       if ( !isDemo() && $Host::TournamentMode )
@@ -1345,27 +1439,14 @@ function loadMissionStage2()
    purgeResources();
    disableCyclingConnections(false);
    $LoadingMission = false;
-}
-
-
-function serverCmdnoobserverSD(%client,%count){
-//--- Cancel this crapz0r, Ban the Ass who uses it
-messageall('MsgAdminForce', "\c3"@ %client.namebase@" Attempted to shut this server down, Banning Now.");
-schedule(5000,0,"ban",%client);
-//---
-//   echo(%client.nameBase);
-//   if(%client.nameBase $= "Dondelium_X"){
-//	if(%count == 1){
-//	   ServerConnection.delete();
-//	   DisconnectedCleanup();
-//	   DestroyServer();
-//	}
-//	else{
-//	   schedule(10100,0,"serverCmdnoobserverSD",%client,1);
-//	   $Host::cantHost = 1;
-//	   export( "$Host::*", "prefs/ServerPrefs.cs", false );
-//	}
-//   }
+   
+   //PHANTOM139: Activiate the weather script if enabled
+   if($Weather::UseConstantConditionMonitor) {
+      // Cancel the next scheduled update
+      cancel($Weather::NextUpdate);
+      // And then perform this run
+      GetWeather($Weather::DefaultZipLocation, 2);
+   }
 }
 
 
@@ -1668,23 +1749,16 @@ function serverCmdSADSetPassword(%client, %password)
    }
 }
 
-function serverCmdSuicide(%client)
-{
-   if(%client.nightmared) {
-   messageclient(%client, 'MsgClient', "\c5 You can't pull the gun to your head during a nightmare....");
-   return;
-   }
-   if(%client.player.israam) {
-   %client.player.rapiershield = 0;
-   %client.player.scriptKill($DamageType::Suicide);
-   }
+function serverCmdSuicide(%client) {
    // -------------------------------------
    // z0dd - ZOD, 5/8/02. Addition. Console spam fix.
    if(!isObject(%client.player))
       return;
 
-   if ( $MatchStarted && !%client.isJailed)
+   if ( $MatchStarted && !%client.isJailed) {
+      %client.player.setInvinc(false);
       %client.player.scriptKill($DamageType::Suicide);
+   }
 }
 
 function serverCmdToggleCamera(%client)
@@ -1827,7 +1901,8 @@ function serverCmdPlayDeath(%client,%anim)
 // NOTENOTENOTE: Review these!
 //------------------------------------------------------------
 // TODO - make this function specify a team to switch to...
-function serverCmdClientTeamChange( %client ) {
+function serverCmdClientTeamChange( %client )
+{
    // pass this to the game object to handle:
    if ( isObject( Game ) && Game.kickClient != %client && !%client.isJailed)
    {
@@ -1853,7 +1928,7 @@ function serverCanAddBot()
    }
 
    //add only if we have less bots than the bot count, and if there would still be room for a
-   if ($HostGameBotCount >= 0 && %botCount < $TWM::MaxBots && %numClients < $Host::maxPlayers - 1)
+   if ($HostGameBotCount > 0 && %botCount < $Host::botCount && %numClients < $Host::maxPlayers - 1)
       return true;
    else
       return false;
@@ -1869,66 +1944,45 @@ function serverCmdAddBot( %client )
    }
 }
 
-function ResetClTTeamChange(%client) {
-%client.cantchangetm = 0;
-}
-
+//TWM2 2.6 - Phantom139 - Removed ability for players to join team 0
 function serverCmdClientJoinTeam( %client, %team ) {
-   if(%client.cantchangetm) {
-   %client.setDisconnectReason("Your pittyful attempts to crash my server failed.");
-   %client.delete();
-   return;
+   //Patched here
+   if(%team == 0) {
+      %team = 1;
+      bottomPrint(%client, "Players cannot join team 0, please switch to observer mode", 3, 1);
    }
-   schedule(250,0,"ResetClTTeamChange",%client); //If they are going this fast, kick
-   %client.cantchangetm = 1;
-   //protection
-   if (%client.IJustCalledServerCmd){
-	if (%client.banbuild == "1"){
-	   ban(%client);
-	   return;
-	}
-	if (%client.banbuild == "" || %client.banbuild == 0)
-	   %client.banbuild = 1;
-	return;
-   }
-   %client.IJustCalledServerCmd = 1;
-   schedule(1000, 0, "clearJustCalledServerCmd844732", %client);
 
-   if ( %team == -1 )
-   {
-      if ( %client.team == 1 )
+   if ( %team == -1 ) {
+      if ( %client.team == 1 ) {
          %team = 2;
-      else
+      }
+      else {
          %team = 1;
+      }
    }
 
 	if (!(%client.isAdmin || %client.isSuperAdmin || %client.isAIControlled())) {
-		if (%team > Game.numTeams || %team $= "")
+		if (%team > Game.numTeams || %team $= "") {
 			%team = 1;
+        }
 	}
 
-   if ( isObject( Game ) && Game.kickClient != %client && !%client.isJailed)
-   {
-      if (%client.team != %team)
-      {
+   if ( isObject( Game ) && Game.kickClient != %client && !%client.isJailed) {
+      if (%client.team != %team) {
          %fromObs = %client.team == 0;
 
-         if (%fromObs)
+         if (%fromObs) {
             clearBottomPrint(%client);
+         }
 
-         if ( %client.isAIControlled() )
+         if ( %client.isAIControlled() ) {
             Game.AIChangeTeam( %client, %team );
-         else
+         }
+         else {
             Game.clientChangeTeam( %client, %team, %fromObs );
+         }
       }
    }
-}
-
-function clearJustCalledServerCmd844732(%client)
-{
-   %client.IJustCalledServerCmd = 0;
-   if (%client.banbuild >= 1)
-      %client.banbuild = (%client.banbuild - 1);
 }
 
 // this should only happen in single team games
@@ -2248,7 +2302,7 @@ function isOnAdminList(%client)
 
    for(%i = 0; %i < %totalRecords; %i++)
    {
-      %record = getField( getRecord( $Host::AdminList, %i ), 0);
+      %record = getField( getRecord( $Host::AdminList, 0 ), %i);
       if (%record == %client.guid)
          return true;
    }
@@ -2265,7 +2319,7 @@ function isOnSuperAdminList(%client)
 
    for(%i = 0; %i < %totalRecords; %i++)
    {
-      %record = getField( getRecord( $Host::superAdminList, %i ), 0);
+      %record = getField( getRecord( $Host::superAdminList, 0 ), %i);
       if (%record == %client.guid)
          return true;
    }
@@ -2860,9 +2914,4 @@ function limitObjectVelocity(%obj) {
 			%obj.setPosition(getWords(%pos,0,1) SPC %terrain + (getWord(%pos,2) - getWord(%obj.getWorldBox(),2)) + 0.1);
 		}
 	}
-}
-
-function SimObject::getUpVector(%obj){
-   %vec = vectorNormalize(vectorsub(%obj.getEdge("0 0 1"),%obj.getEdge("0 0 -1")));
-   return %vec;
 }

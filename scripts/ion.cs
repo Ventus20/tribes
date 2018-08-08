@@ -23,6 +23,8 @@ $Ion::StopIon = 0; //Stops ion in it's tracks.
 $Ion::Damage = 1;
 $Ion::MaxIon = 50;
 
+$Ion::MaxPass = 4;
+
 ////////Ionstorm globals/////////
 
 $IonStorm::Radius = 500; //Max distance a beam will hit from target.
@@ -317,6 +319,8 @@ datablock SniperProjectileData(ShockBeam) {
 	explosion      = "ShockExplosion";
 	//splash       = SniperSplash;
 	//directDamageType  = $DamageType::Lightning;
+ 
+    ImageSource         = "IonRifleImage";
 
 	maxRifleRange    = 2000;
 	rifleHeadMultiplier = 1.3;
@@ -364,6 +368,9 @@ datablock SniperProjectileData(ShockBeam2) :ShockBeam {
 	maxFlareSize    = 500.0;
 	pulseSpeed     = 5;
 	pulseLength     = 0.05;
+ 
+    ImageSource         = "IonRifleImage";
+
 	textureName[0]   = "special/flare";
 	//textureName[1]   = "skins/beampulse";
 	textureName[1] = "special/laserrip04";
@@ -391,6 +398,9 @@ datablock SniperProjectileData(ShockBeam2) :ShockBeam {
 ////////Main Ion functions///////
 
 function ShapeBase::zap(%obj,%charge) {
+    if(isStaticShape(%obj) && !Deployables.isMember(%obj)) {
+       return;
+    }
 	zap(%obj,%charge);
 }
 
@@ -411,8 +421,9 @@ function zap(%obj,%charge,%pos) {
 	}
 
 	%charge = %charge + %energy;
-	if ($Ion::StopIon || ShockGroup.getCount > $Ion::MaxIon)
-		return "";
+	if ($Ion::StopIon || (ShockGroup.getCount > $Ion::MaxIon)
+       || (isStaticShape(%obj) && !Deployables.isMember(%obj))) //Phantom139 - Lets block out
+		return "";                     //map pieces from being ioned
 	if (%charge > 0 && %conductor)
 		%charge = findPassEnemy(%charge,%obj);
 	if (%charge > 0)
@@ -479,7 +490,7 @@ function findPassObj(%pos,%charge,%obj) {
 		%charge = %charge - (%maxPass - %left);
 		if (%charge != %startCharge)
 			%count = %count + 1;
-		if (%count > 4) //Only pass to 4 object at a time (lag issues);
+		if (%count > $Ion::MaxPass) //Only pass to 4 object at a time (lag issues);
 			return %charge;
 	}
 	return %charge;
@@ -544,10 +555,6 @@ function GameBase::passCharge(%obj,%pos,%charge,%emit) {
 	return %charge;
 
 	if (%obj.zapSched || %obj == %emit)
-		return %charge;
-
-	//If I was just zapped by an evil object don't zap it's allies back.. >:)
-	if (%emit.lastDamagedBy.getOwner().evil && (%emit.lastDamagedBy.getOwner() == %obj.getOwner() || %emit.lastDamagedBy.getOwner() == %obj.client))
 		return %charge;
 
 	if (isConductor(%emit))
@@ -987,19 +994,21 @@ datablock ParticleEmitterData(IonJetEmitter) {
 
 datablock SeekerProjectileData(IonMissile):ShoulderMissile {
 	hasDamageRadius     = true;
-	indirectDamage      = 0.1;
-	damageRadius        = 1.0;
+	indirectDamage      = 0.5;
+	damageRadius        = 6.0;
 	radiusDamageType    = $DamageType::Missile;
 	kickBackStrength    = 5;
 	explosion           = "ShockExplosion2";
 	baseEmitter         = IonJetEmitter;
 	delayEmitter        = ELFSparksEmitter;
+ 
+    ImageSource         = "IonLauncherImage";
 
 	lifetimeMS          = 120000;
 	muzzleVelocity      = 10.0;
-	maxVelocity         = 30.0;
+	maxVelocity         = 120.0;
 	turningSpeed        = 110.0;
-	acceleration        = 20.0;
+	acceleration        = 110.0;
 
 	hasLight    = true;
 	lightRadius = 5.0;

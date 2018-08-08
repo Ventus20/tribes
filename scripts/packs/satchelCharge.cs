@@ -11,33 +11,11 @@ $SatchelChargeMultiplier = 1;
 //--------------------------------------------------------------------------
 // Sounds
 
-datablock EffectProfile(SatchelChargeActivateEffect)
-{
-   effectname = "packs/satchel_pack_activate";
-   minDistance = 2.5;
-   maxDistance = 2.5;
-};
-
-datablock EffectProfile(SatchelChargeExplosionEffect)
-{
-   effectname = "packs/satchel_pack_detonate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(SatchelChargePreExplosionEffect)
-{
-   effectname = "explosions/explosion.xpl03";
-   minDistance = 10.0;
-   maxDistance = 30.0;
-};
-
 datablock AudioProfile(SatchelChargeActivateSound)
 {
    filename    = "fx/packs/satchel_pack_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = SatchelChargeActivateEffect;
 };
 
 datablock AudioProfile(SatchelChargeExplosionSound)
@@ -45,7 +23,6 @@ datablock AudioProfile(SatchelChargeExplosionSound)
    filename = "fx/packs/satchel_pack_detonate.wav";
    description = AudioBIGExplosion3d;
    preload = true;
-   effect = SatchelChargeExplosionEffect;
 };
 
 datablock AudioProfile(SatchelChargePreExplosionSound)
@@ -53,7 +30,6 @@ datablock AudioProfile(SatchelChargePreExplosionSound)
    filename    = "fx/explosions/explosion.xpl03.wav";
    description = AudioBIGExplosion3d;
    preload = true;
-   effect = SatchelChargePreExplosionEffect;
 };
 
 datablock AudioProfile(UnderwaterSatchelChargeExplosionSound)
@@ -61,7 +37,6 @@ datablock AudioProfile(UnderwaterSatchelChargeExplosionSound)
    filename    = "fx/weapons/mortar_explode_UW.wav";
    description = AudioBIGExplosion3d;
    preload = true;
-   effect = SatchelChargeExplosionEffect;
 };
 
 //----------------------------------------------------------------------------
@@ -436,6 +411,103 @@ datablock ExplosionData(SatchelMainExplosion)
    subExplosion[2] = SatchelSubExplosion3;
 };
 
+//LARGE
+datablock ExplosionData(LargeSatchelSubExplosion)
+{
+   explosionShape = "disc_explosion.dts";
+   faceViewer           = true;
+   explosionScale = "0.5 0.5 0.5";
+
+   debris = SatchelDebris;
+   debrisThetaMin = 10;
+   debrisThetaMax = 80;
+   debrisNum = 8;
+   debrisVelocity = 60.0;
+   debrisVelocityVariance = 15.0;
+
+   lifetimeMS = 1000;
+   delayMS = 0;
+
+   emitter[0] = SatchelExplosionSmokeEmitter;
+   emitter[1] = SatchelSparksEmitter;
+
+   offset = 0.0;
+
+   playSpeed = 1.5;
+
+   sizes[0] = "5.5 5.5 5.5";
+   sizes[1] = "8.0 8.0 8.0";
+   times[0] = 0.0;
+   times[1] = 1.0;
+};
+
+datablock ExplosionData(LargeSatchelSubExplosion2)
+{
+   explosionShape = "disc_explosion.dts";
+   faceViewer           = true;
+   explosionScale = "0.7 0.7 0.7";
+
+   debris = SatchelDebris;
+   debrisThetaMin = 10;
+   debrisThetaMax = 170;
+   debrisNum = 8;
+   debrisVelocity = 60.0;
+   debrisVelocityVariance = 15.0;
+
+   lifetimeMS = 1000;
+   delayMS = 50;
+
+   emitter[0] = SatchelExplosionSmokeEmitter;
+   emitter[1] = SatchelSparksEmitter;
+
+   offset = 9.0;
+
+   playSpeed = 1.5;
+
+   sizes[0] = "5.5 5.5 5.5";
+   sizes[1] = "5.5 5.5 5.5";
+   times[0] = 0.0;
+   times[1] = 1.0;
+};
+
+datablock ExplosionData(LargeSatchelSubExplosion3)
+{
+   explosionShape = "disc_explosion.dts";
+   faceViewer           = true;
+   explosionScale = "1.0 1.0 1.0";
+
+   debris = SatchelDebris;
+   debrisThetaMin = 10;
+   debrisThetaMax = 170;
+   debrisNum = 8;
+   debrisVelocity = 60.0;
+   debrisVelocityVariance = 15.0;
+
+   lifetimeMS = 2000;
+   delayMS = 100;
+
+   emitter[0] = SatchelExplosionSmokeEmitter;
+   emitter[1] = SatchelSparksEmitter;
+
+   offset = 9.0;
+
+   playSpeed = 2.5;
+
+   sizes[0] = "5.0 5.0 5.0";
+   sizes[1] = "5.0 5.0 5.0";
+   times[0] = 0.0;
+   times[1] = 1.0;
+};
+
+datablock ExplosionData(LargeSatchelMainExplosion)
+{
+   soundProfile = SatchelChargePreExplosionSound;
+
+   subExplosion[0] = LargeSatchelSubExplosion;
+   subExplosion[1] = LargeSatchelSubExplosion2;
+   subExplosion[2] = LargeSatchelSubExplosion3;
+};
+
 //---------------------------------------------------------------------------
 // Underwater Explosion
 //---------------------------------------------------------------------------
@@ -540,7 +612,6 @@ datablock ShapeBaseImageData(SatchelChargeImage)
    mountPoint = 1;
    offset = "0 0 0";
    emap = true;
-   mass = 16;
 };
 
 datablock ItemData(SatchelCharge)
@@ -549,7 +620,7 @@ datablock ItemData(SatchelCharge)
    catagory = "Packs";
    image = SatchelChargeImage;
    shapeFile = "pack_upgrade_satchel.dts";
-   mass = 8.0;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 2;
@@ -564,16 +635,16 @@ datablock ItemData(SatchelChargeThrown)
    shapeFile = "pack_upgrade_satchel.dts";
    explosion = SatchelMainExplosion;
    underwaterExplosion = UnderwaterSatchelMainExplosion;
-   mass = 1.5;
+   mass = 1;
    elasticity = 0.1;
    friction = 0.9;
    rotate = false;
    pickupRadius = 0;
    noTimeout = true;
-   armDelay = 1000;
-   maxDamage = 2.5;
+   armDelay = 3000;
+   maxDamage = 0.6;
 
-   kickBackStrength    = 5000;
+   kickBackStrength    = 4000;
 
    computeCRC = true;
 };
@@ -678,6 +749,10 @@ function SatchelChargeImage::onMount(%data, %obj, %node)
    %obj.thrownChargeId = 0;
 }
 
+function SatchelChargeImage::onUnmount(%data, %obj, %node)
+{
+}
+
 function SatchelChargeThrown::onDestroyed(%this, %object, %lastState)
 {
    if(%object.kaboom)
@@ -691,16 +766,16 @@ function SatchelChargeThrown::onDestroyed(%this, %object, %lastState)
       if(%object.thwart)
       {
          messageClient(%object.sourceObject.client, 'msgSatchelChargeDetonate', "\c2Satchel charge destroyed.");
-         %dmgRadius = 23 * $SatchelChargeMultiplier;
-         %dmgMod = 2.0 * $SatchelChargeMultiplier;
+         %dmgRadius = 10 * $SatchelChargeMultiplier;
+         %dmgMod = 0.3 * $SatchelChargeMultiplier;
          %expImpulse = limitSatchelImpulse(1000 * $SatchelChargeMultiplier);
-         %dmgType = $DamageType::SatchelCharge;
+         %dmgType = $DamageType::Explosion;
       }
       else
       {
          messageClient(%object.sourceObject.client, 'msgSatchelChargeDetonate', "\c2Satchel charge detonated!");
-         %dmgRadius = 30 * $SatchelChargeMultiplier;
-         %dmgMod = 3.0 * $SatchelChargeMultiplier;
+         %dmgRadius = 20 * $SatchelChargeMultiplier;
+         %dmgMod = 1.0 * $SatchelChargeMultiplier;
          %expImpulse = limitSatchelImpulse(2500 * $SatchelChargeMultiplier);
          %dmgType = $DamageType::SatchelCharge;
       }
@@ -716,6 +791,11 @@ function SatchelChargeThrown::onDestroyed(%this, %object, %lastState)
    // clients couldn't pick up packs when satchel was destroyed from dmg.
    if(isObject(%object.sourceObject))
       %object.sourceObject.thrownChargeId = 0;
+}
+
+function SatchelChargeThrown::onCollision(%data,%obj,%col)
+{
+   // Do nothing...
 }
 
 function SatchelChargeThrown::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType)
@@ -736,6 +816,11 @@ function SatchelChargeThrown::damageObject(%data, %targetObject, %sourceObject, 
 		%targetObject.sourceObject.client.clearBackPackIcon();
       }
    }
+}
+
+function SatchelCharge::onPickup(%this, %obj, %shape, %amount)
+{
+   // created to prevent console errors
 }
 
 function limitSatchelImpulse(%val) {

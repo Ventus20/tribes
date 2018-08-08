@@ -3,99 +3,107 @@
 
 datablock ShapeBaseImageData(TurretDeployableImage)
 {
-   mass = 15;
-   emap = true;
+mass = 1;
+emap = true;
 
-   shapeFile = "stackable1s.dts";
-   item = TurretBasePack;
-   mountPoint = 1;
-   offset = "0 -0.2 0";
+shapeFile = "stackable1s.dts";
+item = TurretBasePack;
+mountPoint = 1;
+offset = "0 -0.2 0";
 
-   minDeployDis = 0.5;
-   maxDeployDis = 5.0;
+minDeployDis = 0.5;
+maxDeployDis = 5.0;
 
-   deployed = TurretDeployedBase;
-   heatSignature = 0;
+deployed = TurretDeployedBase;
+heatSignature = 0;
 
-   stateName[0] = "Idle";
-   stateTransitionOnTriggerDown[0] = "Activate";
+stateName[0] = "Idle";
+stateTransitionOnTriggerDown[0] = "Activate";
 
-   stateName[1] = "Activate";
-   stateScript[1] = "onActivate";
-   stateTransitionOnTriggerUp[1] = "Idle";
 
-   isLarge = true;
-   maxDepSlope = 360;
-   deploySound = StationDeploySound;
+
+stateName[1] = "Activate";
+stateScript[1] = "onActivate";
+stateTransitionOnTriggerUp[1] = "Idle";
+
+isLarge = true;
+maxDepSlope = 360;
+deploySound = StationDeploySound;
 };
 
 datablock ItemData(TurretBasePack)
 {
-   className = Pack;
-   catagory = "Deployables";
-   shapeFile = "stackable1s.dts";
-   mass = 3.0;
-   elasticity = 0.2;
-   friction = 0.6;
-   pickupRadius = 1;
-   rotate = false;
-   image = "TurretDeployableImage";
-   pickUpName = "a base turret pack";
-   heatSignature = 0;
+className = Pack;
+catagory = "Deployables";
+shapeFile = "stackable1s.dts";
+mass = 1;
+elasticity = 0.2;
+friction = 0.6;
+pickupRadius = 1;
+rotate = false;
+image = "TurretDeployableImage";
+pickUpName = "a base turret pack";
+heatSignature = 0;
 
-   computeCRC = true;
-   emap = true;
+computeCRC = true;
+emap = true;
+
 };
 
 datablock TurretData(TurretDeployedBase) : TurretDamageProfile
 {
-   className = DeployedTurret;
-   shapeFile = "turret_base_large.dts";
+className = DeployedTurret;
+shapeFile = "turret_base_large.dts";
 
-   rechargeRate = 0.31;
+rechargeRate = 0.31;
 
-   selfPower = true;
+selfPower = true;
 
-   needsPower = true;
-   mass = 5.0;
-   maxDamage = 2.25;
-   destroyedLevel = 2.25;
-   disabledLevel = 1.35;
-   repairRate = 0;
-   explosion = TurretExplosion;
-   expDmgRadius = 15.0;
-   expDamage = 0.7;
-   expImpulse = 2000.0;
+needsPower = true;
+mass = 1;
+maxDamage = 2.25;
+destroyedLevel = 2.25;
+disabledLevel = 1.35;
+repairRate = 0;
+explosion = TurretExplosion;
+expDmgRadius = 15.0;
+expDamage = 0.7;
+expImpulse = 2000.0;
 
-   deployedObject = true;
+deployedObject = true;
 
-   thetaMin = 15;
-   thetaMax = 140;
-   //thetaNull = 90;
+thetaMin = 15;
+thetaMax = 140;
+//thetaNull = 90;
 
-   isShielded = true;
-   energyPerDamagePoint = 50;
-   maxEnergy = 150;
+isShielded = true;
+energyPerDamagePoint = 50;
+maxEnergy = 150;
 
-   humSound = SensorHumSound;
-   heatSignature = 1;
-   pausePowerThread = true;
+humSound = SensorHumSound;
+heatSignature = 1;
+pausePowerThread = true;
 
-   canControl = true;
-   cmdCategory = "DTactical";
-   cmdIcon = CMDTurretIcon;
-   cmdMiniIconName = "commander/MiniIcons/com_turret_grey";
-   targetNameTag = 'Deployed Base';
-   targetTypeTag = 'Turret';
-   sensorData = TurretBaseSensorObj;
-   sensorRadius = TurretBaseSensorObj.detectRadius;
-   sensorColor = "0 212 45";
+canControl = true;
+cmdCategory = "DTactical";
+cmdIcon = CMDTurretIcon;
+cmdMiniIconName = "commander/MiniIcons/com_turret_grey";
+targetNameTag = 'Deployed Base';
+targetTypeTag = 'Turret';
+sensorData = TurretBaseSensorObj;
+sensorRadius = TurretBaseSensorObj.detectRadius;
+sensorColor = "0 212 45";
 
-   firstPersonOnly = true;
+firstPersonOnly = true;
 
-   debrisShapeName = "debris_generic.dts";
-   debris = TurretDebris;
+debrisShapeName = "debris_generic.dts";
+debris = TurretDebris;
 };
+
+function TurretBasePack::onPickup(%this, %obj, %shape, %amount)
+{
+// created to prevent console errors
+}
 
 function TurretDeployableImage::onDeploy(%item, %plyr, %slot)
 {

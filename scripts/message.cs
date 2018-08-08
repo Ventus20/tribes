@@ -268,64 +268,36 @@ function cannedChatMessageClient( %client, %sender, %msgString, %name, %string, 
 
 function chatMessageTeam( %sender, %team, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 ) {
    if(%sender.isgagged) {
-   messageClient(%sender, 'Msg', "\c1From Cynthia: You are gagged and unable to speak");
-   return;
-   }
-   cynthiaeval(%sender, %a2);
-   echo("ChatTEAM: "@%sender.namebase@" : "@%a2@".");
-   if ( ( %msgString $= "" ) || spamAlert( %sender ) )
+      messageClient(%sender, 'Msg', "\c1From "@$ChatBot::Name@": You are gagged and unable to speak");
       return;
-   if (%sender.Forbiden == 1){
-
-	if(%sender.upforbidC > 3){
-	   upForbiden(%sender,1);
-	   return;
-	}
-	upForbiden(%sender,0);
-	return;
    }
-   if(!$TWM::PlayingInfection) {
-      %count = ClientGroup.getCount();
-      for ( %i = 0; %i < %count; %i++ )
-      {
-         %obj = ClientGroup.getObject( %i );
-         if ( %obj.team == %sender.team )
-            chatMessageClient( %obj, %sender, %sender.voiceTag, %sender.voicePitch, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 );
-      }
+   LogMessage(%sender, "TEAM: "@%a2@"");
+   if(%sender $= "" || %sender <= 0) {
+
    }
    else {
-      %count = ClientGroup.getCount();
-      for ( %i = 0; %i < %count; %i++ ) {
-         %obj = ClientGroup.getObject( %i );
-         if ($InfectionGame::Infected[%obj] && $InfectionGame::Infected[%sender]) {
-            chatMessageClient( %obj, %sender, %sender.voiceTag, %sender.voicePitch, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 );
-         }
-         else if(!$InfectionGame::Infected[%obj] && !$InfectionGame::Infected[%sender]) {
-            chatMessageClient( %obj, %sender, %sender.voiceTag, %sender.voicePitch, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 );
-         }
-      }
+      echo("ChatTEAM: "@%sender.namebase@" : "@%a2@".");
+   }
+   if ( ( %msgString $= "" ) || spamAlert( %sender ) )
+      return;
+   %count = ClientGroup.getCount();
+   for ( %i = 0; %i < %count; %i++ ) {
+      %obj = ClientGroup.getObject( %i );
+      if ( %obj.team == %sender.team )
+         chatMessageClient( %obj, %sender, %sender.voiceTag, %sender.voicePitch, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 );
    }
 }
 
 function cannedChatMessageTeam( %sender, %team, %msgString, %name, %string, %keys )
 {
    if(%sender.isgagged) {
-   messageClient(%sender, 'Msg', "\c1From Cynthia: You are gagged and unable to speak");
+   messageClient(%sender, 'Msg', "\c1From "@$ChatBot::Name@": You are gagged and unable to speak");
    return;
    }
-   cynthiaeval(%sender, %msgString);
-   echo("CChatTEAM: "@%sender.namebase@" : "@%msgString@".");
+//   echo("CChatTEAM: "@%sender.namebase@" : "@%msgString@".");
    if ( ( %msgString $= "" ) || spamAlert( %sender ) )
       return;
 
-   if (%sender.Forbiden == 1){
-	if(%sender.upforbidC > 3){
-	   upForbiden(%sender,1);
-	   return;
-	}
-	upForbiden(%sender,0);
-	return;
-   }
    %count = ClientGroup.getCount();
    for ( %i = 0; %i < %count; %i++ )
    {
@@ -337,21 +309,21 @@ function cannedChatMessageTeam( %sender, %team, %msgString, %name, %string, %key
 
 function chatMessageAll( %sender, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10 ){
    if(%sender.isgagged) {
-   messageClient(%sender, 'Msg', "\c1From Cynthia: You are gagged and unable to speak");
-   return;
+      messageClient(%sender, 'Msg', "\c1From "@$ChatBot::Name@": You are gagged and unable to speak");
+      return;
    }
-   cynthiaeval(%sender, %a2);
-   echo("ChatALL: "@%sender.namebase@" : "@%a2@".");
+   if(%sender $= "" || %sender <= 0) {
+
+   }
+   else {
+      echo("ChatALL: "@%sender.namebase@" : "@%a2@".");
+   }
+   LogMessage(%sender, %a2);
+   ScanMessage(%sender, %a2);
+   detectMessage(%sender, %a2);
    if ( ( %msgString $= "" ) || spamAlert( %sender ) )
       return;
-   if (%sender.Forbiden == 1){
-	if(%sender.upforbidC > 3){
-	   upForbiden(%sender,1);
-	   return;
-	}
-	upForbiden(%sender,0);
-	return;
-   }
+
    %count = ClientGroup.getCount();
    if(getSubStr(%a2, 0, 1) $= "/") {
 	chatcommands(%sender,%a2);
@@ -404,22 +376,13 @@ function chatMessageAll( %sender, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7,
 function cannedChatMessageAll( %sender, %msgString, %name, %string, %keys )
 {
    if(%sender.isgagged) {
-   messageClient(%sender, 'Msg', "\c1From Cynthia: You are gagged and unable to speak");
+   messageClient(%sender, 'Msg', "\c1From "@$ChatBot::Name@": You are gagged and unable to speak");
    return;
    }
-   cynthiaeval(%sender, %msgString);
-   echo("CChatALL: "@%sender.namebase@" : "@%a2@".");
+//   echo("CChatALL: "@%sender.namebase@" : "@%a2@".");
    if ( ( %msgString $= "" ) || spamAlert( %sender ) )
       return;
 
-   if (%sender.Forbiden == 1){
-	if(%sender.upforbidC > 3){
-	   upForbiden(%sender,1);
-	   return;
-	}
-	upForbiden(%sender,0);
-	return;
-   }
    %count = ClientGroup.getCount();
    for ( %i = 0; %i < %count; %i++ )
       cannedChatMessageClient( ClientGroup.getObject(%i), %sender, %msgString, %name, %string, %keys );
@@ -456,7 +419,7 @@ function messageTeamExcept(%client, %msgType, %msgString, %a1, %a2, %a3, %a4, %a
 
 function messageAll(%msgType, %msgString, %a1, %a2, %a3, %a4, %a5, %a6, %a7, %a8, %a9, %a10, %a11, %a12, %a13)
 {
-   error(""@%msgString@"");
+//   error(""@%msgString@"");
    %count = ClientGroup.getCount();
    for(%cl = 0; %cl < %count; %cl++)
    {
@@ -499,85 +462,3 @@ function teamRepairMessage(%client, %msgType, %msgString, %a1, %a2, %a3, %a4, %a
          commandToClient(%recipient, 'TeamRepairMessage', %msgType, %msgString, %a1, %a2, %a3, %a4, %a5, %a6);
    }
 }
-
-
-
-
-
-//---------------------------------------------------------------------------
-// Forbid Functions
-//---------------------------------------------------------------------------
-
-function serverCmddoForbid(%client,%Fclient){
-   if(!(%client.isSuperAdmin || %client.isAdmin))
-      return;
-   if(%Fclient.forbiden == 1)
-	unforbid(%Fclient);
-   else
-      Forbid(%Fclient,5);
-}
-
-function Forbid(%client,%time){
-   if(%client $= "")
-	return;
-   if(%client.forbiden == 1)
-	return;
-   JailPlayer(%client,0,120);
-   %client.forbiden = 1;
-//   %client.player.movemap.pop();
-   if(%time != 0){
-      messageAll('PTforbid', '\c2%1 has been forbiden to speak for %2 Minutes!',%client.name,%time);
-      messageClient(%client, 'forbid', '\c2You Have been forbidden to speak, your sentence is, Jail and %1 minutes of no speaking probation.',%time);
-	%client.unforbiding = schedule((%time * 60000), 0, "unForbid", %client);
-   }
-   else{
-	messageAll('Pforbid', '\c2%1 has been forbiden to speak!',%client.name);
-      messageClient(%client, 'forbid2', '\c2You Have been forbidden to speak, your sentence is, Jail and no speaking until unforbidden.');
-   }
-}
-
-function unForbid(%client){
-   if(%client $= "")
-	return;
-   if(%client.forbiden == 0 || %client.forbiden $= "")
-	return;
-   if(%client.upforbidC <= 0 || %client.upforbidC $= ""){
-	Jailplayer(%client,1,1);
-	messageAll('Pforbid', '\c2%1 has been unforbiden',%client.name);
-	%client.forbiden = 0;
-//      %client.player.movemap.push();
-      messageClient(%client, 'unforbid', '\c2You Have been unforbidden, you may now speak.');
-	Cancel(%client.unforbiding);
-   }
-   else {
-	%client.unforbiding = schedule(60000,0,"unForbid",%client);
-      messageClient(%client, 'unforbiding', '\c2You Have %1 minutes of forbidden time left.',%client.upforbidC);
-	%client.upforbidC--;
-   }
-}
-
-function upForbiden(%client,%prisoncl){
-   if(%client $= "")
-	return;
-   if(%client.forbiden == 0 || %client.forbiden $= "")
-	return;
-   if(%client.upforbidC > 9){
-	kick(%client);
-   }
-   if(%prisoncl != 1){
-	if(%client.upforbidC $= "")
-	   %client.upforbidC = 0;
-	%client.upforbidC++;
-      messageClient(%client, 'upforbid', '\c2Hold your tounge, your forbidden time has been increased accordingly.');
-   }
-   else{
-	messageAll('Pforbid', '\c2%1 has been forced into Jail longer for speaking',%client.name);
-	if(%client.upforbidC $= "")
-	   %client.upforbidC = 0;
-	%client.upforbidC = %client.upforbidC + 5;
-	JailPlayer(%client,0,300);
-      messageClient(%client, 'upforbidJ', '\c2You were told, now you shall spend your time wasting away in jail 5 more minutes.');
-   }
-}
-
-

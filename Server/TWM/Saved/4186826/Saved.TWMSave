@@ -1,0 +1,38 @@
+//Ranks & Settings File For GUID 4186826 / Name: PulpFreeFiction
+//Created On 2018-08-01, Total Warfare Mod 2 3.6
+//--- OBJECT WRITE BEGIN ---
+new SimSet(Container_4186826) {
+
+	new ScriptObject(TWM2Client_4186826) {
+
+		rankNumber = "11";
+		gameTime = "39";
+		rank = "Corporal Grade III";
+		millionxp = "0";
+		xp = "782";
+		weaponKillsS3RifleImage = "30";
+		hasMedalTheUltimateHeadshot = "1";
+		money = "782";
+		noMoreEXP34fcd7e3f2ea95b58a0a96186babdd8ae24b7ecc = "0";
+		weaponKillsM1700Image = "5";
+		AirstrikeCalls = "1";
+		officer = "0";
+		xpGain34fcd7e3f2ea95b58a0a96186babdd8ae24b7ecc = "782";
+	};
+	new ScriptObject(ClientStore4186826) {
+
+		nextSlot = "0";
+		nextLoto = "0";
+	};
+	new ScriptObject(CCD_4186826) {
+
+		ZombieKillCount20180801_S3RifleImage_1 = "30";
+		zombieHeadshots20180801 = "27";
+		ZombieKillCount20180801_M1700Image_1 = "5";
+		killstreakCalls20180801_2 = "1";
+		ZombieKillCount20180801_0_1 = "35";
+		totalZombieKillCount20180801 = "34";
+		expireDate = "2.01808e+07";
+	};
+};
+//--- OBJECT WRITE END ---

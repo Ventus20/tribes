@@ -79,44 +79,6 @@ datablock ShapeBaseImageData(MedpackImg2b)
 //--------------------------------------------------------------------------
 // Repair Gun
 
-datablock ShockLanceProjectileData(ReviveProj)
-{
-   directDamage        = 0;
-   radiusDamageType    = $DamageType::ShockLance;
-   kickBackStrength    = 0; // z0dd - ZOD, 3/30/02. More lance kick. was 2500
-   velInheritFactor    = 0;
-   sound               = "";
-
-   zapDuration = 1.0;
-   impulse = 1800;
-   boltLength = 16.0;
-   extension = 16.0;
-   lightningFreq = 25.0;
-   lightningDensity = 3.0;
-   lightningAmp = 0.25;
-   lightningWidth = 0.05;
-
-   shockwave = ShocklanceHit;
-   							 
-   boltSpeed[0] = 2.0;
-   boltSpeed[1] = -0.5;
-
-   texWrap[0] = 1.5;
-   texWrap[1] = 1.5;
-
-   startWidth[0] = 0.3;
-   endWidth[0] = 0.6;
-   startWidth[1] = 0.3;
-   endWidth[1] = 0.6;
-   
-   texture[0] = "special/shockLightning01";
-   texture[1] = "special/shockLightning02";
-   texture[2] = "special/shockLightning03";
-   texture[3] = "special/ELFBeam";
-
-   emitter[0] = ShockParticleEmitter;
-};
-
 datablock ShapeBaseImageData(MedPackGunImage)
 {
    shapeFile = "pack_upgrade_repair.dts";
@@ -278,16 +240,16 @@ function MedPackGunImage::onRepair(%this,%obj,%slot){
          if (%targetObject.infected && %targetObject.getState() !$= "dead") {
             CureInfection(%targetObject);
             %targetObject.playAudio(0, ShockLanceHitSound);
-            messageclient(%obj.client, 'MsgClient', "\c2Applying Zombie Cure To "@%targetObject.client@".");
-            messageclient(%targetObject.client, 'MsgClient', "\c2Zombie Cure Applied By "@%obj.client@".");
+            messageclient(%obj.client, 'MsgClient', "\c2Applying Zombie Cure To "@%targetObject.client.namebase@".");
+            messageclient(%targetObject.client, 'MsgClient', "\c2Zombie Cure Applied By "@%obj.client.namebase@".");
          }
       }
       else if(%obj.MedToolMode == 2) {
          if (%targetObject.onfire && %targetObject.getState() !$= "dead") {
             %targetObject.onfire = 0;
             %targetObject.playAudio(0, ShockLanceHitSound);
-            messageclient(%obj.client, 'MsgClient', "\c2Applying Burn Patch To "@%targetObject.client@".");
-            messageclient(%targetObject.client, 'MsgClient', "\c2Burn Patch Applied By "@%obj.client@".");
+            messageclient(%obj.client, 'MsgClient', "\c2Applying Burn Patch To "@%targetObject.client.namebase@".");
+            messageclient(%targetObject.client, 'MsgClient', "\c2Burn Patch Applied By "@%obj.client.namebase@".");
          }
       }
    }
@@ -395,21 +357,20 @@ function checkrevive(%obj){
 	   messageclient(%obj.client, 'MsgClient', "\c2Sure thing Megatron, Lets Revive the enemy so you can kill him again =-|");
 	   return;
 	}
-      if((%obj.getEnergyLevel() / %obj.getDataBlock().maxEnergy) >= 0.9){
-	   %obj.setEnergyLevel(0);
 	   revive(%obj, %tobj);
-      }
-	else
-	   messageclient(%obj.client, 'MsgClient', "\c2Must have more energy to initiate reviver.");
    }
    else
 	messageclient(%obj.client, 'MsgClient', "\c2Must be in contact with a body to revive it.");
 }
 
 function revive(%obj, %target){
+   if(%target.team == 0) {
+      messageclient(%obj.client, 'MsgClient', "\c2"@%target.client.namebase@" cannot be revived.");
+   }
    if(%target.client.getControlObject() !$= %target.client.player){
 	//necessitys
     if($TWM::PlayingHorde) {
+       CompleteNWChallenge(%obj.client, "Angel");
        $HordeGame::RevivesLeft--;
        $HordeGame::LivingCount++;
        %s = MakeReviveString();
@@ -425,30 +386,19 @@ function revive(%obj, %target){
     Cancel(%target.player.createTheZ);
 	//points and message
 	%obj.client.revivecount++;
-    %obj.client.xp += 20;
-    UpdateClientRank(%obj.client);
+    GainExperience(%obj.client, 25, "You have revived "@%target.client.namebase@" ");
 	messageclient(%target.client, 'MsgClient', "\c2You were revived by "@%obj.client.namebase@".");
-	messageclient(%obj.client, 'MsgClient', "\c2You revived "@%target.client.namebase@" (+20XP).");
 
 	//effects
 	%target.setDamageFlash(1);
 	%target.setMoveState(true);
 	playDeathCry(%target);
 	revivestand(%target, 0);
-	for(%i =0; %i<$InventoryHudCount; %i++)
-	   %target.client.setInventoryHudItem($InventoryHudData[%i, itemDataName], 0, 1);
-	%target.client.clearBackpackIcon();
+    buyFavorites(%target.client);
 
 	%obj.playAudio(0, ShockLanceHitSound);
-      %p = new ShockLanceProjectile() {
-         dataBlock        = ReviveProj;
-         initialDirection = vectorNormalize(vectorSub(%target.getPosition(),%obj.getMuzzlePoint($WeaponSlot)));
-         initialPosition  = %obj.getMuzzlePoint($WeaponSlot);
-         sourceObject     = %obj;
-         sourceSlot       = %obj.getMuzzlePoint($WeaponSlot);
-         targetId         = %target;
-      };
-      MissionCleanup.add(%p);
+    %obj.zapObject();
+    %obj.schedule(3000, "stopZap");
    }
    else
 	messageclient(%obj.client, 'MsgClient', "\c2Target already has another clone in use.");

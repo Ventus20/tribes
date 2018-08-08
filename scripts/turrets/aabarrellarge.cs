@@ -5,27 +5,11 @@
 //--------------------------------------------------------------------------
 // Sounds and feedback effects
 //--------------------------------------
-
-datablock EffectProfile(AASwitchEffect)
-{
-   effectname = "powered/turret_light_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(AAFireEffect)
-{
-   effectname = "weapons/chaingun_fire";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
 datablock AudioProfile(AASwitchSound)
 {
    filename    = "fx/powered/turret_aa_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = AASwitchEffect;
 };
 
 datablock AudioProfile(AAFireSound)
@@ -33,7 +17,6 @@ datablock AudioProfile(AAFireSound)
    filename    = "fx/vehicles/tank_chaingun.wav";
    description = AudioDefault3d;
    preload = true;
-   effect = AAFireEffect;
 };
 
 //--------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------
 
 datablock ShapeBaseImageData(SolarPanelDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = SolarPanelDeployable;
@@ -31,7 +31,7 @@ datablock ItemData(SolarPanelDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 
 	hasLight = true;
 	lightType = "PulsingLight";
@@ -109,8 +109,8 @@ function SolarPanelDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%deplObj.playThread($PowerThread,"Power");
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+	//%plyr.unmountImage(%slot);
+	//%plyr.decInventory(%item.item, 1);
 
 	// add to power list
 	$PowerList = listAdd($PowerList,%deplObj,-1);

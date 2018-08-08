@@ -34,7 +34,7 @@ datablock StaticShapeData(DeployedwWall) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(wWallDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = wwallDeployable;
@@ -62,7 +62,7 @@ datablock ItemData(wwallDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -143,7 +143,7 @@ function wWallDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%vec2 = vectorAdd(vectorScale(virvec(%item.surface,%item.surfaceNrm),-0.5),"0 0 -0.5");
 	
 	deployEffect(%deplObj,%location,%side,"walk");
-   	%angle = getWord($packSetting["walk",%plyr.packSet],0)/180*$Pi;
+	%angle = getWord($packSetting["walk",%plyr.packSet],0)/180*$Pi;
 	%deplObj.setTransform(remoterotate(%deplObj,%axis SPC %angle,%item.surface,vectorAdd(%vec2,%vec1)));
 
 	if ($Host::ExpertMode == 1 && %plyr.expertSet == 1) {

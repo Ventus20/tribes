@@ -3,21 +3,21 @@
 //---------------------------------------------------------
 
 // Translucencies
-%noPassTrans = 1.0;
-%teamPassTrans = 0.6;
-%allPassTrans = 0.2;
+$noPassTrans = 1.0;
+$teamPassTrans = 0.6;
+$allPassTrans = 0.2;
 
-%dimDiv = 4;
+$dimDiv = 4;
 
 // RGB
-%colourOn = 0.3;
-%colourOff = 0.0;
+$colourOn = 0.3;
+$colourOff = 0.0;
 
 datablock ForceFieldBareData(DeployedForceField) {
 	className = "forcefield";
 	fadeMS = 1000;
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
 	color         = "1.0 1.0 1.0";
@@ -40,223 +40,198 @@ datablock ForceFieldBareData(DeployedForceField) {
 
 // No pass
 datablock ForceFieldBareData(DeployedForceField0) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOn SPC %colourOn;
+	color         = $colourOn SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField1) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOff SPC %colourOff;
+	color         = $colourOn SPC $colourOff SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField2) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOn SPC %colourOff;
+	color         = $colourOff SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField3) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOff SPC %colourOn;
+	color         = $colourOff SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField4) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOn SPC %colourOn;
+	color         = $colourOff SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField5) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOff SPC %colourOn;
+	color         = $colourOn SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField6) : DeployedForceField {
-	baseTranslucency = %noPassTrans;
-	powerOffTranslucency = %noPassTrans / %dimDiv;
+	baseTranslucency = $noPassTrans;
+	powerOffTranslucency = $noPassTrans / $dimDiv;
 	teamPermiable = false;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOn SPC %colourOff;
+	color         = $colourOn SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 // Team pass
 datablock ForceFieldBareData(DeployedForceField7) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOn SPC %colourOn;
+	color         = $colourOn SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField8) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOff SPC %colourOff;
+	color         = $colourOn SPC $colourOff SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField9) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOn SPC %colourOff;
+	color         = $colourOff SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField10) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOff SPC %colourOn;
+	color         = $colourOff SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField11) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOff SPC %colourOn SPC %colourOn;
+	color         = $colourOff SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField12) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOff SPC %colourOn;
+	color         = $colourOn SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField13) : DeployedForceField {
-	baseTranslucency = %teamPassTrans;
-	powerOffTranslucency = %teamPassTrans / %dimDiv;
+	baseTranslucency = $teamPassTrans;
+	powerOffTranslucency = $teamPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = false;
-	color         = %colourOn SPC %colourOn SPC %colourOff;
+	color         = $colourOn SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 // All pass
 datablock ForceFieldBareData(DeployedForceField14) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOn SPC %colourOn;
+	color         = $colourOn SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField15) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOff SPC %colourOff;
+	color         = $colourOn SPC $colourOff SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField16) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOff SPC %colourOn SPC %colourOff;
+	color         = $colourOff SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField17) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOff SPC %colourOff SPC %colourOn;
+	color         = $colourOff SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField18) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOff SPC %colourOn SPC %colourOn;
+	color         = $colourOff SPC $colourOn SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField19) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOff SPC %colourOn;
+	color         = $colourOn SPC $colourOff SPC $colourOn;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ForceFieldBareData(DeployedForceField20) : DeployedForceField {
-	baseTranslucency = %allPassTrans;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
+	baseTranslucency = $allPassTrans;
+	powerOffTranslucency = $allPassTrans / $dimDiv;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOn SPC %colourOff;
-	powerOffColor = "0.0 0.0 0.0";
-};
-
-datablock ForceFieldBareData(DeployedForceField21) : DeployedForceField {
-	baseTranslucency = 0.8;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
-	teamPermiable = true;
-	otherPermiable = true;
-	color         = "0.2 0.9 0.7";
-	powerOffColor = "0.0 0.0 0.0";
-
-	texture[0] = "liquidTiles/Modulation03";
-	framesPerSec = 10;
-	numFrames = 1;
-	scrollSpeed = 0.6;
-	umapping = 0.4;
-	vmapping = 0.4;
-};
-
-datablock ForceFieldBareData(DeployedForceField22) : DeployedForceField {
-	baseTranslucency = 0;
-	powerOffTranslucency = %allPassTrans / %dimDiv;
-	teamPermiable = false;
-	otherPermiable = false;
-	color         = "0.0 0.0 0.0";
+	color         = $colourOn SPC $colourOn SPC $colourOff;
 	powerOffColor = "0.0 0.0 0.0";
 };
 
 datablock ShapeBaseImageData(ForceFieldDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "ammo_chaingun.dts";
 	item = ForceFieldDeployable;
@@ -284,7 +259,7 @@ datablock ItemData(ForceFieldDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -539,13 +514,5 @@ function DeployedForceField19::disassemble(%data,%plyr,%obj) {
 }
 
 function DeployedForceField20::disassemble(%data,%plyr,%obj) {
-	DeployedForceField::disassemble(%data,%plyr,%obj);
-}
-
-function DeployedForceField21::disassemble(%data,%plyr,%obj) {
-	DeployedForceField::disassemble(%data,%plyr,%obj);
-}
-
-function DeployedForceField22::disassemble(%data,%plyr,%obj) {
 	DeployedForceField::disassemble(%data,%plyr,%obj);
 }

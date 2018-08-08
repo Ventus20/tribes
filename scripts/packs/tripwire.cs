@@ -145,7 +145,7 @@ datablock StaticShapeData(DeployedTripwire) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(TripwireDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "camera.dts";
 	item = TripwireDeployable;
@@ -174,7 +174,7 @@ datablock ItemData(TripwireDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 3;
@@ -271,8 +271,8 @@ function TripwireDeployableImage::onDeploy(%item, %plyr, %slot) {
 	addDSurface(%item.surface,%deplObj);
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+	//%plyr.unmountImage(%slot);
+	//%plyr.decInventory(%item.item, 1);
 
 	return %deplObj;
 }

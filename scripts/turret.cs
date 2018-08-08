@@ -1,21 +1,11 @@
-$TurretOnlyTargetPlayers = 0;
-$TurretEnableOverride = 1;
-$Host::NTP = 1; //Do Turrets Attack Aplayer?
 // sounds and effects
 ///////////////////////
-datablock EffectProfile(DeployableExplosionEffect)
-{
-   effectname = "explosions/explosion.xpl10";
-   minDistance = 10;
-   maxDistance = 50;
-};
 
 datablock AudioProfile(DeployablesExplosionSound)
 {
    filename = "fx/explosions/deployables_explosion.wav";
    description = AudioExplosion3d;
    preload = true;
-   effect = DeployableExplosionEffect;
 };
 
 //--------------------------------------------------------------------------
@@ -166,9 +156,9 @@ datablock TurretData(TurretBaseLarge) : TurretDamageProfile
 
    mass           = 1.0;  // Not really relevant
 
-   maxDamage      = 4.0;
-   destroyedLevel = 4.0;
-   disabledLevel  = 3.25;
+   maxDamage      = 2.25;
+   destroyedLevel = 2.25;
+   disabledLevel  = 1.35;
    explosion      = TurretExplosion;
 	expDmgRadius = 15.0;
 	expDamage = 0.66;
@@ -179,7 +169,7 @@ datablock TurretData(TurretBaseLarge) : TurretDamageProfile
    thetaMin = 15;
    thetaMax = 140;
 
-   isShielded           = false;
+   isShielded           = true;
    energyPerDamagePoint = 50;
    maxEnergy = 150;
    rechargeRate = 0.31;
@@ -190,7 +180,7 @@ datablock TurretData(TurretBaseLarge) : TurretDamageProfile
    cmdCategory = "Tactical";
    cmdIcon = CMDTurretIcon;
    cmdMiniIconName = "commander/MiniIcons/com_turretbase_grey";
-   targetNameTag = 'Heavy Assault';
+   targetNameTag = 'Base';
    targetTypeTag = 'Turret';
    sensorData = TurretBaseSensorObj;
    sensorRadius = TurretBaseSensorObj.detectRadius;
@@ -218,7 +208,9 @@ function TurretData::onLosePowerDisabled(%data, %obj) {
 }
 
 function TurretData::selectTarget(%this, %turret) {
-	%turretTarg = %turret.getTarget();
+ if($TWM2::TurretsDisabled)
+    return;
+ %turretTarg = %turret.getTarget();
 	if(%turretTarg == -1)
 		return;
 
@@ -234,15 +226,8 @@ function TurretData::selectTarget(%this, %turret) {
 		return;
 	}
 
-	if ($Host::Purebuild == 1 && $TurretEnableOverride != 1) {
-		%turret.clearTarget();
-		return;
-	}
-
-	if(!$Host::NTP)
-		%TargetSearchMask = $TypeMasks::PlayerObjectType | $TypeMasks::VehicleObjectType | $TypeMasks::StationObjectType | $TypeMasks::GeneratorObjectType | $TypeMasks::SensorObjectType | $TypeMasks::TurretObjectType; //$TypeMasks::StaticObjectType;
-	else
-		%TargetSearchMask = $TypeMasks::PlayerObjectType | $TypeMasks::VehicleObjectType;
+	%TargetSearchMask = $TypeMasks::PlayerObjectType | $TypeMasks::VehicleObjectType | $TypeMasks::StationObjectType | $TypeMasks::GeneratorObjectType |
+	$TypeMasks::SensorObjectType | $TypeMasks::TurretObjectType; //$TypeMasks::StaticObjectType;
 
 	InitContainerRadiusSearch(%turret.getMuzzlePoint(0),
 				%turret.getMountedImage(0).attackRadius,
@@ -252,35 +237,36 @@ function TurretData::selectTarget(%this, %turret) {
 
 	while ((%potentialTarget = ContainerSearchNext()) != 0) {
 		if (%potentialtarget) {
-			if(!$Host::NTP)
-			{
-				%potTargTarg = %potentialTarget.getTarget();
-				if (%turret.isValidTarget(%potentialTarget)
-				&& (getTargetSensorGroup(%turretTarg) != getTargetSensorGroup(%potTargTarg))
-				&& (getTargetSensorGroup(%potTargTarg) != 0)
-				&& ((%potentialTarget.getType() & $TypeMasks::PlayerObjectType) || !$TurretOnlyTargetPlayers)
-				&& %this.hasLOS(%turret,0,%potentialTarget)) {
-					if (%potentialTarget.homingCount > 0 && !%secondTarg) {
-						if (!%firstTarg)
-							%firstTarg = %potentialTarget;
-						else
-							%secondTarg = %potentialTarget;
-					}
-					else {
-						%turret.setTargetObject(%potentialTarget);
-						%turret.aquireTime = getSimTime();
-						return;
-					}
+			%potTargTarg = %potentialTarget.getTarget();
+			if (%turret.isValidTarget(%potentialTarget)
+			&& (getTargetSensorGroup(%turretTarg) != getTargetSensorGroup(%potTargTarg))
+			&& (getTargetSensorGroup(%potTargTarg) != 0)
+			&& ((%potentialTarget.getType() & $TypeMasks::PlayerObjectType) || !$TurretOnlyTargetPlayers)
+			&& %this.hasLOS(%turret,0,%potentialTarget)) {
+				if (%potentialTarget.homingCount > 0 && !%secondTarg) {
+					if (!%firstTarg)
+						%firstTarg = %potentialTarget;
+					else
+						%secondTarg = %potentialTarget;
 				}
-			}
-			else
-			{                 //Check Target Armor, If It Returns, FIRE!
-				if(%potentialTarget.iszombie || %potentialTarget.isdrone == 1 && %potentialTarget.team != %turret.team )
-				{
+				else {
 					%turret.setTargetObject(%potentialTarget);
+					%turret.aquireTime = getSimTime();
 					return;
 				}
 			}
+		    else if(%potentialTarget.iszombie) {
+		       %turret.setTargetObject(%potentialTarget);
+		       return;
+            }
+            else if(%potentialTarget.isBoss) {
+               %dbN = %turret.getDatablock().getName();
+               if(%dbN !$= "PlatFormPlasma" && %dbN !$= "PlatFormMissile"
+                  && %dbN !$= "PlatFormMortar") {
+                     %turret.setTargetObject(%potentialTarget);
+                     return;
+                  }
+            }
 		}
 	}
 	if (%secondTarg) {
@@ -345,7 +331,6 @@ function checkTurretMount(%data, %obj, %slot)
 
 	if(%potTurret.getDatablock().getName() $= "TurretBaseLarge"
 	|| %potTurret.getDatablock().getName() $= %otherMountObj
-	|| %potTurret.getDatablock().getName() $= "ssTurret"
 	|| %potTurret.getDatablock().getName() $= "TurretDeployedBase")
       {
          // found a turret base, what team is it on?
@@ -354,7 +339,7 @@ function checkTurretMount(%data, %obj, %slot)
 				if(%potTurret.getDamageState() !$= "Enabled")
 				{
 					// the base is destroyed
-					messageClient(%obj.client, 'MsgBaseDestroyed', "\c2Hey @$$-Wipe, This Thing Is Destroyed.");
+					messageClient(%obj.client, 'MsgBaseDestroyed', "\c2Turret base is disabled, cannot mount barrel.");
 					%obj.setImageTrigger($BackpackSlot, false);
 				}
 				else
@@ -368,21 +353,21 @@ function checkTurretMount(%data, %obj, %slot)
          else
          {
             // whoops, wrong team
-            messageClient(%obj.client, 'MsgTryEnemyTurretMount', "\c2DAMN dude! trying to mount a barrel on sumtin shooting at you???!");
+            messageClient(%obj.client, 'MsgTryEnemyTurretMount', "\c2Cannot mount a barrel on an enemy turret base!");
             %obj.setImageTrigger($BackpackSlot, false);
          }
       }
       else
       {
          // tried to mount barrel on some other turret type
-         messageClient(%obj.client, 'MsgNotTurretBase', "\c2WRONG kind dumb *uck.");
+         messageClient(%obj.client, 'MsgNotTurretBase', "\c2Can only mount a barrel on a turret base.");
          %obj.setImageTrigger($BackpackSlot, false);
       }
    }
    else
    {
       // I don't see any turret
-      messageClient(%obj.client, 'MsgNoTurretBase', "\c2No!!! Try pointing AT a turret.");
+      messageClient(%obj.client, 'MsgNoTurretBase', "\c2No turret within range.");
       %obj.setImageTrigger($BackpackSlot, false);
    }
 }
@@ -397,4 +382,3 @@ exec("scripts/turrets/ELFBarrelLarge.cs");
 exec("scripts/turrets/outdoorDeployableBarrel.cs");
 exec("scripts/turrets/indoorDeployableBarrel.cs");
 exec("scripts/turrets/sentryTurret.cs");
-exec("scripts/turrets/artillerybarrellarge.cs");

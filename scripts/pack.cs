@@ -44,6 +44,9 @@ function Pack::onInventory(%data,%obj,%amount)
 	//only do this for players
 	if(%obj.getClassName() !$= "Player")
 		return;
+    if(%obj.isZombie || %obj.isboss) {
+       return;
+    }
 
    // Auto-mount the packs on players
    if((%oldPack = %obj.getMountedImage($BackpackSlot)) != 0)
@@ -74,10 +77,12 @@ function Pack::onInventory(%data,%obj,%amount)
 
 // --- Upgrade packs
 exec("scripts/packs/ammopack.cs");
+exec("scripts/packs/cloakingpack.cs");
+exec("scripts/packs/energypack.cs");
 exec("scripts/packs/repairpack.cs");
+exec("scripts/packs/shieldpack.cs");
 exec("scripts/packs/satchelCharge.cs");
-exec("scripts/packs/FlamerAmmopack.cs");
-exec("scripts/packs/parachutepack.cs");
+exec("scripts/packs/sensorjammerpack.cs");
 
 exec("scripts/packs/largeInventory.cs");
 exec("scripts/packs/spine.cs");
@@ -91,7 +96,6 @@ exec("scripts/packs/cratepack.cs");
 exec("scripts/packs/decorationpack.cs");
 exec("scripts/packs/logoprojectorpack.cs");
 exec("scripts/packs/lightpack.cs");
-exec("scripts/packs/ZSpawnpack.cs");
 exec("scripts/packs/forcefieldpack.cs");
 exec("scripts/packs/gravityfieldpack.cs");
 exec("scripts/packs/telepadpack.cs");
@@ -103,11 +107,7 @@ exec("scripts/packs/escapePodPack.cs");
 exec("scripts/packs/vehiclepad.cs");
 exec("scripts/packs/Effectpacks.cs");
 exec("scripts/packs/door.cs");
-exec("scripts/packs/ArtilleryLoadoutPack.cs");
-exec("scripts/packs/Medpack.cs");
-exec("scripts/packs/SpawnPointPack.cs");
-exec("scripts/packs/vehicleRepairPad.cs");
-exec("scripts/packs/CardPack.cs");
+exec("scripts/packs/ZSpawnPack.cs");
 
 // --- Turret barrel packs
 exec("scripts/packs/aabarrelpack.cs");
@@ -115,9 +115,13 @@ exec("scripts/packs/missilebarrelpack.cs");
 exec("scripts/packs/mortarbarrelpack.cs");
 exec("scripts/packs/plasmabarrelpack.cs");
 exec("scripts/packs/ELFbarrelpack.cs");
-exec("scripts/packs/artillerybarrelpack.cs");
 
 // --- power
 exec("scripts/packs/generator.cs");
 exec("scripts/packs/solarpanel.cs");
 exec("scripts/packs/switch.cs");
+
+//
+exec("scripts/packs/CardPack.cs");
+exec("scripts/packs/SpawnPointPack.cs");
+exec("scripts/packs/MedPack.cs");

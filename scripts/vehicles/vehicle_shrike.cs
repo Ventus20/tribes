@@ -16,33 +16,11 @@ datablock SensorData(combatSensor)
 //**************************************************************
 // SOUNDS
 //**************************************************************
-datablock EffectProfile(ScoutFlyerThrustEffect)
-{
-   effectname = "vehicles/shrike_boost";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(ScoutFlyerEngineEffect)
-{
-   effectname = "vehicles/shrike_engine";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(ShrikeBlasterFireEffect)
-{
-   effectname = "vehicles/shrike_blaster";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
 datablock AudioProfile(ScoutFlyerThrustSound)
 {
    filename    = "fx/vehicles/shrike_boost.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = ScoutFlyerThrustEffect;
 };
 
 datablock AudioProfile(ScoutFlyerEngineSound)
@@ -57,7 +35,6 @@ datablock AudioProfile(ShrikeBlasterFire)
    filename    = "fx/vehicles/tank_chaingun.wav";
    description = AudioDefault3d;
    preload = true;
-   effect = ScoutFlyerEngineEffect;
 };
 
 datablock AudioProfile(ShrikeBlasterProjectile)
@@ -65,7 +42,6 @@ datablock AudioProfile(ShrikeBlasterProjectile)
    filename    = "fx/weapons/shrike_blaster_projectile.wav";
    description = ProjectileLooping3d;
    preload = true;
-   effect = ShrikeBlasterFireEffect;
 };
 
 datablock AudioProfile(ShrikeBlasterDryFireSound)
@@ -220,7 +196,7 @@ datablock FlyingVehicleData(ScoutFlyer) : ShrikeDamageProfile
    numDmgEmitterAreas = 1;
 
    //
-   max[chaingunAmmo] = 1500;
+   max[MiniChaingunAmmo] = 1500;
    max[MissileLauncherAmmo] = 4;
    max[MortarAmmo] = 2;
 
@@ -234,7 +210,7 @@ datablock FlyingVehicleData(ScoutFlyer) : ShrikeDamageProfile
    cmdCategory = "Tactical";
    cmdIcon = CMDFlyingScoutIcon;
    cmdMiniIconName = "commander/MiniIcons/com_scout_grey";
-   targetNameTag = 'F39 RaptorII';
+   targetNameTag = 'F39';
    targetTypeTag = 'Interceptor';
    sensorData = combatSensor;
    sensorRadius = combatSensor.detectRadius;
@@ -338,7 +314,7 @@ datablock SeekerProjectileData(sidewinder)
    maxVelocity         = 225.0; // z0dd - ZOD, 4/14/02. Was 80.0
    turningSpeed        = 50.0;
    acceleration        = 100.0;
-   
+
    proximityRadius     = 4;
 
    terrainAvoidanceSpeed = 100;
@@ -360,8 +336,8 @@ datablock ShapeBaseImageData(ScoutChaingunPairImage)
 {
    className = WeaponImage;
    shapeFile = "turret_tank_barrelchain.dts";
-   item      = Chaingun;
-   ammo   = ChaingunAmmo;
+   item      = MiniChaingun;
+   ammo   = MiniChaingunAmmo;
    projectile = Shrike_special_gun;
    projectileType = TracerProjectile;
    mountPoint = 10;
@@ -371,10 +347,8 @@ datablock ShapeBaseImageData(ScoutChaingunPairImage)
    projectileSpread = 1.0 / 1000.0;
 
    usesEnergy = false;
-   useMountEnergy = true;
+   useMountEnergy = false;
    // DAVEG -- balancing numbers below!
-   minEnergy = 1;
-   fireEnergy = 1;
    fireTimeout = 125;
 
    //--------------------------------------
@@ -441,8 +415,11 @@ datablock ShapeBaseImageData(ScoutChaingunPairImage)
    stateTransitionOnTimeout[8]   = "ready";
 };
 
-datablock ShapeBaseImageData(ScoutChaingunImage) : ScoutChaingunPairImage
-{
+datablock ShapeBaseImageData(ScoutChaingunImage) : ScoutChaingunPairImage {
+
+   item      = MiniChaingun;
+   ammo   = MiniChaingunAmmo;
+
 //**original**   offset = "-.73 0 0";
    offset = "-1.05 0.8 0.45";
    stateScript[3]           = "onTriggerDown";
@@ -472,7 +449,7 @@ datablock ShapeBaseImageData(ShrikeMissileImage)
    stateTransitionOnTimeout[0] = "ActivateReady";
    stateTimeoutValue[0] = 0.5;
    stateSequence[0] = "Activate";
-   
+
    stateName[1] = "ActivateReady";
    stateTransitionOnLoaded[1] = "Ready";
    stateTransitionOnNoAmmo[1] = "NoAmmo";
@@ -557,7 +534,7 @@ datablock ShapeBaseImageData(ShrikeBombImage)
    stateTransitionOnTimeout[0] = "ActivateReady";
    stateTimeoutValue[0] = 0.5;
    stateSequence[0] = "Activate";
-   
+
    stateName[1] = "ActivateReady";
    stateTransitionOnLoaded[1] = "Ready";
    stateTransitionOnNoAmmo[1] = "NoAmmo";
@@ -603,14 +580,14 @@ datablock ShapeBaseImageData(ScoutChaingunParam)
    isSeeker = true;
    seekRadius = $Bomber::SeekRadius;
    maxSeekAngle = 45;
-   seekTime = 0.25;
+   seekTime = $Bomber::SeekTime;
    minSeekHeat = $Bomber::minSeekHeat;
-   minTargetingDistance = 50;
+   minTargetingDistance = $Bomber::minTargetingDistance;
    useTargetAudio = $Bomber::useTargetAudio;
-}; 
+};
 
-function shrikeMissileImage::onFire(%data,%obj,%slot) 
-{ 
+function shrikeMissileImage::onFire(%data,%obj,%slot)
+{
    %p = Parent::onFire(%data, %obj, %slot);
    if(!%obj.isdrone)
    %obj.getMountNodeObject(0).decInventory(%data.ammo, 1);
@@ -625,20 +602,20 @@ function shrikeMissileImage::onFire(%data,%obj,%slot)
         %target = %obj.getTargetObject();
 
       %homein = missileCheckAirTarget(%target);
-      if(%target && %homein) 
-         %p.setObjectTarget(%target); 
-      else if(%obj.isLocked()) 
-         %p.setPositionTarget(%obj.getLockedPosition()); 
-      else 
-         %p.setNoTarget(); 
-   } 
+      if(%target && %homein)
+         %p.setObjectTarget(%target);
+      else if(%obj.isLocked())
+         %p.setPositionTarget(%obj.getLockedPosition());
+      else
+         %p.setNoTarget();
+   }
 }
 
-function shrikebombImage::onFire(%data,%obj,%slot) 
-{ 
+function shrikebombImage::onFire(%data,%obj,%slot)
+{
    %p = Parent::onFire(%data, %obj, %slot);
    %obj.getMountNodeObject(0).decInventory(%data.ammo, 1);
-   MissileSet.add(%p); 
+   MissileSet.add(%p);
 }
 
 function scoutflyer::onDestroyed(%data, %obj, %prevState)
@@ -688,4 +665,62 @@ function scoutflyer::onEnterLiquid(%data, %obj, %coverage, %type)
       case 7:
          //Quick Sand
    }
+}
+
+function ScoutFlyer::onAdd(%this, %obj)
+{
+   Parent::onAdd(%this, %obj);
+   if (%obj.clientControl)
+       serverCmdResetControlObject(%obj.clientControl);
+
+   %obj.mountImage(ScoutChaingunParam, 0);
+   %obj.mountImage(ScoutChaingunImage, 2);
+   %obj.mountImage(ScoutChaingunPairImage, 3);
+   %obj.mountImage(ShrikeMissileImage, 4);
+   %obj.mountImage(ShrikebombImage, 5);
+   %obj.selectedWeapon = 1;
+   %obj.nextWeaponFire = 1;
+   %obj.setInventory(MissileLauncherAmmo, 4);
+   %obj.setInventory(MortarAmmo, 2);
+   %obj.setInventory(MiniChaingunAmmo, 1500);
+   %obj.schedule(5500, "playThread", $ActivateThread, "activate");
+}
+
+function Scoutflyer::playerMounted(%data, %obj, %player, %node) {
+
+   $numVWeapons = 3;
+
+   %ammoAmt = %obj.inv[MiniChaingunAmmo];
+   if(%ammoAmt)
+     %obj.incInventory(MiniChaingunAmmo, %ammoAmt);
+
+   %ammoAmt = %obj.inv[MissileLauncherAmmo];
+   if(%ammoAmt)
+     %obj.incInventory(MissileLauncherAmmo, %ammoAmt);
+
+   %ammoAmt = %obj.inv[MortarAmmo];
+   if(%ammoAmt)
+     %obj.incInventory(MortarAmmo, %ammoAmt);
+
+   bottomPrint(%player.client, "Shrike: wep1 CG, wep2 missile, wep3 bombs", 5, 2 );
+
+
+   commandToClient(%player.client, 'setHudMode', 'Pilot', "Shrike2", %node);
+   %obj.selectedWeapon = 1;
+   commandToClient(%player.client, 'SetWeaponryVehicleKeys', true);
+   if( %player.client.observeCount > 0 )
+      resetObserveFollow( %player.client, false );
+}
+
+function missileCheckAirTarget(%obj){
+   if(!isobject(%obj))
+   return;
+   %mask = $TypeMasks::InteriorObjectType | $TypeMasks::TerrainObjectType;
+   %pos = %obj.getWorldBoxCenter();
+   %searchResult = containerRayCast(%pos,vectorAdd(%pos,"0 0 -15"), %mask, %obj);
+   if(%searchResult)
+	%result = false;
+   else
+	%result = true;
+   return %result;
 }

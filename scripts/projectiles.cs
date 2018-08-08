@@ -15,22 +15,154 @@
 //--------------------------------------------------------------------------
 //-------------------------------------- Default functions
 //
-datablock StaticShapeData(TargeterBeacon)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   targetNameTag = 'beacon';
-   isInvincible = true;
-   
-   dynamicType = $TypeMasks::SensorObjectType;
-};
-
-
 function ProjectileData::onCollision(%data, %projectile, %targetObject, %modifier, %position, %normal)
 {
-   if(isObject(%targetObject)) // Console spam fix - ToS. z0ddm0d
-   {
-      %targetObject.damage(%projectile.sourceObject, %position, %data.directDamage * %modifier, %data.directDamageType);
-   }
+   if(isObject(%targetObject)) { // Console spam fix - ToS. z0ddm0d
+	  // extra damage for head shot or less for close range shots
+	  if(!(%targetObject.getType() & ($TypeMasks::InteriorObjectType | $TypeMasks::TerrainObjectType)) &&
+         (%targetObject.getDataBlock().getClassName() $= "PlayerData")) {
+	        %damLoc = firstWord(%targetObject.getDamageLocation(%position));
+            %targetObject.headShot = 0; //Reset first
+            if(%projectile.sourceObject.client.ActivePerk["AP Bullets"]) {
+               %modifier *= 1.5;
+            }
+            if(%targetObject.client !$= "") {
+               if(!%targetObject.client.isHarb) {
+                  if(%targetObject.client.IsActivePerk("Kevlar Armor")) {
+                     %modifier *= 0.5;
+                  }
+               }
+            }
+            if(%targetObject.isZombie) {
+               if(Game.CheckModifier("Demonic") == 1) {
+                  %modifier = 0.5;
+               }
+            }
+            %TDB = %targetObject.getDatablock().getName();
+            //wow :p
+          //  echo(%projectile.sourceObject.getDatablock().getClassName());
+            if(strStr(%projectile.sourceObject.getDatablock().getClassName(), "Turret") != -1) {
+               //echo("hit");
+               %pSO = %projectile.sourceObject;
+               if(%pSO.getDatablock().getName() $= "HarbingerGunshipTurret") {
+               //   echo("hit 2");
+                  %projectile.sourceObject = %projectile.sourceObject.mountobj;
+               }
+               else if(%pSO.getDatablock().getName() $= "AC130GunshipTurret") {
+               //   echo("hit 2");
+                  %projectile.sourceObject = %projectile.sourceObject.mountobj;
+               }
+               else if(%pSO.getDatablock().getName() $= "CentaurTurret") {
+                  //echo("yeah");
+                  %projectile.sourceObject = %projectile.sourceObject.source;
+               }
+            }
+            if(strStr(%projectile.sourceObject.getDatablock().getClassName(), "Vehicle") != -1) {
+               //vehicle kill!
+               if(%targetObject.isPlayer()) {
+                  if(%targetObject.getState() $= "dead") {
+                     %pl = %projectile.sourceObject.getMountNodeObject(0); //the pilot
+                     //echo(%pl);
+                     %cl = %pl.client;
+                     if(%cl !$= "") {
+                        %VDB = %projectile.sourceObject.getDatablock().getName();
+                        if(!%targetObject.isAllyBot) {
+                           UpdateVehicleKillFile(%cl, %VDB);
+                        }
+                        //
+                        if(%TDB $= "DemonMotherZombieArmor" && %VDB $= "CentaurVehicle") {
+                           %cl.CDLKills++;
+                           if(%cl.CDLKills >= 5) {
+                              AwardClient(%cl, "19");
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+	        if(%damLoc $= "head") {
+               if(%data.HeadMultiplier !$= "")
+                  %modifier *= %data.HeadMultiplier;
+               if(%data.HeadShotKill && $TWM2::HeadshotKill) {
+                  %targetObject.headShot = 1;
+               }
+               if(%projectile.sourceObject.client !$= "") {
+                  if(%projectile.sourceObject.client.UpgradeOn("HSBullets", %projectile.WeaponImageSource) && $TWM2::HeadshotKill) {
+                     %targetObject.headShot = 1;
+                  }
+               }
+               if(%targetObject.headShot) {
+                  if(%targetObject.client.ActivePerk["Head Guard"]) {
+                     %targetObject.headShot = 0;
+                  }
+                  else {
+                     if((!%targetObject.isBoss && !%targetObject.noHS) && !(%targetObject.getShieldHealth() > 0)) {
+                        if(%targetObject.isZombie) {
+                           if(%TDB $= "FZombieArmor") {
+                              AwardClient(%projectile.sourceObject.client, "16");
+                           }
+                           if(Game.CheckModifier("WheresMyHead") == 1) {
+                              %targetObject.headShot = 0;
+                           }
+                           else {
+                              %modifier *= 1000;
+                           }
+                        }
+                        else {
+                           %modifier *= 1000;
+                           if(%targetObject.client !$= "") {
+                              BottomPrint(%targetObject.client, "You Lost Your Head!!!", 3, 1);
+                           }
+                        }
+                     }
+                  }
+               }
+	        }
+	        else if(%damLoc $= "legs") {
+               if(%data.LegsMultiplier !$= "")
+		          %modifier *= %data.LegsMultiplier;
+	        }
+	        else {
+		       %modifier = 1;
+	        }
+       }
+    %targetObject.lastDamagedImage = %projectile.getDatablock().ImageSource;
+    
+    %targetObject.damage(%projectile.sourceObject, %position, %modifier * %data.directDamage, %data.directDamageType);
+    if(!(%targetObject.getType() & ($TypeMasks::InteriorObjectType | $TypeMasks::TerrainObjectType)) &&
+       (%targetObject.getDataBlock().getClassName() $= "PlayerData")) {
+
+       //After Damage Stuff
+       if(%targetObject.getState() $= "dead") {
+          if(%projectile.sourceObject.client !$= "") {
+             if(%projectile.getDatablock().getName() !$= "GrenadeShrapnel") {
+                if(!%targetObject.isAllyBot) {
+                   UpdateWeaponKillFile(%projectile.sourceObject.client, %projectile.WeaponImageSource);
+                }
+             }
+          }
+       }
+
+       if(%targetObject.headShot) {
+          if(%targetObject.getState() $= "dead") {
+             //CreateBlood(%targetObject); //bypass the GoreMod Check
+             //we place this in here to prevent XP boosting
+             if(%projectile.sourceObject.client !$= "") {
+                BottomPrint(%projectile.sourceObject.client, "HeadShot!!! +2 XP Bonus", 3, 1);
+                GainExperience(%projectile.sourceobject.client, 2, "Headshot! ");
+                if(%targetObject.isZombie) {
+                   recordAction(%projectile.sourceObject.client, "HSC", "zombie\t1");
+                }
+                else {
+                   recordAction(%projectile.sourceObject.client, "HSC", "player\t1");
+                }
+                //
+             }
+             %targetObject.headShot = 0;
+          }
+       }
+    }
+  }
 }
 
 function SniperProjectileData::onCollision(%data, %projectile, %targetObject, %modifier, %position, %normal)
@@ -110,17 +242,34 @@ function ShapeBaseImageData::onFire(%data, %obj, %slot) {
    }
    // ---------------------------------------------------------------------
    // Code streamlining - ToS. z0ddm0d
-   if(%data.projectileSpread)
-   {
+   if(%data.projectileSpread) {
+      //
+      %spread = %data.projectileSpread;
+      if(%obj.client !$= "") {
+         if(%obj.client.IsActivePerk("Advanced Grip")) {
+            %spread = %spread / 2.5;
+         }
+         if(%obj.client.UpgradeOn("Grip", %data.getName())) {
+            %spread = %spread / 1.7;
+         }
+      }
+      //
       %vec = %obj.getMuzzleVector(%slot);
-      %x = (getRandom() - 0.5) * 2 * 3.1415926 * %data.projectileSpread;
-      %y = (getRandom() - 0.5) * 2 * 3.1415926 * %data.projectileSpread;
-      %z = (getRandom() - 0.5) * 2 * 3.1415926 * %data.projectileSpread;
+      %x = (getRandom() - 0.5) * 2 * 3.1415926 * %spread;
+      %y = (getRandom() - 0.5) * 2 * 3.1415926 * %spread;
+      %z = (getRandom() - 0.5) * 2 * 3.1415926 * %spread;
       %mat = MatrixCreateFromEuler(%x @ " " @ %y @ " " @ %z);
       %vector = MatrixMulVector(%mat, %vec);
+      
+      if(%obj.client !$= "") {
+         if(%obj.client.IsActivePerk("Pistol God")) {
+            if(%data.getName() $= "PistolImage" || %data.getName() $= "DeagleImage") {
+               %vector = %obj.getMuzzleVector(%slot);
+            }
+         }
+      }
    }
-   else
-   {
+   else {
       %vector = %obj.getMuzzleVector(%slot);
    }
 	%initialPos = %obj.getMuzzlePoint(%slot);
@@ -155,6 +304,8 @@ function ShapeBaseImageData::onFire(%data, %obj, %slot) {
    %obj.deleteLastProjectile = %data.deleteLastProjectile;
    MissionCleanup.add(%p);
 
+   %p.WeaponImageSource = %data.getName();
+
    // AI hook
    if(%obj.client)
       %obj.client.projectile = %p;
@@ -173,8 +324,12 @@ function ShapeBaseImageData::onFire(%data, %obj, %slot) {
       else
          %obj.setEnergyLevel(%energy - %data.fireEnergy);
    }
-   else
+   else {
       %obj.decInventory(%data.ammo,1);
+      if(%obj.inv[%data.ammo] == 0) { //Added Phantom139, TWM2
+         AttemptReload(%data, %obj, %slot);
+      }
+   }
    return %p;
 }
 
@@ -211,8 +366,10 @@ function MissileLauncherImage::onFire(%data,%obj,%slot)
    MissileSet.add(%p);
 
    %target = %obj.getLockedTarget();
-   if(%target)
+   if(%target) {
       %p.setObjectTarget(%target);
+      SetMissileTargeted(%target, %p);
+   }
    else if(%obj.isLocked())
       %p.setPositionTarget(%obj.getLockedPosition());
    else
@@ -244,8 +401,10 @@ function MissileBarrelLarge::onFire(%data,%obj,%slot)
       %target = %obj.getTargetObject();
    }
 
-   if(%target)
+   if(%target) {
       %p.setObjectTarget(%target);
+      SetMissileTargeted(%target, %p);
+   }
    else if(%obj.isLocked())
       %p.setPositionTarget(%obj.getLockedPosition());
    else
@@ -303,36 +462,10 @@ function TargetingLaserImage::onFire(%data,%obj,%slot)
    %p = Parent::onFire(%data, %obj, %slot);
    %p.setTarget(%obj.team);
    %obj.posLaze = 1;
-   if(%obj.beacon)
-   {
-      %obj.beacon.delete();
-      %obj.beacon = "";
-   }   
 }
 
 function TargetingLaserImage::deconstruct(%data, %obj, %slot)
 {
-   %pos = %obj.lastProjectile.getTargetPoint();
-   
-   if(%obj.beacon)
-   {
-      %obj.beacon.delete();
-      %obj.beacon = "";
-   }
-   %obj.beacon = new BeaconObject() {
-      dataBlock = "TargeterBeacon";
-      beaconType = "vehicle";
-      position = %pos;
-   };
-
-   %obj.beacon.playThread($AmbientThread, "ambient");
-   %obj.beacon.team = %obj.team;
-   %obj.beacon.sourceObject = %obj;
-
-   // give it a team target
-   %obj.beacon.setTarget(%obj.team);                  
-   MissionCleanup.add(%obj.beacon);
-
    %obj.posLaze = 0;
    Parent::deconstruct(%data, %obj, %slot);
 }
@@ -418,11 +551,8 @@ function ShockLanceImage::onFire(%this, %obj, %slot)
             if (%dot >= mCos(1.05)) {
                // Rear hit
                %damageMultiplier = 3.0;
-               //Award Assasin Points
-               %obj.client.SLAssassinCnt++;
-               if(%obj.client.SLAssassinCnt > 4) {
-                  awardClient(%obj.client,25); //Medal
-               }
+			   //backstabage :D
+			   
             }
          }
 
@@ -552,8 +682,8 @@ function ELFProjectile::checkELFStatus(%this, %data, %target, %targeter)
 }
 
 
-function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse, %sourceObject, %damageType)
-{
+function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse, %sourceObject, %damageType) {
+
    InitContainerRadiusSearch(%position, %radius, $TypeMasks::PlayerObjectType      |
                                                  $TypeMasks::VehicleObjectType     |
                                                  $TypeMasks::StaticShapeObjectType |
@@ -562,8 +692,7 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
                                                  $TypeMasks::ItemObjectType);
 
    %numTargets = 0;
-   while ((%targetObject = containerSearchNext()) != 0)
-   {
+   while ((%targetObject = containerSearchNext()) != 0) {
 
 	if (%targetObject.isRemoved)
 		continue;
@@ -596,8 +725,7 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
       %numTargets++;
    }
 
-   for (%i = 0; %i < %numTargets; %i++)
-   {
+   for (%i = 0; %i < %numTargets; %i++) {
       %targetObject = %targets[%i];
       %dist = %targetDists[%i];
 
@@ -610,8 +738,6 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
          %coverage = calcBuildingInWay(%position, %targetObject);
       if (%coverage == 0)
          continue;
-	if (%damagetype $= $DamageType::nuke)
-	   %coverage = 1;
 
       //if ( $splashTest )
          %amount = (1.0 - ((%dist / %radius) * 0.88)) * %coverage * %damage;
@@ -623,8 +749,7 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
       %data = %targetObject.getDataBlock();
       %className = %data.className;
 
-      if (%impulse && %data.shouldApplyImpulse(%targetObject) && !%targetObject.isobjectinvincibility)
-      {
+      if (%impulse && %data.shouldApplyImpulse(%targetObject)) {
          %p = %targetObject.getWorldBoxCenter();
          %momVec = VectorSub(%p, %position);
          %momVec = VectorNormalize(%momVec);
@@ -635,8 +760,7 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
       // z0dd - ZOD, 5/8/02. Removed Wheeled Vehicle to eliminate the flying MPB bug 
       // caused by tossing concussion grenades under a deployed MPB.
       //else if( %className $= WheeledVehicleData || %className $= FlyingVehicleData || %className $= HoverVehicleData )
-      else if( %className $= FlyingVehicleData || %className $= HoverVehicleData || %classname $= WheeledVehicleData)
-      {
+      else if( %className $= FlyingVehicleData || %className $= HoverVehicleData ) {
          %p = %targetObject.getWorldBoxCenter();
          %momVec = VectorSub(%p, %position);
          %momVec = VectorNormalize(%momVec);
@@ -667,13 +791,62 @@ function RadiusExplosion(%explosionSource, %position, %radius, %damage, %impulse
 
 	if(%doImpulse)
 		%targetObject.applyImpulse(%position, %impulseVec);
+        %targetObject.lastDamagedImage = %explosionSource.getDatablock().ImageSource;
+  
+      if (%targetObject.isPlayer()) {
+      
+         if(%targetObject.getState() $= "dead") {
+         //
+            %TDB = %targetObject.getDatablock().getName();
+            //wow :p
+          //  echo(%projectile.sourceObject.getDatablock().getClassName());
+            if(strStr(%explosionSource.sourceObject.getDatablock().getClassName(), "Turret") != -1) {
+               //echo("hit");
+               %pSO = %explosionSource.sourceObject;
+               if(%pSO.getDatablock().getName() $= "HarbingerGunshipTurret") {
+               //   echo("hit 2");
+                  %explosionSource.sourceObject = %explosionSource.sourceObject.mountobj;
+               }
+               else if(%pSO.getDatablock().getName() $= "CentaurTurret") {
+                  //echo("yeah");
+                  %explosionSource.sourceObject = %explosionSource.sourceObject.source;
+               }
+            }
+            if(strStr(%explosionSource.sourceObject.getDatablock().getClassName(), "Vehicle") != -1) {
+               //vehicle kill!
+               %pl = %explosionSource.sourceObject.getMountNodeObject(0); //the pilot
+               //echo(%pl);
+               %cl = %pl.client;
+               if(%cl !$= "") {
+                  %VDB = %explosionSource.sourceObject.getDatablock().getName();
+                  $TWM2::VehicleKills[%cl.guid, %VDB]++;
+                  UpdateVehicleKillFile(%cl, %VDB);
+                  //
+                  if(%TDB $= "DemonMotherZombieArmor" && %VDB $= "CentaurVehicle") {
+                     %cl.CDLKills++;
+                     if(%cl.CDLKills >= 5) {
+                        AwardClient(%cl, "19");
+                     }
+                  }
+               }
+            }
+         //
+
+            if(%sourceObject.client !$= "") {
+
+               $TWM2::WeaponKills[%sourceObject.client.guid, %explosionSource.WeaponImageSource]++;
+               UpdateWeaponKillFile(%sourceObject.client, %explosionSource.WeaponImageSource);
+               // ^- Protected from invalid entries now, thus I can use it :)
+            }
+         }
+      }
    }
 }
 
-function ProjectileData::onExplode(%data, %proj, %pos, %mod)
-{
-   if (%data.hasDamageRadius)
+function ProjectileData::onExplode(%data, %proj, %pos, %mod) {
+   if (%data.hasDamageRadius) {
       RadiusExplosion(%proj, %pos, %data.damageRadius, %data.indirectDamage, %data.kickBackStrength, %proj.sourceObject, %data.radiusDamageType);
+   }
 }
 
 function Flag::shouldApplyImpulse(%data, %obj)

@@ -1,151 +1,9 @@
 //**************************************************************
 // BEOWULF ASSAULT VEHICLE
 //**************************************************************
-
-datablock AudioProfile(MobileBaseStationDeploySound)
-{
-   filename    = "fx/vehicles/MPB_deploy_station.wav";
-   description = AudioClose3d;
-   preload = true;
-};
-
-datablock ParticleData(ACCGSmoke)
-{
-   dragCoeffiecient     = 0.05;
-   gravityCoefficient   = 0.1;
-   inheritedVelFactor   = 0.025;
-
-   lifetimeMS           = 1250;
-   lifetimeVarianceMS   = 150;
-
-   textureName          = "particleTest";
-
-   useInvAlpha =  true;
-   spinRandomMin = -25.0;
-   spinRandomMax =  25.0;
-
-   textureName = "special/Smoke/bigSmoke";
-
-   colors[0]     = "0.3 0.3 0.3 1.0";
-   colors[1]     = "0.4 0.4 0.4 0.5";
-   colors[2]     = "0.5 0.5 0.5 0.0";
-   sizes[0]      = 1.0;
-   sizes[1]      = 1.5;
-   sizes[2]      = 2.0;
-   times[0]      = 0.0;
-   times[1]      = 0.5;
-   times[2]      = 1.0;
-};
-datablock ParticleEmitterData(ACCGSmokeEmitter)
-{
-   ejectionPeriodMS = 1;
-   periodVarianceMS = 0;
-
-   ejectionOffset = 0.1;
-
-   ejectionVelocity = 4.0;
-   velocityVariance = 3.5;
-
-   thetaMin         = 85.0;
-   thetaMax         = 90.0;
-
-   lifetimeMS       = 100;
-
-   particles = "ACCGSmoke";
-
-};
-datablock ParticleEmitterData(ACCGSmokeEmitter2)
-{
-   ejectionPeriodMS = 5;
-   periodVarianceMS = 0;
-
-   ejectionOffset = 0.1;
-
-   ejectionVelocity = 5.5;
-   velocityVariance = 5.5;
-
-   thetaMin         = 0.0;
-   thetaMax         = 15.0;
-
-   lifetimeMS       = 150;
-
-   particles = "ACCGSmoke";
-
-};
-datablock ExplosionData(ACCGSubExplosion)
-{
-   explosionShape = "effect_plasma_explosion.dts";
-   faceViewer = true;
-   delayMS = 0;
-   offset = 0.0;
-   playSpeed = 2.0;
-   sizes[0] = "0.1 0.1 0.1";
-   sizes[1] = "0.1 0.1 0.1";
-   times[0] = 0.0;
-   times[1] = 1.0;
-
-};
-datablock ExplosionData(ACCGExplosion)
-{
-   soundProfile   = plasmaExpSound;
-   subExplosion[0] = ACCGSubExplosion;
-   emitter[0] = ACCGSmokeEmitter;
-   emitter[1] = ACCGSmokeEmitter2;
-   shakeCamera = false;
-};
-
 //**************************************************************
 // SOUNDS
 //**************************************************************
-datablock EffectProfile(AssaultVehicleEngineEffect)
-{
-   effectname = "vehicles/tank_engine";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultVehicleThrustEffect)
-{
-   effectname = "vehicles/tank_boost";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultTurretActivateEffect)
-{
-   effectname = "vehicles/tank_activate";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultMortarDryFireEffect)
-{
-   effectname = "weapons/mortar_dryfire";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultMortarFireEffect)
-{
-   effectname = "vehicles/tank_mortar_fire";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultMortarReloadEffect)
-{
-   effectname = "weapons/mortar_reload";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(AssaultChaingunFireEffect)
-{
-   effectname = "weapons/chaingun_fire";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
 datablock AudioProfile(AssaultVehicleSkid)
 {
    filename    = "fx/vehicles/tank_skid.wav";
@@ -158,7 +16,6 @@ datablock AudioProfile(AssaultVehicleEngineSound)
    filename    = "fx/vehicles/tank_engine.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = AssaultVehicleEngineEffect;
 };
 
 datablock AudioProfile(AssaultVehicleThrustSound)
@@ -166,7 +23,6 @@ datablock AudioProfile(AssaultVehicleThrustSound)
    filename    = "fx/vehicles/tank_boost.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = AssaultVehicleThrustEffect;
 };
 
 datablock AudioProfile(AssaultChaingunFireSound)
@@ -174,7 +30,6 @@ datablock AudioProfile(AssaultChaingunFireSound)
    filename    = "fx/vehicles/tank_chaingun.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = AssaultChaingunFireEffect;
 };
 
 datablock AudioProfile(AssaultChaingunReloadSound)
@@ -196,7 +51,6 @@ datablock AudioProfile(AssaultTurretActivateSound)
     filename    = "fx/vehicles/tank_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = AssaultTurretActivateEffect;
 };
 
 datablock AudioProfile(AssaultChaingunDryFireSound)
@@ -218,7 +72,6 @@ datablock AudioProfile(AssaultMortarDryFireSound)
    filename    = "fx/weapons/mortar_dryfire.wav";
    description = AudioClose3d;
    preload = true;
-   effect = AssaultMortarDryFireEffect;
 };
 
 datablock AudioProfile(AssaultMortarFireSound)
@@ -226,7 +79,6 @@ datablock AudioProfile(AssaultMortarFireSound)
    filename    = "fx/vehicles/tank_mortar_fire.wav";
    description = AudioClose3d;
    preload = true;
-   effect = AssaultMortarFireEffect;
 };
 
 datablock AudioProfile(AssaultMortarReloadSound)
@@ -234,7 +86,6 @@ datablock AudioProfile(AssaultMortarReloadSound)
    filename    = "fx/weapons/mortar_reload.wav";
    description = AudioClose3d;
    preload = true;
-   effect = AssaultMortarReloadEffect;
 };
 
 datablock AudioProfile(AssaultMortarIdleSound)
@@ -290,7 +141,7 @@ datablock RunningLightData(TankLight4)
 datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
 {
    spawnOffset = "0 0 4";
-   canControl = false;
+   canControl = true;
    floatingGravMag = 4.5;
 
    catagory = "Vehicles";
@@ -301,8 +152,8 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
 
    weaponNode = 1;
 
-   debrisShapeName = "vehicle_grav_tank.dts";
-   debris = GShapeDebris;
+   debrisShapeName = "vehicle_land_assault_debris.dts";
+   debris = ShapeDebris;
 
    drag = 0.0;
    density = 0.9;
@@ -316,17 +167,14 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    cameraMaxDist = 20;
    cameraOffset = 3;
    cameraLag = 1.5;
-   explosion = HGVehicleExplosion;
-   explosionDamage = 2.0;
-   explosionRadius = 30.0;
+   explosion = LargeGroundVehicleExplosion;
+   explosionDamage = 0.5;
+   explosionRadius = 5.0;
 
    maxSteeringAngle = 0.5;  // 20 deg.
 
-   maxDamage = 3.0;
-   destroyedLevel = 3.0;
-
-   HDAddMassLevel = 2.1;
-   HDMassImage = TankHDMassImage;
+   maxDamage = 3.15;
+   destroyedLevel = 3.15;
 
    isShielded = false;
    rechargeRate = 1.0;
@@ -348,8 +196,8 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    hardImpactSpeed = 18;      // Play HardImpact Sound
 
    // Ground Impact Damage (uses DamageType::Ground)
-   minImpactSpeed = 30;
-   speedDamageScale = 0.020;
+   minImpactSpeed = 17;
+   speedDamageScale = 0.060;
 
    // Object Impact Damage (uses DamageType::Impact)
    collDamageThresholdVel = 18;
@@ -359,12 +207,12 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    vertFactor           = 0.0;
    floatingThrustFactor = 0.15;
 
-   mainThrustForce    = 80;
-   reverseThrustForce = 35;
-   strafeThrustForce  = 0;
-   turboFactor        = 1.5;
+   mainThrustForce    = 50;
+   reverseThrustForce = 40;
+   strafeThrustForce  = 40;
+   turboFactor        = 1.7;
 
-   brakingForce = 20;
+   brakingForce = 25;
    brakingActivationSpeed = 4;
 
    stabLenMin = 3.25;
@@ -375,8 +223,8 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    gyroDrag = 20;
    normalForce = 20;
    restorativeForce = 10;
-   steeringForce = 30;
-   rollForce  = 0;
+   steeringForce = 15;
+   rollForce  = 5;
    pitchForce = 3;
 
    dustEmitter = TankDustEmitter;
@@ -408,10 +256,10 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    impactWaterHard   = VehicleImpactWaterMediumSound;
    waterWakeSound    = VehicleWakeMediumSplashSound;
 
-   minMountDist = 7;
+   minMountDist = 4;
 
    damageEmitter[0] = SmallLightDamageSmoke;
-   damageEmitter[1] = MeHGHeavyDamageSmoke;
+   damageEmitter[1] = SmallHeavyDamageSmoke;
    damageEmitter[2] = DamageBubbles;
    damageEmitterOffset[0] = "0.0 -1.5 3.5 ";
    damageLevelTolerance[0] = 0.3;
@@ -426,11 +274,9 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    cmdCategory = "Tactical";
    cmdIcon = CMDGroundTankIcon;
    cmdMiniIconName = "commander/MiniIcons/com_tank_grey";
-   targetNameTag = 'M4A1 Wolf';
-   targetTypeTag = 'Light Tank';
-   sensorData = combatSensor;
-   sensorRadius = combatSensor.detectRadius;
-   sensorColor = "9 9 255";
+   targetNameTag = 'Beowulf';
+   targetTypeTag = 'Assault Tank';
+   sensorData = VehiclePulseSensor;
 
    checkRadius = 5.5535;
    observeParameters = "1 10 10";
@@ -440,8 +286,6 @@ datablock HoverVehicleData(AssaultVehicle) : TankDamageProfile
    runningLight[3] = TankLight4;
    shieldEffectScale = "0.9 1.0 0.6";
    showPilotInfo = 1;
-
-   replaceTime = 45;
 };
 
 //**************************************************************
@@ -457,16 +301,16 @@ datablock TracerProjectileData(AssaultChaingunBullet)
    doDynamicClientHits = true;
 
    projectileShapeName = "";
-   directDamage        = 0.4;
-   directDamageType    = $DamageType::TankChaingunH;
+   directDamage        = 0.16;
+   directDamageType    = $DamageType::TankChaingun;
    hasDamageRadius     = false;
    splash			   = ChaingunSplash;
 
    kickbackstrength    = 0.0;
    sound          	   = TankChaingunProjectile;
 
-   dryVelocity       = 1250.0;
-   wetVelocity       = 500.0;
+   dryVelocity       = 425.0;
+   wetVelocity       = 100.0;
    velInheritFactor  = 1.0;
    fizzleTimeMS      = 3000;
    lifetimeMS        = 3000;
@@ -483,20 +327,20 @@ datablock TracerProjectileData(AssaultChaingunBullet)
 	tracerTex[0]  	 = "special/tracer00";
 	tracerTex[1]  	 = "special/tracercross";
 	tracerWidth     = 0.10;
-   crossSize       = 0.25;
+   crossSize       = 0.20;
    crossViewAng    = 0.990;
    renderCross     = true;
 
-   decalData[0] = MG42Decal1;
-   decalData[1] = MG42Decal2;
-   decalData[2] = MG42Decal3;
-   decalData[3] = MG42Decal4;
-   decalData[4] = MG42Decal5;
-   decalData[5] = MG42Decal6;
+   decalData[0] = ChaingunDecal1;
+   decalData[1] = ChaingunDecal2;
+   decalData[2] = ChaingunDecal3;
+   decalData[3] = ChaingunDecal4;
+   decalData[4] = ChaingunDecal5;
+   decalData[5] = ChaingunDecal6;
 
    activateDelayMS   = 100;
 
-   explosion = ACCGExplosion;
+   explosion = ChaingunExplosion;
 };
 
 //-------------------------------------
@@ -508,23 +352,14 @@ datablock TurretData(AssaultPlasmaTurret) : TurretDamageProfile
    className      = VehicleTurret;
    catagory       = "Turrets";
    shapeFile      = "Turret_tank_base.dts";
-   //turret_assaulttank_plasma.dts
    preload        = true;
-   canControl = false;
+   canControl = true;
    cmdCategory = "Tactical";
    cmdIcon = CMDGroundTankIcon;
    cmdMiniIconName = "commander/MiniIcons/com_tank_grey";
-   targetNameTag = 'light';
+   targetNameTag = 'Beowulf';
    targetTypeTag = 'Assault Tank turret';
    mass           = 1.0;  // Not really relevant
-
-   isSeeker = true; 
-   seekRadius = $Bomber::SeekRadius; 
-   maxSeekAngle = 30; 
-   seekTime = $Bomber::SeekTime; 
-   minSeekHeat = $Bomber::minSeekHeat; 
-   minTargetingDistance = $Bomber::minTargetingDistance; 
-   useTargetAudio = $Bomber::useTargetAudio;
 
    maxEnergy               = 1;
    maxDamage               = AssaultVehicle.maxDamage;
@@ -532,8 +367,8 @@ datablock TurretData(AssaultPlasmaTurret) : TurretDamageProfile
    repairRate              = 0;
 
    // capacitor
-   maxCapacitorEnergy      = 200;
-   capacitorRechargeRate   = 0.45;
+   maxCapacitorEnergy      = 250;
+   capacitorRechargeRate   = 1.0;
 
    thetaMin = 0;
    thetaMax = 100;
@@ -547,7 +382,7 @@ datablock TurretData(AssaultPlasmaTurret) : TurretDamageProfile
    cameraMinFov = 5.0;
    cameraMaxFov = 120.0;
 
-   targetNameTag = 'light Tank';
+   targetNameTag = 'Beowulf Chaingun';
    targetTypeTag = 'Turret';
 };
 
@@ -565,13 +400,13 @@ datablock TurretImageData(AssaultPlasmaTurretBarrel)
    shellExitVariance   = 15.0;
    shellVelocity       = 3.0;
 
-   projectileSpread = 1.5 / 1000.0;
+   projectileSpread = 12.0 / 1000.0;
 
    useCapacitor = true;
    usesEnergy = true;
    useMountEnergy = true;
-   fireEnergy = 0.01;
-   minEnergy = 5.0;
+   fireEnergy = 7.5;
+   minEnergy = 15.0;
 
    // Turret parameters
    activationMS      = 4000;
@@ -606,14 +441,14 @@ datablock TurretImageData(AssaultPlasmaTurretBarrel)
    stateAllowImageChange[3]            = false;
    stateSound[3]                       = AssaultChaingunFireSound;
    stateScript[3]                      = "onFire";
-   stateTimeoutValue[3]                = 0.14;
+   stateTimeoutValue[3]                = 0.1;
    stateTransitionOnTimeout[3]         = "Fire";
    stateTransitionOnTriggerUp[3]       = "Reload";
    stateTransitionOnNoAmmo[3]          = "noAmmo";
 
    stateName[4]                        = "Reload";
    stateSequence[4]                    = "Reload";
-   stateTimeoutValue[4]                = 0.2;
+   stateTimeoutValue[4]                = 0.1;
    stateAllowImageChange[4]            = false;
    stateTransitionOnTimeout[4]         = "Ready";
    stateTransitionOnNoAmmo[4]          = "NoAmmo";
@@ -658,16 +493,265 @@ datablock ItemData(AssaultMortarAmmo)
    computeCRC = true;
 };
 
-//--------------------------------------------------------------------------
-// Projectile
-//--------------------------------------
-datablock SeekerProjectileData(TankRocket)
+datablock TracerProjectileData(TankShell) {
+   doDynamicClientHits = true;
+
+   directDamage        = 0.0; // z0dd - ZOD, 9-27-02. Was 0.0825
+   directDamageType    = $DamageType::TankMortar;
+   hasDamageRadius     = true;
+   indirectDamage      = 0.8;
+   damageRadius        = 7.0;
+   radiusDamageType    = $DamageType::TankMortar;
+   explosion           = "MissileExplosion";
+   splash              = ChaingunSplash;
+
+   kickBackStrength  = 1500.0;
+   sound 				= ChaingunProjectile;
+
+   //dryVelocity       = 425.0;
+   dryVelocity       = 500.0; // z0dd - ZOD, 8-12-02. Was 425.0
+   wetVelocity       = 400.0;
+   velInheritFactor  = 0.0;
+   fizzleTimeMS      = 300;
+   lifetimeMS        = 600;
+   explodeOnDeath    = false;
+   reflectOnWaterImpactAngle = 0.0;
+   explodeOnWaterImpact      = false;
+   deflectionOnWaterImpact   = 0.0;
+   fizzleUnderwaterMS        = 300;
+
+   tracerLength    = 25.0;
+   tracerAlpha     = false;
+   tracerMinPixels = 6;
+   tracerColor     = 211.0/255.0 @ " " @ 215.0/255.0 @ " " @ 120.0/255.0 @ " 0.75";
+	tracerTex[0]  	 = "special/tracer00";
+	tracerTex[1]  	 = "special/tracercross";
+	tracerWidth     = 2.25;
+   crossSize       = 0.20;
+   crossViewAng    = 0.990;
+   renderCross     = true;
+
+   decalData[0] = ChaingunDecal1;
+   decalData[1] = ChaingunDecal2;
+   decalData[2] = ChaingunDecal3;
+   decalData[3] = ChaingunDecal4;
+   decalData[4] = ChaingunDecal5;
+   decalData[5] = ChaingunDecal6;
+};
+
+//-------------------------------------
+// ASSAULT MORTAR CHARACTERISTICS
+//-------------------------------------
+
+datablock TurretImageData(AssaultMortarTurretBarrel)
 {
+   shapeFile = "turret_tank_barrelmortar.dts";
+   mountPoint = 0;
+
+//   ammo = AssaultMortarAmmo;
+   projectile = TankShell;
+   projectileType = TracerProjectile;
+
+   usesEnergy = true;
+   useMountEnergy = true;
+   fireEnergy = 77.00;
+   minEnergy = 77.00;
+   useCapacitor = true;
+
+   // Turret parameters
+   activationMS                        = 4000;
+   deactivateDelayMS                   = 1500;
+   thinkTimeMS                         = 200;
+   degPerSecTheta                      = 360;
+   degPerSecPhi                        = 360;
+   attackRadius                        = 75;
+
+   // State transitions
+   stateName[0]                        = "Activate";
+   stateTransitionOnNotLoaded[0]       = "Dead";
+   stateTransitionOnLoaded[0]          = "ActivateReady";
+
+   stateName[1]                        = "ActivateReady";
+   stateSequence[1]                    = "Activate";
+   stateSound[1]                       = AssaultTurretActivateSound;
+   stateTimeoutValue[1]                = 1.0;
+   stateTransitionOnTimeout[1]         = "Ready";
+   stateTransitionOnNotLoaded[1]       = "Deactivate";
+
+   stateName[2]                        = "Ready";
+   stateTransitionOnNotLoaded[2]       = "Deactivate";
+   stateTransitionOnNoAmmo[2]          = "NoAmmo";
+   stateTransitionOnTriggerDown[2]     = "Fire";
+
+   stateName[3]                        = "Fire";
+   stateSequence[3]                    = "Fire";
+   stateTransitionOnTimeout[3]         = "Reload";
+   stateTimeoutValue[3]                = 1.0;
+   stateFire[3]                        = true;
+   stateRecoil[3]                      = LightRecoil;
+   stateAllowImageChange[3]            = false;
+   stateSound[3]                       = AssaultMortarFireSound;
+   stateScript[3]                      = "onFire";
+
+   stateName[4]                        = "Reload";
+   stateSequence[4]                    = "Reload";
+   stateTimeoutValue[4]                = 1.0;
+   stateAllowImageChange[4]            = false;
+   stateTransitionOnTimeout[4]         = "Ready";
+   //stateTransitionOnNoAmmo[4]          = "NoAmmo";
+   stateWaitForTimeout[4]              = true;
+
+   stateName[5]                        = "Deactivate";
+   stateDirection[5]                   = false;
+   stateSequence[5]                    = "Activate";
+   stateTimeoutValue[5]                = 1.0;
+   stateTransitionOnLoaded[5]          = "ActivateReady";
+   stateTransitionOnTimeout[5]         = "Dead";
+
+   stateName[6]                        = "Dead";
+   stateTransitionOnLoaded[6]          = "ActivateReady";
+   stateTransitionOnTriggerDown[6]     = "DryFire";
+
+   stateName[7]                        = "DryFire";
+   stateSound[7]                       = AssaultMortarDryFireSound;
+   stateTimeoutValue[7]                = 1.0;
+   stateTransitionOnTimeout[7]         = "NoAmmo";
+
+   stateName[8]                        = "NoAmmo";
+   stateSequence[8]                    = "NoAmmo";
+   stateTransitionOnAmmo[8]            = "Reload";
+   stateTransitionOnTriggerDown[8]     = "DryFire";
+};
+
+datablock TurretImageData(AssaultTurretParam)
+{
+   mountPoint = 2;
+   shapeFile = "turret_muzzlepoint.dts";
+
+   projectile = AssaultChaingunBullet;
+   projectileType = TracerProjectile;
+
+   useCapacitor = true;
+   usesEnergy = true;
+
+   // Turret parameters
+   activationMS      = 1000;
+   deactivateDelayMS = 1500;
+   thinkTimeMS       = 200;
+   degPerSecTheta    = 500;
+   degPerSecPhi      = 500;
+
+   attackRadius      = 75;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+// Sandstorm AA Tank
+//
+
+datablock HoverVehicleData(SandstormTank) : AssaultVehicle {
+   maxDamage = 3.15;
+   destroyedLevel = 3.15;
+
+   isShielded = false;
+   rechargeRate = 1.0;
+   energyPerDamagePoint = 135;
+   maxEnergy = 400;
+   minJetEnergy = 15;
+   jetEnergyDrain = 2.0;
+   
+   cmdCategory = "Tactical";
+   cmdIcon = CMDGroundTankIcon;
+   cmdMiniIconName = "commander/MiniIcons/com_tank_grey";
+   targetNameTag = 'Sandstorm';
+   targetTypeTag = 'AA Tank';
+   sensorData = VehiclePulseSensor;
+
+   checkRadius = 5.5535;
+   observeParameters = "1 10 10";
+   runningLight[0] = TankLight1;
+   runningLight[1] = TankLight2;
+   runningLight[2] = TankLight3;
+   runningLight[3] = TankLight4;
+   shieldEffectScale = "0.9 1.0 0.6";
+   showPilotInfo = 1;
+};
+
+datablock TurretData(SandstormAAPod) : TurretDamageProfile {
+   className      = VehicleTurret;
+   catagory       = "Turrets";
+   shapeFile      = "Turret_tank_base.dts";
+   preload        = true;
+   canControl = false;
+   cmdCategory = "Tactical";
+   cmdIcon = CMDGroundTankIcon;
+   cmdMiniIconName = "commander/MiniIcons/com_tank_grey";
+   mass           = 1.0;
+
+   isSeeker     = true;
+   seekRadius   = 750;
+   maxSeekAngle = 30;
+   seekTime     = 1.0;
+   minSeekHeat  = 0.00001;
+   emap = true;
+   minTargetingDistance = 40;
+
+   maxEnergy               = 1;
+   maxDamage               = AssaultVehicle.maxDamage;
+   destroyedLevel          = AssaultVehicle.destroyedLevel;
+   repairRate              = 0;
+
+   // capacitor
+   maxCapacitorEnergy      = 200;
+   capacitorRechargeRate   = 0.45;
+
+   thetaMin = 0;
+   thetaMax = 100;
+
+   inheritEnergyFromMount = true;
+   firstPersonOnly = true;
+   useEyePoint = true;
+   numWeapons = 1;
+
+   cameraDefaultFov = 90.0;
+   cameraMinFov = 5.0;
+   cameraMaxFov = 120.0;
+
+   targetNameTag = 'Sandstorm';
+   targetTypeTag = 'Turret';
+};
+
+datablock SeekerProjectileData(SandstormTankRocket) {
    casingShapeName     = "weapon_missile_casement.dts";
    projectileShapeName = "weapon_missile_projectile.dts";
    hasDamageRadius     = true;
-   indirectDamage      = 0.75;
-   damageRadius        = 10.0;
+   indirectDamage      = 0.54;
+   damageRadius        = 12.0;
    radiusDamageType    = $DamageType::MissileTurret;
    kickBackStrength    = 500;
 
@@ -688,7 +772,7 @@ datablock SeekerProjectileData(TankRocket)
    maxVelocity         = 300.0; // z0dd - ZOD, 4/14/02. Was 80.0
    turningSpeed        = 60.0;
    acceleration        = 100.0;
-   
+
    proximityRadius     = 7;
 
    terrainAvoidanceSpeed = 40;
@@ -705,28 +789,27 @@ datablock SeekerProjectileData(TankRocket)
 // ASSAULT MORTAR CHARACTERISTICS
 //-------------------------------------
 
-datablock TurretImageData(AssaultMortarTurretBarrel)
-{
+datablock TurretImageData(SandstormTurretBarrel) {
    shapeFile = "stackable2m.dts";
    rotation = "-1 0 0 90";
    offset = "0 0.7 0";
    mountPoint = 0;
 
-   projectile = TankRocket;
+   projectile = SandstormTankRocket;
    projectileType = SeekerProjectile;
 
    usesEnergy = true;
    useMountEnergy = true;
-   fireEnergy = 50.00;
-   minEnergy = 50.00;
+   fireEnergy = 25.00;
+   minEnergy = 25.00;
    useCapacitor = true;
-
-   isSeeker = true; 
-   seekRadius = $Bomber::SeekRadius; 
-   maxSeekAngle = 30; 
-   seekTime = $Bomber::SeekTime; 
-   minSeekHeat = $Bomber::minSeekHeat; 
-   minTargetingDistance = $Bomber::minTargetingDistance; 
+   
+   isSeeker = true;
+   seekRadius = 750;
+   maxSeekAngle = 360;
+   seekTime = $Bomber::SeekTime;
+   minSeekHeat = 0.0001;
+   minTargetingDistance = $Bomber::minTargetingDistance;
    useTargetAudio = $Bomber::useTargetAudio;
 
    // Turret parameters
@@ -801,81 +884,111 @@ datablock TurretImageData(AssaultMortarTurretBarrel)
 
    stateName[9]                        = "Fire4";
    stateSequence[9]                    = "Fire";
-   stateTransitionOnTimeout[9]         = "Reload";
+   stateTransitionOnTimeout[9]         = "NextFire4";
    stateTimeoutValue[9]                = 0.5;
    stateFire[9]                        = true;
    stateRecoil[9]                      = LightRecoil;
    stateAllowImageChange[9]            = false;
    stateSound[9]                       = MissileFireSound;
    stateScript[9]                      = "onFire";
+   
+   stateName[10]                        = "NextFire4";
+   stateTransitionOnNotLoaded[10]       = "Deactivate";
+   stateTransitionOnNoAmmo[10]          = "NoAmmo";
+   stateTransitionOnTriggerDown[10]     = "Fire";
 
-   stateName[10]                        = "Reload";
-   stateSequence[10]                    = "Reload";
-   stateTimeoutValue[10]                = 8;
-   stateAllowImageChange[10]            = false;
-   stateTransitionOnTimeout[10]         = "ReloadSound";
-   stateWaitForTimeout[10]              = true;
-
-   stateName[11]                        = "ReloadSound";
-   stateTimeoutValue[11]                = 2;
+   stateName[11]                        = "Fire5";
+   stateSequence[11]                    = "Fire";
+   stateTransitionOnTimeout[11]         = "NextFire5";
+   stateTimeoutValue[11]                = 0.5;
+   stateFire[11]                        = true;
+   stateRecoil[11]                      = LightRecoil;
    stateAllowImageChange[11]            = false;
-   stateTransitionOnTimeout[11]         = "Ready";
-   stateSound[11]                       = MobileBaseStationDeploySound;
-   stateWaitForTimeout[11]              = true;
+   stateSound[11]                       = MissileFireSound;
+   stateScript[11]                      = "onFire";
 
-   stateName[12]                        = "Deactivate";
-   stateDirection[12]                   = false;
-   stateSequence[12]                    = "Activate";
-   stateTimeoutValue[12]                = 1.0;
-   stateTransitionOnLoaded[12]          = "ActivateReady";
-   stateTransitionOnTimeout[12]         = "Dead";
+   stateName[12]                        = "NextFire5";
+   stateTransitionOnNotLoaded[12]       = "Deactivate";
+   stateTransitionOnNoAmmo[12]          = "NoAmmo";
+   stateTransitionOnTriggerDown[12]     = "Fire";
+   
+   stateName[13]                        = "Fire6";
+   stateSequence[13]                    = "Fire";
+   stateTransitionOnTimeout[13]         = "NextFire6";
+   stateTimeoutValue[13]                = 0.5;
+   stateFire[13]                        = true;
+   stateRecoil[13]                      = LightRecoil;
+   stateAllowImageChange[13]            = false;
+   stateSound[13]                       = MissileFireSound;
+   stateScript[13]                      = "onFire";
 
-   stateName[13]                        = "Dead";
-   stateTransitionOnLoaded[13]          = "ActivateReady";
-   stateTransitionOnTriggerDown[13]     = "DryFire";
+   stateName[14]                        = "NextFire6";
+   stateTransitionOnNotLoaded[14]       = "Deactivate";
+   stateTransitionOnNoAmmo[14]          = "NoAmmo";
+   stateTransitionOnTriggerDown[14]     = "Fire";
+   
+   stateName[15]                        = "Fire7";
+   stateSequence[15]                    = "Fire";
+   stateTransitionOnTimeout[15]         = "NextFire7";
+   stateTimeoutValue[15]                = 0.5;
+   stateFire[15]                        = true;
+   stateRecoil[15]                      = LightRecoil;
+   stateAllowImageChange[15]            = false;
+   stateSound[15]                       = MissileFireSound;
+   stateScript[15]                      = "onFire";
 
-   stateName[14]                        = "DryFire";
-   stateSound[14]                       = AssaultMortarDryFireSound;
-   stateTimeoutValue[14]                = 1.0;
-   stateTransitionOnTimeout[14]         = "NoAmmo";
+   stateName[16]                        = "NextFire7";
+   stateTransitionOnNotLoaded[16]       = "Deactivate";
+   stateTransitionOnNoAmmo[16]          = "NoAmmo";
+   stateTransitionOnTriggerDown[16]     = "Fire";
+   
+   stateName[17]                        = "Fire8";
+   stateSequence[17]                    = "Fire";
+   stateTransitionOnTimeout[17]         = "Reload";
+   stateTimeoutValue[17]                = 0.5;
+   stateFire[17]                        = true;
+   stateRecoil[17]                      = LightRecoil;
+   stateAllowImageChange[17]            = false;
+   stateSound[17]                       = MissileFireSound;
+   stateScript[17]                      = "onFire";
 
-   stateName[15]                        = "NoAmmo";
-   stateSequence[15]                    = "NoAmmo";
-   stateTransitionOnAmmo[15]            = "Reload";
-   stateTransitionOnTriggerDown[15]     = "DryFire";
+   stateName[18]                        = "Reload";
+   stateSequence[18]                    = "Reload";
+   stateTimeoutValue[18]                = 8;
+   stateAllowImageChange[18]            = false;
+   stateTransitionOnTimeout[18]         = "ReloadSound";
+   stateWaitForTimeout[18]              = true;
+
+   stateName[19]                        = "ReloadSound";
+   stateTimeoutValue[19]                = 2;
+   stateAllowImageChange[19]            = false;
+   stateTransitionOnTimeout[19]         = "Ready";
+   stateSound[19]                       = MobileBaseStationDeploySound;
+   stateWaitForTimeout[19]              = true;
+
+   stateName[20]                        = "Deactivate";
+   stateDirection[20]                   = false;
+   stateSequence[20]                    = "Activate";
+   stateTimeoutValue[20]                = 1.0;
+   stateTransitionOnLoaded[20]          = "ActivateReady";
+   stateTransitionOnTimeout[20]         = "Dead";
+
+   stateName[21]                        = "Dead";
+   stateTransitionOnLoaded[21]          = "ActivateReady";
+   stateTransitionOnTriggerDown[21]     = "DryFire";
+
+   stateName[22]                        = "DryFire";
+   stateSound[22]                       = AssaultMortarDryFireSound;
+   stateTimeoutValue[22]                = 1.0;
+   stateTransitionOnTimeout[22]         = "NoAmmo";
+
+   stateName[23]                        = "NoAmmo";
+   stateSequence[23]                    = "NoAmmo";
+   stateTransitionOnAmmo[23]            = "Reload";
+   stateTransitionOnTriggerDown[23]     = "DryFire";
 };
 
-datablock TurretImageData(AssaultTurretParam)
-{
-   mountPoint = 2;
-   shapeFile = "turret_muzzlepoint.dts";
-
-   projectile = AssaultChaingunBullet;
-   projectileType = TracerProjectile;
-
-   useCapacitor = true;
-   usesEnergy = true;
-
-   // Turret parameters
-   activationMS      = 1000;
-   deactivateDelayMS = 1500;
-   thinkTimeMS       = 200;
-   degPerSecTheta    = 500;
-   degPerSecPhi      = 500;
-
-   isSeeker = true; 
-   seekRadius = $Bomber::SeekRadius; 
-   maxSeekAngle = 30; 
-   seekTime = $Bomber::SeekTime; 
-   minSeekHeat = $Bomber::minSeekHeat; 
-   minTargetingDistance = $Bomber::minTargetingDistance; 
-   useTargetAudio = $Bomber::useTargetAudio;
-
-   attackRadius      = 500;
-};
-
-function AssaultMortarTurretBarrel::onFire(%data,%obj,%slot) 
-{ 
+function SandstormTurretBarrel::onFire(%data,%obj,%slot) {
    %p = Parent::onFire(%data, %obj, %slot);
    MissileSet.add(%p);
 
@@ -885,44 +998,138 @@ function AssaultMortarTurretBarrel::onFire(%data,%obj,%slot)
       %target = %obj.getTargetObject();
 
    %homein = missileCheckAirTarget(%target);
-   if(%target && %homein) 
-      %p.setObjectTarget(%target); 
-   else if(%obj.isLocked()) 
-      %p.setPositionTarget(%obj.getLockedPosition()); 
-   else 
-      %p.setNoTarget(); 
+   if(%target && %homein)
+      %p.setObjectTarget(%target);
+   else if(%obj.isLocked())
+      %p.setPositionTarget(%obj.getLockedPosition());
+   else
+      %p.setNoTarget();
 }
 
-function AssaultVehicle::onEnterLiquid(%data, %obj, %coverage, %type)
-{
-   switch(%type)
-   {
-      case 0:
-         //Water
-         %obj.setHeat(0.0);
-         %obj.liquidDamage(%data, 0.1, $DamageType::Crash);
-      case 1:
-         //Ocean Water
-         %obj.setHeat(0.0);
-         %obj.liquidDamage(%data, 0.1, $DamageType::Crash);
-      case 2:
-         //River Water
-         %obj.setHeat(0.0);
-         %obj.liquidDamage(%data, 0.1, $DamageType::Crash);
-      case 3:
-         //Stagnant Water
-         %obj.setHeat(0.0);
-         %obj.liquidDamage(%data, 0.1, $DamageType::Crash);
-      case 4:
-         //Lava
-         %obj.liquidDamage(%data, $VehicleDamageLava, $DamageType::Lava);
-      case 5:
-         //Hot Lava
-         %obj.liquidDamage(%data, $VehicleDamageHotLava, $DamageType::Lava);
-      case 6:
-         //Crusty Lava
-         %obj.liquidDamage(%data, $VehicleDamageCrustyLava, $DamageType::Lava);
-      case 7:
-         //Quick Sand
+datablock ShapeBaseImageData(SandstormParam) {
+   mountPoint = 2;
+   shapeFile = "turret_muzzlepoint.dts";
+
+   projectile = SandstormTankRocket;
+   projectileType = SeekerProjectile;
+   isSeeker = true;
+   seekRadius = 750;
+   maxSeekAngle = 360;
+   seekTime = $Bomber::SeekTime;
+   minSeekHeat = 0.0001;
+   minTargetingDistance = $Bomber::minTargetingDistance;
+   useTargetAudio = $Bomber::useTargetAudio;
+};
+
+function SandstormTank::onAdd(%this, %obj) {
+   Parent::onAdd(%this, %obj);
+
+   %turret = TurretData::create(SandstormAAPod);
+   %turret.selectedWeapon = 1;
+   MissionCleanup.add(%turret);
+   %turret.team = %obj.teamBought;
+   %turret.setSelfPowered();
+   %obj.mountObject(%turret, 10);
+   %turret.mountImage(SandstormTurretBarrel, 0);
+   %turret.setCapacitorRechargeRate( %turret.getDataBlock().capacitorRechargeRate );
+   %obj.turretObject = %turret;
+
+   //vehicle turrets should not auto fire at targets
+   %turret.setAutoFire(false);
+
+   %obj.schedule(6000, "playThread", $ActivateThread, "activate");
+   %turret.mountImage(SandstormParam, 2);
+
+   // set the turret's target info
+   setTargetSensorGroup(%turret.getTarget(), %turret.team);
+   setTargetNeverVisMask(%turret.getTarget(), 0xffffffff);
+}
+
+function SandstormTank::deleteAllMounted(%data, %obj) {
+   %turret = %obj.getMountNodeObject(10);
+   if (!%turret)
+      return;
+
+   if (%client = %turret.getControllingClient()) {
+      %client.player.setControlObject(%client.player);
+      %client.player.mountImage(%client.player.lastWeapon, $WeaponSlot);
+      %client.player.mountVehicle = false;
    }
+   %turret.schedule(2000, delete);
+}
+
+function SandstormTank::playerMounted(%data, %obj, %player, %node) {
+//[[CHANGE]]
+   if (%obj.clientControl)
+       serverCmdResetControlObject(%obj.clientControl);
+
+   if (%node == 0) {
+      // driver position
+      // is there someone manning the turret?
+      //%turreteer = %obj.getMountedNodeObject(1);
+	   commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", %node);
+   }
+   else if (%node == 1) {
+      // turreteer position
+      %turret = %obj.getMountNodeObject(10);
+      %player.vehicleTurret = %turret;
+      %player.setTransform("0 0 0 0 0 1 0");
+      %player.lastWeapon = %player.getMountedImage($WeaponSlot);
+      %player.unmountImage($WeaponSlot);
+      if (!%player.client.isAIControlled())
+      {
+         %player.setControlObject(%turret);
+         %player.client.setObjectActiveImage(%turret, 2);
+      }
+      %turret.turreteer = %player;
+      // if the player is the turreteer, show vehicle's weapon icons
+      //commandToClient(%player.client, 'showVehicleWeapons', %data.getName());
+      //%player.client.setVWeaponsHudActive(1); // plasma turret icon (default)
+
+      $aWeaponActive = 0;
+      commandToClient(%player.client,'SetWeaponryVehicleKeys', true);
+      %obj.getMountNodeObject(10).selectedWeapon = 1;
+	   commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", %node);
+   }
+
+   // update observers who are following this guy...
+   if ( %player.client.observeCount > 0 )
+      resetObserveFollow( %player.client, false );
+
+   // build a space-separated string representing passengers
+   // 0 = no passenger; 1 = passenger (e.g. "1 0 ")
+   %passString = buildPassengerString(%obj);
+	// send the string of passengers to all mounted players
+	for(%i = 0; %i < %data.numMountPoints; %i++)
+		if (%obj.getMountNodeObject(%i) > 0)
+		   commandToClient(%obj.getMountNodeObject(%i).client, 'checkPassengers', %passString);
+}
+
+function SandstormAAPod::onTrigger(%data, %obj, %trigger, %state) {
+   switch (%trigger) {
+      case 0:
+         %obj.fireTrigger = %state;
+            if(%state)
+               %obj.setImageTrigger(4, true);
+            else
+               %obj.setImageTrigger(4, false);
+      case 2:
+         if(%state) {
+            %obj.getDataBlock().playerDismount(%obj);
+         }
+   }
+}
+
+function SandstormAAPod::playerDismount(%data, %obj) {
+   //Passenger Exiting
+   %obj.fireTrigger = 0;
+   %obj.setImageTrigger(2, false);
+   %obj.setImageTrigger(4, false);
+   %client = %obj.getControllingClient();
+// %client.setControlObject(%client.player);
+   %client.player.mountImage(%client.player.lastWeapon, $WeaponSlot);
+   %client.player.mountVehicle = false;
+   setTargetSensorGroup(%obj.getTarget(), 0);
+   setTargetNeverVisMask(%obj.getTarget(), 0xffffffff);
+//   %client.player.getDataBlock().doDismount(%client.player);
 }

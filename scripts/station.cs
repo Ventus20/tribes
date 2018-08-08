@@ -1,50 +1,11 @@
-// Time to hold in station
-if ($Host::StationHoldTime $= "")
-	$Host::StationHoldTime = 1600;
-
 //******************************************************************************
 //*   Station  -  Data Blocks                                                  *
 //******************************************************************************
-datablock EffectProfile(StationInventoryActivateEffect)
-{
-   effectname = "powered/inv_pad_on";
-   minDistance = 5.0;
-   maxDistance = 7.5;
-};
-
-datablock EffectProfile(StationVehicleAcitvateEffect)
-{
-   effectname = "powered/vehicle_screen_on2";
-   minDistance = 3.0;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(StationVehicleDeactivateEffect)
-{
-   effectname = "powered/vehicle_screen_off";
-   minDistance = 3.0;
-   maxDistance = 5.0;
-};
-
-//datablock EffectProfile(MobileBaseInventoryActivateEffect)
-//{
-//   effectname = "misc/diagnostic_on";
-//   minDistance = 3.0;
-//};
-
-datablock EffectProfile(StationAccessDeniedEffect)
-{
-   effectname = "powered/station_denied";
-   minDistance = 3.0;
-   maxDistance = 5.0;
-};
-
 datablock AudioProfile(StationInventoryActivateSound)
 {
    filename = 	"fx/powered/inv_pad_on.wav";
    description = AudioClose3d;
    preload = 	 true;
-   effect = StationInventoryActivateEffect;
 };
 
 datablock AudioProfile(MobileBaseInventoryActivateSound)
@@ -52,7 +13,6 @@ datablock AudioProfile(MobileBaseInventoryActivateSound)
    filename    = "fx/vehicles/mpb_inv_station.wav";
    description = AudioClose3d;
    preload = true;
-   effect = StationInventoryActivateEffect;
 };
 
 datablock AudioProfile(DepInvActivateSound)
@@ -60,7 +20,6 @@ datablock AudioProfile(DepInvActivateSound)
    filename = 	"fx/powered/dep_inv_station.wav";
    description = AudioClose3d;
    preload = 	 true;
-   effect = StationInventoryActivateEffect;
 };
 
 datablock AudioProfile(StationVehicleAcitvateSound)
@@ -68,7 +27,6 @@ datablock AudioProfile(StationVehicleAcitvateSound)
    filename    = "fx/powered/vehicle_screen_on2.wav";
    description = AudioClosest3d;
    preload = true;
-   effect = StationVehicleAcitvateEffect;
 };
 
 datablock AudioProfile(StationVehicleDeactivateSound)
@@ -76,7 +34,6 @@ datablock AudioProfile(StationVehicleDeactivateSound)
    filename    = "fx/powered/vehicle_screen_off.wav";
    description = AudioClose3d;
    preload = true;
-   effect = StationVehicleDeactivateEffect;
 };
 
 datablock AudioProfile(StationAccessDeniedSound)
@@ -84,7 +41,6 @@ datablock AudioProfile(StationAccessDeniedSound)
    filename    = "fx/powered/station_denied.wav";
    description = AudioClosest3d;
    preload = true;
-   effect = StationAccessDeniedEffect;
 };
 
 datablock AudioProfile(StationVehicleHumSound)
@@ -350,6 +306,10 @@ function StationInventory::stationReady(%data, %obj)
    // -------------------------------------------------
    // z0dd - ZOD, 4/20/02. Addition. Inv energy bug fix
    %max = %player.getDatablock().maxEnergy;
+   
+   if(%player.isZombie) {
+      return;
+   }
 
    %player.setCloaked(true);
    %player.schedule(500, "setCloaked", false);
@@ -360,9 +320,6 @@ function StationInventory::stationReady(%data, %obj)
    // z0dd - ZOD, 4/20/02. Addition. Inv energy bug fix
    //%player.setEnergyLevel(%energy);
    %player.setEnergyLevel(mFloor(%player.getDatablock().maxEnergy * %energy / %max));
-   if(%player.client.tirednightmared) {
-   %player.client.tirednightmared = 0;
-   }
 
    %data.schedule( 500, "beginPersonalInvEffect", %obj );
 }
@@ -425,10 +382,7 @@ function StationInventory::setPlayersPosition(%data, %obj, %trigger, %colObj)
 	%pos = getWord(%pos,0) @ " " @ getWord(%pos,1) @ " " @ getWord(%pos,2) + 0.8;
 	%terrain = getTerrainHeight2(%pos);
 	if (!(getWord(%pos,2) < getWord(%terrain,2) || %terrain $= "") || $Host::AllowUnderground)
-		%colObj.setTransform(%pos @ " " @ %rot);//center player on object
-      %colObj.setMoveState(true);
-      %colObj.schedule($Host::StationHoldTime,"setMoveState", false);
-      %colObj.setvelocity("0 0 0");
+		//%colObj.setTransform(%pos @ " " @ %rot);//center player on object
       return true;
    }
    return false;
@@ -524,10 +478,7 @@ function StationAmmo::setPlayersPosition(%data, %obj, %trigger, %colObj)
 	%pos = getWord(%pos,0) @ " " @ getWord(%pos,1) @ " " @ getWord(%pos,2) + 0.8;
 	%terrain = getTerrainHeight2(%pos);
 	if (!(getWord(%pos,2) < getWord(%terrain,2) || %terrain $= "") || $Host::AllowUnderground)
-		%colObj.setTransform(%pos @ " " @ %rot);//center player on object
-      %colObj.setMoveState(true);
-      %colObj.schedule($Host::StationHoldTime,"setMoveState", false);
-      %colObj.setvelocity("0 0 0");
+		//%colObj.setTransform(%pos @ " " @ %rot);//center player on object
       return true;
    }
    return false;
@@ -777,6 +728,12 @@ function StationVehiclePad::createStationVehicle(%data, %obj)
       setTargetSensorGroup(%sv.getTarget(), %obj.team);
 
    //Remove unwanted vehicles
+   removetheVehStuff(%sv, %obj);
+}
+// End z0dd - ZOD - Founder
+// -----------------------------------------------------------------------------
+
+function removetheVehStuff(%sv, %obj) {
    if(%obj.scoutVehicle !$= "Removed")
 	%sv.vehicle[scoutvehicle] = true;
    if(%obj.assaultVehicle !$= "Removed")
@@ -785,43 +742,27 @@ function StationVehiclePad::createStationVehicle(%data, %obj)
 	%sv.vehicle[mobileBasevehicle] = true;
    if(%obj.scoutFlyer !$= "Removed")
 	%sv.vehicle[scoutFlyer] = true;
-   if(%obj.AWACS !$= "Removed")
-	%sv.vehicle[AWACS] = true;
    if(%obj.bomberFlyer !$= "Removed")
 	%sv.vehicle[bomberFlyer] = true;
    if(%obj.hapcFlyer !$= "Removed")
 	%sv.vehicle[hapcFlyer] = true;
-   if(%obj.Artillery !$= "Removed")
-	%sv.vehicle[Artillery] = true;
-   if(%obj.FFTransport !$= "Removed")
-	%sv.vehicle[FFTransport] = true;
-   if(%obj.HeavyTank !$= "Removed")
-	%sv.vehicle[HeavyTank] = true;
-   if(%obj.beamflyer !$= "Removed")
-	%sv.vehicle[beamflyer] = true;
-   if(%obj.CGTank !$= "Removed")
-	%sv.vehicle[CGTank] = true;
-   if(%obj.helicopter !$= "Removed")
-	%sv.vehicle[helicopter] = true;
-   if(%obj.HeavyChopper !$= "Removed")
-	%sv.vehicle[HeavyChopper] = true;
-   if(%obj.StrikeFlyer !$= "Removed")
-	%sv.vehicle[StrikeFlyer] = true;
-   if(%obj.StormSeigeDrone !$= "Removed")
-	%sv.vehicle[StormSeigeDrone] = true;
-   if(%obj.BattleMaster !$= "Removed")
-	%sv.vehicle[BattleMaster] = true;
-   if(%obj.F56Hornet !$= "Removed")
-	%sv.vehicle[F56Hornet] = true;
-   if(%obj.gunship !$= "Removed")
-	%sv.vehicle[gunship] = true;
-   if(%obj.SuperFortVeh !$= "Removed")
-	%sv.vehicle[SuperFortVeh] = true;
    if(%obj.HarbingerGunship !$= "Removed")
 	%sv.vehicle[HarbingerGunship] = true;
+   if(%obj.CentaurVehicle !$= "Removed")
+	%sv.vehicle[CentaurVehicle] = true;
+   if(%obj.CombatHelicopter !$= "Removed")
+	%sv.vehicle[CombatHelicopter] = true;
+   if(%obj.GunshipHelicopter !$= "Removed")
+	%sv.vehicle[GunshipHelicopter] = true;
+   if(%obj.ApacheHelicopter !$= "Removed")
+	%sv.vehicle[ApacheHelicopter] = true;
+   if(%obj.Harrier !$= "Removed")
+	%sv.vehicle[Harrier] = true;
+   if(%obj.AC130 !$= "Removed")
+	%sv.vehicle[AC130] = true;
+   if(%obj.SandstormTank !$= "Removed")
+	%sv.vehicle[SandstormTank] = true;
 }
-// End z0dd - ZOD - Founder
-// -----------------------------------------------------------------------------
 
 function StationVehiclePad::onEndSequence(%data, %obj, %thread)
 {
@@ -938,10 +879,7 @@ function MobileInvStation::setPlayersPosition(%data, %obj, %trigger, %colObj)
 	%pos = getWord(%pos,0) @ " " @ getWord(%pos,1) @ " " @ getWord(%pos,2)+0.8;
 	%terrain = getTerrainHeight2(%pos);
 	if (!(getWord(%pos,2) < getWord(%terrain,2) || %terrain $= "") || $Host::AllowUnderground)
-		%colObj.setTransform(%pos @ " " @ %rot);//center player on object
-      %colObj.setMoveState(true);
-      %colObj.schedule($Host::StationHoldTime,"setMoveState", false);
-      %colObj.setvelocity("0 0 0");
+		//%colObj.setTransform(%pos @ " " @ %rot);//center player on object
       return true;
    }
    return false;
@@ -1250,10 +1188,7 @@ function DeployedStationInventory::setPlayersPosition(%data, %obj, %trigger, %co
 	%pos = getWords(%colObj.getTransform(),0,2);
 	%terrain = getTerrainHeight2(%pos);
 	if (!(getWord(%pos,2) < getWord(%terrain,2) || %terrain $= "") || $Host::AllowUnderground)
-		%colObj.setTransform( %pos @ " " @ %rot );
-      %colObj.setMoveState(true);
-      %colObj.schedule($Host::StationHoldTime,"setMoveState", false);
-      %colObj.setvelocity("0 0 0");
+		//%colObj.setTransform( %pos @ " " @ %rot );
       return true;
    }
    return false;

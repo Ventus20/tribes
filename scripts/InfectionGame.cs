@@ -8,6 +8,12 @@
 // Zombies Can Choose What Zombie To Use (Normal, Demon, Lord)
 //--- GAME RULES END ---
 
+$InvBanList[Infection, "GrappleHook"] = 1;
+
+$InfectionGame::Min2Alphas = 7;
+$InfectionGame::Min3Alphas = 10;
+$InfectionGame::Rounds = 5;
+
 // spam fix
 function InfectionGame::AIInit(%game) {
 	//call the default AIInit() function
@@ -17,6 +23,13 @@ function InfectionGame::AIInit(%game) {
 function InfectionGame::allowsProtectedStatics(%game) {
 	return true;
 }
+
+function InfectionGame::pickTeamSpawn(%game, %team) {
+   %pos = vectorAdd($InfectionGame::SpawnLocation[$CurrentMission], GetRandomPosition(5,1));
+   %pos = vectorAdd(%pos,"0 0 5");
+   return %pos;
+}
+
 
 function InfectionGame::clientMissionDropReady(%game, %client) {
     $InfectionGame::Score[%client] = 0;
@@ -77,12 +90,22 @@ function InfectionGame::startMatch(%game) {
     %game.StartTimeUntilInfect($InfectionGame::TimeTilInfect);
     DefaultGame::StartMatch(%game);
     Game.NumTeams = 1;
+    //Disable Killstreaks and Perks
+    for(%i = 0; %i < ClientGroup.getCount(); %i++) {
+       %client = ClientGroup.getObject(%i);
+       DisableAllPerkGroup(%client, 1);
+       DisableAllPerkGroup(%client, 2);
+       DisableAllPerkGroup(%client, 3);
+       %client.DisableAllKillstreaks();
+       messageClient(%client, 'msgOffline', "\c5INFECTION: All Killstreaks and Perks Disabled.");
+    }
 }
 
 function InfectionGame::TryInfectAnother(%game) {
    %selected = ClientGroup.getObject(GetRandom()*ClientGroup.getCount());
-   if($InfectionGame::IsAlpha[%selected]) {
-      %game.TryInfectAnother();
+   if($InfectionGame::IsAlpha[%selected] || %selected.team == 0) {
+      //do not pick observers or already infected
+      return %game.TryInfectAnother();
    }
    return %selected;
 }
@@ -110,7 +133,7 @@ function InfectionGame::StartTimeUntilInfect(%game, %time) {
             $InfectionGame::ClientZombie[%selected] = "Demon"; //we start them as demonz :)
             if(isObject(%selected.player)) {
                %targetlastpos = %selected.player.getworldboxcenter();
-               makePersonZombie(%targetlastpos, %selected);
+               makePersonZombie(%targetlastpos, %selected, 4);
             }
             %ZString = ""@%ZString@" "@%selected.namebase@"";
          }
@@ -133,7 +156,7 @@ function InfectionGame::StartTimeUntilInfect(%game, %time) {
             $InfectionGame::ClientZombie[%selected] = "Demon"; //we start them as demonz :)
             if(isObject(%selected.player)) {
                %targetlastpos = %selected.player.getworldboxcenter();
-               makePersonZombie(%targetlastpos, %selected);
+               makePersonZombie(%targetlastpos, %selected, 4);
             }
             %ZString = ""@%ZString@" "@%selected.namebase@"";
          }
@@ -152,7 +175,7 @@ function InfectionGame::StartTimeUntilInfect(%game, %time) {
          $InfectionGame::ClientZombie[%selected] = "Demon"; //we start them as demonz :)
          if(isObject(%selected.player)) {
             %targetlastpos = %selected.player.getworldboxcenter();
-            makePersonZombie(%targetlastpos, %selected);
+            makePersonZombie(%targetlastpos, %selected, 4);
          }
          for(%i = 0; %i < ClientGroup.getCount(); %i ++) {
 		    %client = ClientGroup.getObject(%i);
@@ -211,7 +234,7 @@ function InfectionGame::Intermission(%game) {
 function InfectionGame::onClientKilled(%game, %clVictim, %clKiller, %damageType, %implement, %damageLocation) {
    Parent::onClientKilled(%game, %clVictim, %clKiller, %damageType, %implement, %damageLocation);
    if(%clVictim !$= "") {
-      if($InfectionGame::Infected[%clKiller] || (%damageType $= $DamageType::Zombie || %damageType $= $DamageType::Suicide)) {
+      if($InfectionGame::Infected[%clKiller] || (%damageType $= $DamageType::Zombie || %damageType $= $DamageType::Suicide || %damageType $= $DamageType::FellOff)) {
          if(!$InfectionGame::Infected[%clVictim]) {
             $InfectionGame::Infected[%clVictim] = 1;
             $InfectionGame::ClientZombie[%clVictim] = "Norm";
@@ -279,98 +302,6 @@ function InfectionGame::gameOver(%game) {
 	}
 }
 
-function InfectionGame::vehicleDestroyed(%game, %vehicle, %destroyer) {
-}
-
-function InfectionGame::awardScoreVehicleDestroyed(%game, %client, %vehicleType, %mult, %passengers)  //added
-{
-    if(isDemo())
-        return 0;
-
-    if(%vehicleType $= "Interceptor") {
-        %base = %game.SCORE_PER_DESTROY_SHRIKE;
-        %XPForVKill = 10;
-        }
-    else if(%vehicleType $= "Fighter") {
-        %base = %game.SCORE_PER_DESTROY_STRIKEFIGHTER;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Assault Chopper") {
-        %base = %game.SCORE_PER_DESTROY_HELICOPTER;
-        %XPForVKill = 5;
-        }
-    else if(%vehicleType $= "AWACS") {
-        %base = %game.SCORE_PER_DESTROY_AWACS;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "Bomber") {
-        %base = %game.SCORE_PER_DESTROY_BOMBER;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Gunship") {
-        %base = %game.SCORE_PER_DESTROY_GUNSHIP;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "Transport Chopper") {
-        %base = %game.SCORE_PER_DESTROY_HEAVYHELICOPTER;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Heavy Transport") {
-        %base = %game.SCORE_PER_DESTROY_TRANSPORT;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "Grav Cycle") {
-        %base = %game.SCORE_PER_DESTROY_WILDCAT;
-        %XPForVKill = 5;
-        }
-    else if(%vehicleType $= "Light Tank") {
-        %base = %game.SCORE_PER_DESTROY_TANK;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Assault Tank") {
-        %base = %game.SCORE_PER_DESTROY_HEAVYTANK;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "chaingun tank") {
-        %base = %game.SCORE_PER_DESTROY_CGTANK;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "APC") {
-        %base = %game.SCORE_PER_DESTROY_FFTRANSPORT;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Heavy Artillery") {
-        %base = %game.SCORE_PER_DESTROY_ARTILLERY;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "MPB") {
-        %base = %game.SCORE_PER_DESTROY_MPB;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Boat") {
-        %base = %game.SCORE_PER_DESTROY_TRANSBOAT;
-        %XPForVKill = 10;
-        }
-    else if(%vehicleType $= "Submarine") {
-        %base = %game.SCORE_PER_DESTROY_SUB;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "GunBoat") {
-        %base = %game.SCORE_PER_DESTROY_BOAT;
-        %XPForVKill = 100;
-        }
-
-    %total = ( %base * %mult ) + ( %passengers * %game.SCORE_PER_PASSENGER );
-
-    %client.vehicleScore += %total;
-    %client.XP = %client.XP + %XPForVKill;
-
-     messageClient(%client, 'msgVehicleScore', '\c0You received a %1 point bonus for destroying an enemy %2.', %total, %vehicleType);
-     messageClient(%client, 'msgVehicleScore', '\c0You received %1XP for destroying an enemy %2.', %XPForVKill, %vehicleType);
-     %game.recalcScore(%client);
-    return %total;
-}
-
 function InfectionGame::leaveMissionArea(%game, %playerData, %player) {
    if(%player.getState() $= "Dead")
       return;
@@ -404,6 +335,9 @@ function InfectionGame::ResetScore(%client) {
 
 package InfectionGamePackage {
    function GameConnection::onDrop(%client, %reason) { //no changes made
+      if($InfectionGame::IsAlpha[%client]) {
+         Game.Intermission();
+      }
       parent::onDrop(%client, %reason);
    }
 };
@@ -477,3 +411,35 @@ echo("[F2] "@%client.namebase@": "@%arg1@", "@%arg2@", "@%arg3@", "@%arg4@", "@%
              return;
    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$InfectionGame::SpawnLocation["EngelamHimmel"] = "126.7 14.7 181";
+$InfectionGame::SpawnLocation["DerGott"] = "0.0299911 -3.61698 155";
+$InfectionGame::SpawnLocation["Strikers2"] = "-9.76935 149.965 105";

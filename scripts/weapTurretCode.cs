@@ -138,8 +138,7 @@ function TurretDeployedCamera::onDestroyed(%this, %obj, %prevState)
    %obj.schedule(500, "delete");
 }
 
-function fireNextGunWep2(%obj)
-{
+function fireNextGunWep2(%obj) {
    if(%obj.fireWeapon)
    {
       if(%obj.nextWeaponFire == 2)
@@ -160,14 +159,11 @@ function fireNextGunWep2(%obj)
    }
 }
 
-
 function ScoutFlyer::onTrigger(%data, %obj, %trigger, %state)
 {
    %player = %obj.getMountNodeObject(0);
-   if(%trigger == 0)
-   {
-      switch (%state) 
-	{
+   if(%trigger == 0) {
+      switch (%state) {
          case 0:
             %obj.fireWeapon = false;
             %obj.setImageTrigger(2, false);
@@ -176,32 +172,27 @@ function ScoutFlyer::onTrigger(%data, %obj, %trigger, %state)
             %obj.setImageTrigger(5, false);
          case 1:
             %obj.fireWeapon = true;
-            if(%obj.selectedWeapon == 1)
-		{
-               if(%obj.nextWeaponFire == 2) 
-		   {
+            if(%obj.selectedWeapon == 1) {
+               if(%obj.nextWeaponFire == 2) {
                   %obj.setImageTrigger(2, true);
                   %obj.setImageTrigger(3, false);
                }
-               else 
-		   {
+               else {
                   %obj.setImageTrigger(2, false);
                   %obj.setImageTrigger(3, true);
                }
-      	}
-            else if(%obj.selectedWeapon == 2) 
-            {
-            %obj.setImageTrigger(2, false);
-            %obj.setImageTrigger(3, false);
-            %obj.setImageTrigger(4, true);
-            %obj.setImageTrigger(5, false);
+   	        }
+            else if(%obj.selectedWeapon == 2) {
+               %obj.setImageTrigger(2, false);
+               %obj.setImageTrigger(3, false);
+               %obj.setImageTrigger(4, true);
+               %obj.setImageTrigger(5, false);
             }
-            else  
-            {
-            %obj.setImageTrigger(2, false);
-            %obj.setImageTrigger(3, false);
-            %obj.setImageTrigger(4, false);
-            %obj.setImageTrigger(5, true);
+            else {
+               %obj.setImageTrigger(2, false);
+               %obj.setImageTrigger(3, false);
+               %obj.setImageTrigger(4, false);
+               %obj.setImageTrigger(5, true);
             }
       }
    }
@@ -228,7 +219,7 @@ function ScoutChaingunImage::onFire(%data,%obj,%slot)
    Parent::onFire(%data, %obj, %slot);
    if(isObject(%obj.getMountNodeObject(0)))
       %obj.getMountNodeObject(0).decInventory(%data.ammo, 1);
-   MissileSet.add(%p); 
+   MissileSet.add(%p);
    %obj.nextWeaponFire = 3;
    schedule(%data.fireTimeout, 0, "fireNextGun", %obj);
 }
@@ -242,7 +233,7 @@ function ScoutChaingunPairImage::onFire(%data,%obj,%slot)
    Parent::onFire(%data, %obj, %slot);
    if(isObject(%obj.getMountNodeObject(0)))
       %obj.getMountNodeObject(0).decInventory(%data.ammo, 1);
-   MissileSet.add(%p); 
+   MissileSet.add(%p);
    %obj.nextWeaponFire = 2;
    schedule(%data.fireTimeout, 0, "fireNextGun", %obj);
 }
@@ -303,7 +294,11 @@ function BomberTurret::onTrigger(%data, %obj, %trigger, %state)
          if(%obj.selectedWeapon == 1)
          {
             %obj.setImageTrigger(4, false);
-            %obj.setImageTrigger(6, false);
+            if(%obj.getImageTrigger(6))
+            {
+               %obj.setImageTrigger(6, false);
+               ShapeBaseImageData::deconstruct(%obj.getMountedImage(6), %obj);
+            }
             if(%state)
                %obj.setImageTrigger(2, true);
             else
@@ -312,7 +307,11 @@ function BomberTurret::onTrigger(%data, %obj, %trigger, %state)
          else if(%obj.selectedWeapon == 2)
          {
             %obj.setImageTrigger(2, false);
-            %obj.setImageTrigger(6, false);
+            if(%obj.getImageTrigger(6))
+            {
+               %obj.setImageTrigger(6, false);
+               ShapeBaseImageData::deconstruct(%obj.getMountedImage(6), %obj);
+            }
             if(%state)
                %obj.setImageTrigger(4, true);
             else
@@ -325,7 +324,10 @@ function BomberTurret::onTrigger(%data, %obj, %trigger, %state)
             if(%state)
                %obj.setImageTrigger(6, true);
             else
-               %obj.setImageTrigger(6, false);                 
+            {
+               %obj.setImageTrigger(6, false);
+               BomberTargetingImage::deconstruct(%obj.getMountedImage(6), %obj);
+            }                   
          }
 
       case 2:
@@ -342,7 +344,11 @@ function BomberTurret::playerDismount(%data, %obj)
    %obj.fireTrigger = 0;
    %obj.setImageTrigger(2, false);
    %obj.setImageTrigger(4, false);
-   %obj.setImageTrigger(6, false);
+   if(%obj.getImageTrigger(6))
+   {
+      %obj.setImageTrigger(6, false);
+      ShapeBaseImageData::deconstruct(%obj.getMountedImage(6), %obj);
+   }
    %client = %obj.getControllingClient();
    %client.player.isBomber = false;
    commandToClient(%client, 'endBomberSight');
@@ -520,83 +526,6 @@ function AssaultPlasmaTurret::playerDismount(%data, %obj)
 //      return 3;
 //}
 
-function TankTurret::onDamage(%data, %obj)
-{
-   %newDamageVal = %obj.getDamageLevel();
-   if(%obj.lastDamageVal !$= "")
-      if(isObject(%obj.getObjectMount()) && %obj.lastDamageVal > %newDamageVal)   
-         %obj.getObjectMount().setDamageLevel(%newDamageVal);
-   %obj.lastDamageVal = %newDamageVal;
-}
-
-function TankTurret::onTrigger(%data, %obj, %trigger, %state)
-{
-   switch (%trigger) {
-      case 0:
-         %obj.fireTrigger = %state;
-         if(%obj.selectedWeapon == 1)
-         {
-            %obj.setImageTrigger(4, false);
-            if(%state)
-               %obj.setImageTrigger(2, true);
-            else
-               %obj.setImageTrigger(2, false);
-         }                       
-         else
-         {
-            %obj.setImageTrigger(2, false);
-            if(%state)
-               %obj.setImageTrigger(4, true);
-            else           
-               %obj.setImageTrigger(4, false);
-         } 
-      case 2:
-         if(%state) 
-         {
-            %obj.getDataBlock().playerDismount(%obj);
-         }
-   }
-   if(%trigger == 5)
-   {
-    if(%obj.selectedWeapon == 2){
-	switch (%state){
-	 case 1:
-	   if(%obj.Firetype == 2){
-	      %obj.Firetype = 1;
-		%Type = "Artillery Shells";
-	   }
-	   else{
-	      %obj.Firetype = 2;
-		%Type = "Anti Tank Shells";
-	   }
-   	   bottomPrint(%obj.getControllingClient(), "Main cannon set to fire "@%Type@".", 5, 2 );
-	}
-    }
-   }
-   else if (%trigger == 3){
-      if(%state)
-         %obj.setImageTrigger(3, true);
-      else           
-         %obj.setImageTrigger(3, false);
-   }
-}
-
-function TankTurret::playerDismount(%data, %obj)
-{
-   //Passenger Exiting
-   %obj.fireTrigger = 0;
-   %obj.setImageTrigger(2, false);
-   %obj.setImageTrigger(3, false);
-   %obj.setImageTrigger(4, false);
-   %client = %obj.getControllingClient();
-// %client.setControlObject(%client.player);
-   %client.player.mountImage(%client.player.lastWeapon, $WeaponSlot);
-   %client.player.mountVehicle = false;
-   setTargetSensorGroup(%obj.getTarget(), 0);
-   setTargetNeverVisMask(%obj.getTarget(), 0xffffffff);
-//   %client.player.getDataBlock().doDismount(%client.player);
-}
-
 
 // ------------------------------------------
 // camera functions
@@ -732,8 +661,7 @@ function FlareGrenade::onUse(%this, %obj)
 //   return(false);
 //}
 
-function GrenadeThrown::onThrow(%this, %gren)
-{
+function GrenadeThrown::onThrow(%this, %gren) {
    AIGrenadeThrown(%gren);
    %gren.detThread = schedule(1500, %gren, "detonateGrenade", %gren);
 }
@@ -759,29 +687,36 @@ function ConcussionGrenadeThrown::onThrow(%this, %gren)
 function detonateGrenade(%obj) {
    %obj.setDamageState(Destroyed);
    %data = %obj.getDataBlock();
-   RadiusExplosion( %obj, %obj.getPosition(), %data.damageRadius, %data.indirectDamage, 
+   RadiusExplosion( %obj, %obj.getPosition(), %data.damageRadius, %data.indirectDamage,
                    %data.kickBackStrength, %obj.sourceObject, %data.radiusDamageType);
-   if(%data.hasShrapnel == 1){
-	%startSpreadLevel = %data.minShrapnelSpread / 180;
-	%shrapnelSpread = (%data.maxShrapnelSpread / 180) - (%data.minShrapnelSpread / 180);
-	%pos = %obj.getPosition();
-	%vector = "0 0 1";
-	for(%i = 0; %i < %data.shrapnelNumber; %i++){
+   //Credit To Dondelium_X, CCM
+   if(%data.hasShrapnel == 1) {
+      %startSpreadLevel = %data.minShrapnelSpread / 180;
+	  %shrapnelSpread = (%data.maxShrapnelSpread / 180) - (%data.minShrapnelSpread / 180);
+	  %pos = %obj.getPosition();
+	  %vector = "0 0 1";
+	  for(%i = 0; %i < %data.shrapnelNumber; %i++) {
          %x = (getRandom() - 0.5) * 2 * 3.1415926 * %shrapnelSpread;
-		if(%x < 0)
-		   %x = %x - %startSpreadLevel;
-		else
-		   %x = %x + %startSpreadLevel;
+		 if(%x < 0) {
+		    %x = %x - %startSpreadLevel;
+         }
+		 else {
+		    %x = %x + %startSpreadLevel;
+         }
          %y = (getRandom() - 0.5) * 2 * 3.1415926 * %shrapnelSpread;
-		if(%y < 0)
-		   %y = %y - %startSpreadLevel;
-		else
-		   %y = %y + %startSpreadLevel;
+		 if(%y < 0) {
+		    %y = %y - %startSpreadLevel;
+         }
+		 else {
+		    %y = %y + %startSpreadLevel;
+         }
          %z = (getRandom() - 0.5) * 2 * 3.1415926 * %shrapnelSpread;
-		if(%z < 0)
-		   %z = %z - %startSpreadLevel;
-		else
-		   %z = %z + %startSpreadLevel;
+		 if(%z < 0) {
+		    %z = %z - %startSpreadLevel;
+         }
+		else {
+		    %z = %z + %startSpreadLevel;
+         }
          %mat = MatrixCreateFromEuler(%x @ " " @ %y @ " " @ %z);
          %newvector = MatrixMulVector(%mat, %vector);
          %p = new (%data.shrapnelProjectileType)(){
@@ -789,9 +724,9 @@ function detonateGrenade(%obj) {
             initialDirection = %newvector;
             initialPosition  = %pos;
             sourceObject     = %obj.sourceObject; //was %obj.sourceObject
-		damageFactor	 = 1;
+		    damageFactor	 = 1;
          };
-	}
+      }
    }
    %obj.schedule(500,"delete");
 }
@@ -870,7 +805,6 @@ function detonateFlashGrenade(%hg)
 			}
 		
       %whiteoutVal = %prevWhiteOut + %totalFactor;
-	%whiteoutVal = %whiteoutVal * 1.8;
       if(%whiteoutVal > %maxWhiteout)
       {
         //error("whitout at max");
@@ -888,26 +822,6 @@ function detonateFlashGrenade(%hg)
 
 
 function MineDeployed::onThrow(%this, %mine, %thrower)
-{
-   %mine.armed = false;
-   %mine.damaged = 0;
-   %mine.detonated = false;
-   %mine.depCount = 0;
-   %mine.theClient = %thrower.client;
-   schedule(1500, %mine, "deployMineCheck", %mine, %thrower);
-}
-
-function ZapMineDeployed::onThrow(%this, %mine, %thrower)
-{
-   %mine.armed = false;
-   %mine.damaged = 0;
-   %mine.detonated = false;
-   %mine.depCount = 0;
-   %mine.theClient = %thrower.client;
-   schedule(1500, %mine, "deployMineCheck", %mine, %thrower);
-}
-
-function CrispMineDeployed::onThrow(%this, %mine, %thrower)
 {
    %mine.armed = false;
    %mine.damaged = 0;
@@ -1006,12 +920,6 @@ function mineCheckVicinity(%mine)
       schedule(300, %mine, "mineCheckVicinity", %mine);
 }
 
-function explodeMine(%mo, %noDamage)
-{
-   %mo.noDamage = %noDamage;
-   %mo.setDamageState(Destroyed);
-}
-
 function MineDeployed::onCollision(%data, %obj, %col)
 {
    // don't detonate if mine isn't armed yet
@@ -1029,6 +937,12 @@ function MineDeployed::onCollision(%data, %obj, %col)
       //error("Mine detonated due to collision with #"@%col@" ("@%struck@"); armed = "@%obj.armed);
       explodeMine(%obj, false);
    }
+}
+
+function explodeMine(%mo, %noDamage)
+{
+   %mo.noDamage = %noDamage;
+   %mo.setDamageState(Destroyed);
 }
 
 function MineDeployed::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType)
@@ -1059,110 +973,6 @@ function MineDeployed::onDestroyed(%data, %obj, %lastState)
    // vicinity if there's a "mine overload", so apply no damage/impulse if true
    if(!%obj.noDamage)
       RadiusExplosion(%obj, %obj.getPosition(), %data.damageRadius, %data.indirectDamage, 
-                      %data.kickBackStrength, %obj.sourceObject, %data.radiusDamageType);
-
-   %obj.schedule(600, "delete");
-}
-
-function ZapMineDeployed::onCollision(%data, %obj, %col)
-{
-   // don't detonate if mine isn't armed yet
-   if(!%obj.armed)
-      return;
-
-   // don't detonate if mine is already detonating
-   if(%obj.boom)
-      return;
-
-   //check to see what it is that collided with the mine
-   %struck = %col.getClassName();
-   if(%struck $= "Player" || %struck $= "WheeledVehicle" || %struck $= "FlyingVehicle")
-   {
-      //error("Mine detonated due to collision with #"@%col@" ("@%struck@"); armed = "@%obj.armed);
-      explodeMine(%obj, false);
-   }
-}
-
-function ZapMineDeployed::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType)
-{
-   if(!%targetObject.armed)
-      return;
-
-   if(%targetObject.boom)
-      return;
-
-   %targetObject.damaged += %amount;
-
-   if(%targetObject.damaged >= %data.maxDamage)
-   {
-      %targetObject.setDamageState(Destroyed);
-   }
-}
-
-function ZapMineDeployed::onDestroyed(%data, %obj, %lastState)
-{
-	if (%obj.isRemoved)
-		return;
-	%obj.isRemoved = true;
-   %obj.boom = true;
-   %mineTeam = %obj.team;
-   $TeamDeployedCount[%mineTeam, ZapMineDeployed]--;
-   // %noDamage is a boolean flag -- don't want to set off all other mines in
-   // vicinity if there's a "mine overload", so apply no damage/impulse if true
-   if(!%obj.noDamage)
-      RadiusExplosion(%obj, %obj.getPosition(), %data.damageRadius, %data.indirectDamage,
-                      %data.kickBackStrength, %obj.sourceObject, %data.radiusDamageType);
-
-   %obj.schedule(600, "delete");
-}
-
-function CrispMineDeployed::onCollision(%data, %obj, %col)
-{
-   // don't detonate if mine isn't armed yet
-   if(!%obj.armed)
-      return;
-
-   // don't detonate if mine is already detonating
-   if(%obj.boom)
-      return;
-
-   //check to see what it is that collided with the mine
-   %struck = %col.getClassName();
-   if(%struck $= "Player" || %struck $= "WheeledVehicle" || %struck $= "FlyingVehicle")
-   {
-      //error("Mine detonated due to collision with #"@%col@" ("@%struck@"); armed = "@%obj.armed);
-      explodeMine(%obj, false);
-   }
-}
-
-function CrispMineDeployed::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType)
-{
-   if(!%targetObject.armed)
-      return;
-
-   if(%targetObject.boom)
-      return;
-
-   %targetObject.damaged += %amount;
-
-   if(%targetObject.damaged >= %data.maxDamage)
-   {
-      %targetObject.setDamageState(Destroyed);
-   }
-}
-
-function CrispMineDeployed::onDestroyed(%data, %obj, %lastState)
-{
-	if (%obj.isRemoved)
-		return;
-	%obj.isRemoved = true;
-   %obj.boom = true;
-   %mineTeam = %obj.team;
-   $TeamDeployedCount[%mineTeam, MineDeployed]--;
-   // %noDamage is a boolean flag -- don't want to set off all other mines in
-   // vicinity if there's a "mine overload", so apply no damage/impulse if true
-   if(!%obj.noDamage)
-      RadiusExplosion(%obj, %obj.getPosition(), %data.damageRadius, %data.indirectDamage,
                       %data.kickBackStrength, %obj.sourceObject, %data.radiusDamageType);
 
    %obj.schedule(600, "delete");

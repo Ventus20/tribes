@@ -213,7 +213,7 @@ $SaveTime::TimeLeft[%cl.guid, "Save"]--;
 if($SaveTime::TimeLeft[%cl.guid, "Save"] == 0) {
 %cl.cantSave = 0;
 echo(""@%cl.namebase@" Can save again");
-MessageClient(%cl,'Allow',"\c1From Cynthia: You may now save another building.");
+MessageClient(%cl,'Allow',"\c1From "@$ChatBot::Name@": You may now save another building.");
 return;
 }
 schedule(1000,0,"ResetSave",%cl);
@@ -224,7 +224,7 @@ $SaveTime::TimeLeft[%cl.guid, "Load"]--;
 if($SaveTime::TimeLeft[%cl.guid, "Load"] == 0) {
 %cl.cantLoad = 0;
 echo(""@%cl.namebase@" Can load again");
-MessageClient(%cl,'Allow',"\c1From Cynthia: You may now load another building.");
+MessageClient(%cl,'Allow',"\c1From "@$ChatBot::Name@": You may now load another building.");
 return;
 }
 schedule(1000,0,"ResetLoad",%cl);
@@ -368,6 +368,30 @@ function writeBuildingComponent(%obj,%file, %cl) {
   	    if (%obj.set2 !$= "") %buildingPiece = %buildingPiece @ "set2 = \"" @ %obj.set2 @ "\";";
         if (%obj.packBlock !$= "") %buildingPiece = %buildingPiece @ "packBlock = \"" @ %obj.packBlock @ "\";";
         if (%obj.emitterBlock !$= "") %buildingPiece = %buildingPiece @ "emitterBlock = \"" @ %obj.emitterBlock @ "\";";
+		if (%obj.nametoset !$= "") %buildingPiece = %buildingPiece @ "nametoset = \"" @ %obj.nametoset @ "\";";
+		if (%obj.SwitchTimer !$= "") %buildingPiece = %buildingPiece @ "SwitchTimer = \"" @ %obj.SwitchTimer @ "\";";
+
+
+        //DOORS
+	    if (%obj.cankill !$= "") %buildingPiece = %buildingPiece @ "cankill = \"" @ %obj.cankill @ "\";";
+        if (%obj.canmove !$= "") %buildingPiece = %buildingPiece @ "canmove = "@%obj.canmove@";";
+        if (%obj.savedclosedscale !$= "") %buildingPiece = %buildingPiece @ "closedscale = \"" @ %obj.savedclosedscale @ "\";";
+        if (%obj.Collision !$= "") %buildingPiece = %buildingPiece @ "Collision = "@%obj.Collision@";";
+        if (%obj.hasslided !$= "") %buildingPiece = %buildingPiece @ "hasslided = \"" @ %obj.hasslided @ "\";";
+        if (%obj.isdoor !$= "") %buildingPiece = %buildingPiece @ "isdoor = \"" @ %obj.isdoor @ "\";";
+        if (%obj.issliding !$= "") %buildingPiece = %buildingPiece @ "issliding = \"" @ %obj.issliding @ "\";";
+        if (%obj.lv !$= "") %buildingPiece = %buildingPiece @ "lv = \"" @ %obj.lv @ "\";";
+        if (%obj.moving !$= "") %buildingPiece = %buildingPiece @ "moving = \"" @ %obj.moving @ "\";";
+        if (%obj.savedopenedscale !$= "") %buildingPiece = %buildingPiece @ "openedscale = \"" @ %obj.savedopenedscale @ "\";";
+        if (%obj.powercontrol !$= "") %buildingPiece = %buildingPiece @ "powercontrol = \"" @ %obj.powercontrol @ "\";";
+        if (%obj.prevscale !$= "") %buildingPiece = %buildingPiece @ "prevscale = \"" @ %obj.prevscale @ "\";";
+        if (%obj.state !$= "") %buildingPiece = %buildingPiece @ "state = \"" @ %obj.state @ "\";";
+        if (%obj.timeout !$= "") %buildingPiece = %buildingPiece @ "timeout = \"" @ %obj.timeout @ "\";";
+        if (%obj.toggletype !$= "") %buildingPiece = %buildingPiece @ "toggletype = \"" @ %obj.toggletype @ "\";";
+        //
+
+
+
 
 		if (%dataBlockName $= "TelePadDeployedBase") {
 			if (%obj.frequency !$= "") %buildingPiece = %buildingPiece @ "frequency = \"" @ %obj.frequency @ "\";";
@@ -377,26 +401,14 @@ function writeBuildingComponent(%obj,%file, %cl) {
 		if (%dataBlockName $= "SpawnPointDeployedBase") {
 		   if (%obj.ispersonal !$= "") %buildingPiece = %buildingPiece @ "ispersonal = \"" @ %obj.ispersonal @ "\";";
 		}
-  
+
 		if (%dataBlockName $= "DeployedCardPack") {
 		   if (%obj.NameHolder !$= "") %buildingPiece = %buildingPiece @ "NameHolder = \"" @ %obj.NameHolder @ "\";";
 		   if (%obj.GUIDHolder !$= "") %buildingPiece = %buildingPiece @ "GUIDHolder = \"" @ %obj.GUIDHolder @ "\";";
 		   if (%obj.cardColor !$= "") %buildingPiece = %buildingPiece @ "cardColor = \"" @ %obj.cardColor @ "\";";
 		   if (%obj.CardSetting !$= "") %buildingPiece = %buildingPiece @ "CardSetting = \"" @ %obj.CardSetting @ "\";";
 		}
-  
-		if (%dataBlockName $= "DeployedDoor"){
-		   if (%obj.cankill !$= "") %buildingPiece = %buildingPiece @ "cankill = \"" @ %obj.cankill @ "\";";
-		   if (%obj.hasslided !$= "") %buildingPiece = %buildingPiece @ "hasslided = \"" @ %obj.hasslided @ "\";";
-		   if (%obj.toggletype !$= "") %buildingPiece = %buildingPiece @ "toggletype = \"" @ %obj.toggletype @ "\";";
-		   if (%obj.powercontrol !$= "") %buildingPiece = %buildingPiece @ "powercontrol = \"" @ %obj.powercontrol @ "\";";
-		   if (%obj.Collision !$= "") %buildingPiece = %buildingPiece @ "Collision = \"" @ %obj.Collision @ "\";";
-		   if (%obj.lv !$= "") %buildingPiece = %buildingPiece @ "lv = \"" @ %obj.lv @ "\";";
-		   if (%obj.canmove !$= "") %buildingPiece = %buildingPiece @ "canmove = \"" @ %obj.canmove @ "\";";
-		   if (%obj.closedscale !$= "") %buildingPiece = %buildingPiece @ "closedscale = \"" @ %obj.closedscale @ "\";";
-		   if (%obj.openedscale !$= "") %buildingPiece = %buildingPiece @ "openedscale = \"" @ %obj.openedscale @ "\";";
-		   if (%obj.isdoor !$= "") %buildingPiece = %buildingPiece @ "isdoor = \"" @ %obj.isdoor @ "\";";
-		}
+
 		if (%dataBlockName $= "DeployedZSpawnBase"){
 			if (%obj.ZType != "") %buildingPiece = %buildingPiece @ "ZType = \"" @ %obj.ZType@ "\";";
 			if (%obj.spawnTypeset != "") %buildingPiece = %buildingPiece @ "spawnTypeset = \"" @ %obj.spawnTypeset@ "\";";
@@ -411,8 +423,20 @@ function writeBuildingComponent(%obj,%file, %cl) {
 				%buildingPiece = %buildingPiece @ "initialBarrel = \"" @ %barrel.getName() @ "\";";
 		}
 		%buildingPiece = %buildingPiece @ "};";
-		if (%obj.getTarget() != -1) %buildingPiece = %buildingPiece @ "setTargetSensorGroup(%building.getTarget()," @ mAbs(%obj.team) @ ");";
+		if (%obj.getTarget() != -1)
+           %buildingPiece = %buildingPiece @ "setTargetSensorGroup(%building.getTarget()," @ mAbs(%obj.team) @ ");";
+
+        if (%obj.nametoset !$= "") {
+           %buildingPiece = %buildingPiece @ "setTargetName(%building.getTarget(), addTaggedString(%building.nametoset));";
+        }
+        
+        if(%obj.cloaked) {
+           %buildingPiece = %buildingPiece @ "%building.setCloaked(true);";
+        }
+
 		%buildingPiece = %buildingPiece @ "addToDeployGroup(%building);";
+        %buildingPiece = %buildingPiece @ "checkPowerObject(%building);";
+        
 		if (%obj.noSlow !$= "") %buildingPiece = %buildingPiece @ "%building.pzone.delete();%building.pzone = \"\";";
 		if (%dataBlockName $= "DeployedEnergizer" || %dataBlockName $= "DeployedStationInventory" || %dataBlockName $= "StationInventory"
 		|| %dataBlockName $= "TurretDeployedFloorIndoor" || %dataBlockName $= "TurretDeployedWallIndoor" || %dataBlockName $= "TurretDeployedCeilingIndoor"
@@ -427,9 +451,9 @@ function writeBuildingComponent(%obj,%file, %cl) {
 			%buildingPiece = %buildingPiece @ "%building.setRechargeRate(%building.getDatablock().rechargeRate);";
 		if (%obj.getDataBlock().className $= "Generator" || %obj.getDataBlock().className $= "Switch") {
 			if (%obj.isSwitchedOff)
-				%buildingPiece = %buildingPiece @ "setTargetName(%building.target,addTaggedString(\"Disabled Frequency\" SPC %building.powerFreq));";
+				%buildingPiece = %buildingPiece @ "setTargetName(%building.target,addTaggedString(\"\c9[OFF] \c6"@CollapseEscape(%building.nametoset)@" Frequency\" SPC %obj.powerFreq));";
 			else
-				%buildingPiece = %buildingPiece @ "setTargetName(%building.target,addTaggedString(\"Frequency\" SPC %building.powerFreq));";
+				%buildingPiece = %buildingPiece @ "setTargetName(%building.target,addTaggedString(\"\c9[ON] \c6"@CollapseEscape(%building.nametoset)@" Frequency\" SPC %obj.powerFreq));";
 			if (%dataBlockName $= "DeployedSwitch")
 				%buildingPiece = %buildingPiece @ "setTargetSkin(%building.target,'" @ getTaggedString(getTargetSkin(%obj.target)) @ "');";
 				if (!%obj.isSwitchedOff)

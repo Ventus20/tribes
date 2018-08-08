@@ -65,32 +65,17 @@ $BackpackSlot = 2;
 $FlagSlot = 3;
 
 //----------------------------------------------------------------------------
-datablock EffectProfile(ItemPickupEffect)
-{
-    effectname = "packs/packs.pickupPack";
-    minDistance = 2.5;
-};
-
 datablock AudioProfile(ItemPickupSound)
 {
    filename = "fx/packs/packs.pickuppack.wav";
    description = AudioClosest3d;
-   effect = ItemPickupEffect;
    preload = true;
-};
-
-datablock EffectProfile(ItemThrowEffect)
-{
-   effectname = "packs/packs.throwpack";
-   minDistance = 2.5;
-	maxDistance = 2.5;
 };
 
 datablock AudioProfile(ItemThrowSound)
 {
    filename = "fx/packs/packs.throwpack.wav";
    description = AudioClosest3d;
-   effect = ItemThrowEffect;
    preload = true;
 };
 
@@ -378,7 +363,7 @@ datablock ItemData(Flag)
 {
    catagory = "Objectives";
    shapefile = "flag.dts";
-   mass = 55;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 3;
@@ -464,7 +449,7 @@ datablock ItemData(HuntersFlag1)
    className = HuntersFlag;
 
    shapefile = "Huntersflag.dts";
-   mass = 75;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 3;
@@ -522,7 +507,7 @@ datablock ItemData(Nexus)
 {
    catagory = "Objectives";
    shapefile = "nexus_effect.dts";
-   mass = 10;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 2;
@@ -695,8 +680,24 @@ function DeployedBeacon::onDestroyed(%data, %obj, %prevState)
    %obj.schedule(500, delete);
 }
 
-function Beacon::onUse(%data, %obj)
-{
+function Beacon::onUse(%data, %obj) {
+   if(%obj.getMountedImage($WeaponSlot) !$= "") {
+      %WImg = %obj.getMountedImage($WeaponSlot);
+      AttemptReload(%WImg, %obj, $WeaponSlot);
+   }
+   
+   //AIR BRAKE BEACON
+   //
+   if(%obj.client.IsActivePerk("Wind Brake Beacon")) {
+      if(%obj.AirBrakes > 0) {
+         messageClient(%obj.client, 'MsgBrakeUsed', "\c2Wind Break Beacon Used, "@%obj.AirBrakes - 1@" Remain.");
+         %obj.setVelocity("0 0 1");
+         %obj.AirBrakes--;
+      }
+   }
+   //
+   
+   
    // look for 3 meters along player's viewpoint for interior or terrain
    %searchRange = 3.0;
    %mask = $TypeMasks::TerrainObjectType | $TypeMasks::InteriorObjectType | $TypeMasks::StaticShapeObjectType | $TypeMasks::ForceFieldObjectType;
@@ -715,76 +716,12 @@ function Beacon::onUse(%data, %obj)
    %searchResult = containerRayCast(%eyePos, %eyeEnd, %mask, 0);
    if(!%searchResult) {
 	// no terrain/interior collision within search range
-    if(%obj.getMountedImage($WeaponSlot) == 0) {
-       %changed = cyclePackSetting(%obj,1);
-       if (!%changed) {
-	      if(%obj.inv[%data.getName()] > 0)
-	         messageClient(%plyr.client, 'MsgBeaconNoSurface', '\c2Cannot place beacon. Too far from surface.');
-	   }
-	   return %changed;
-    }
-    else {
-	   %currentWeap = %obj.getMountedImage($WeaponSlot).item.getName();
-	   if (%currentWeap $= Shotgun) {
-   	      if (%obj.inv[ShotgunAmmo] <= 4) {
-   	         if (%obj.inv[ShotgunAmmo] >= 1) {
-   	            SGCheckforclip(%obj);
-   		     if (%obj.inv[ShotgunClip] > 0)
-   		        %obj.setInventory(ShotgunAmmo, 0);
-	         }
-	      }
-	   }
-	   else if (%currentWeap $= RShotgun) {
-   	      if (%obj.inv[RShotgunAmmo] <= 24) {
-   	         if (%obj.inv[RShotgunAmmo] >= 1) {
-   	            RSGCheckforclip(%obj);
-             if (%obj.inv[RShotgunClip] > 0)
-   		        %obj.setInventory(RShotgunAmmo, 0);
-	         }
-	      }
-	   }
-	   else if (%currentWeap $= MG42) {
-   	      if (%obj.inv[MG42Ammo] <= 100) {
-   	         if (%obj.inv[MG42Ammo] >= 1) {
-   	            MG42Checkforclip(%obj);
-   		     if (%obj.inv[MG42clip] > 0)
-   		        %obj.setInventory(MG42Ammo, 0);
-	         }
-	      }
-	   }
-       else {
-          if(%obj.getMountedImage($WeaponSlot) == 0) {
-             %changed = cyclePackSetting(%obj,1);
-             if (!%changed) {
-                if(%obj.inv[%data.getName()] > 0)
-	               messageClient(%plyr.client, 'MsgBeaconNoSurface', '\c2Cannot place beacon. Too far from surface.');
-	         }
-	         return %changed;
-          }
-          else {
-              %currentWeap = %obj.getMountedImage($WeaponSlot).getName(); // !!!NOTE!!! Changed for image instead of actual weapon. !!!NOTE!!!
-    	      if(%currentWeap $= "KriegRifleImage" || %currentWeap $= "LSMGImage" || %currentWeap $= "HRPChaingunImage" || %currentWeap $= "RPChaingunImage") {
-    	         // Make it so you can't waste clips.
-       	         if (%obj.getInventory(%currentWeap.ammo) < %obj.maxInventory(%currentWeap.ammo)) {
-    	            // Make it so you can't waste clips while reloading.
-       	            if (%obj.getInventory(%currentWeap.ammo) > 0) {
-         	            %obj.getMountedImage($WeaponSlot).checkForClip(%obj);
-    	               %obj.setInventory(%currentWeap.ammo, 0);
-    	            }
-    	         }
-    	      }
-    	      else {
-    	         %changed = cyclePackSetting(%obj,1);
-     	         if (!%changed) {
-    	            if(%obj.inv[%data.getName()] > 0)
-    	               messageClient(%plyr.client, 'MsgBeaconNoSurface', '\c2Cannot place beacon. Too far from surface.');
-    	         }
-    	         return %changed;
-    	      }
-          }
-       }
+	%changed = cyclePackSetting(%obj,1);
+	if (!%changed) {
+		if(%obj.inv[%data.getName()] > 0)
+			messageClient(%plyr.client, 'MsgBeaconNoSurface', '\c2Cannot place beacon. Too far from surface.');
 	}
-	return 0;
+	return %changed;
    }
    else
    {
@@ -1069,25 +1006,15 @@ function cyclePackSetting(%plyr,%val) {
 		bottomPrint(%plyr.client,"Missile Rack set to " @ %line ,2,1);
 		%changed = true;
 	}
-      else if (%plyr.hasZspawn) {
-	   %plyr.packSet = %plyr.packSet + %val;
-	   if (%plyr.packSet > $packSettings["ZSpawn"])
-		%plyr.packSet = 0;
-	   if (%plyr.packSet < 0)
-		%plyr.packSet = $packSettings["ZSpawn"];
-	   %line = $packSetting["ZSpawn",%plyr.packSet];
-	   bottomPrint(%plyr.client,"Spawn set to" SPC %line,2,1);
-	   %changed = true;
-	}
-      else if (%plyr.hasArtWepPack) {
-	   %plyr.packSet = %plyr.packSet + %val;
-	   if (%plyr.packSet > $packSettings["ArtPack"])
-		%plyr.packSet = 0;
-	   if (%plyr.packSet < 0)
-		%plyr.packSet = $packSettings["ArtPack"];
-	   %line = $packSetting["ArtPack",%plyr.packSet];
-	   bottomPrint(%plyr.client,"Loadout set to" SPC %line,2,1);
-	   %changed = true;
+        else if (%plyr.hasZspawn) {
+	    %plyr.packSet = %plyr.packSet + %val;
+	    if (%plyr.packSet > $packSettings["ZSpawn"])
+		   %plyr.packSet = 0;
+	    if (%plyr.packSet < 0)
+		   %plyr.packSet = $packSettings["ZSpawn"];
+	    %line = $packSetting["ZSpawn",%plyr.packSet];
+	    bottomPrint(%plyr.client,"Spawn set to" SPC %line,2,1);
+	    %changed = true;
 	}
       else if (%plyr.hasSpawn) {
 	   %plyr.packSet = %plyr.packSet + %val;

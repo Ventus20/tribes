@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------------
 
 datablock ShapeBaseImageData(LargeInventoryDeployableImage) {
-   mass = 20;
+   mass = 1;
    emap = true;
    shapeFile = "stackable1s.dts";
    item = LargeInventoryDeployable;
@@ -34,7 +34,7 @@ datablock ItemData(LargeInventoryDeployable)
    className = Pack;
    catagory = "Deployables";
    shapeFile = "stackable1s.dts";
-   mass = 5.0;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 1;
@@ -53,8 +53,8 @@ function LargeInventoryDeployable::onPickup(%this, %obj, %shape, %amount)
 
 function LargeInventoryDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%className = "StaticShape";
-	%plyr.unMountImage(%slot);
-	%plyr.decInventory(%item.item,1);
+	//%plyr.unMountImage(%slot);
+	//%plyr.decInventory(%item.item,1);
 	%grounded = 0;
 	if (%item.surface.getClassName() $= TerrainBlock)
 		%grounded = 1;

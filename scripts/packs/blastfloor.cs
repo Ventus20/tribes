@@ -34,7 +34,7 @@ datablock StaticShapeData(DeployedFloor) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(FloorDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = FloorDeployable;
@@ -62,7 +62,7 @@ datablock ItemData(FloorDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;

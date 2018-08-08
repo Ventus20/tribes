@@ -7,27 +7,11 @@
 
 //--------------------------------------------------------------------------
 // Sounds & feedback effects
-
-datablock EffectProfile(RepairPackActivateEffect)
-{
-   effectname = "packs/packs.repairPackOn";
-   minDistance = 2.5;
-   maxDistance = 2.5;
-};
-
-datablock EffectProfile(RepairPackFireEffect)
-{
-   effectname = "packs/repair_use";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
 datablock AudioProfile(RepairPackActivateSound)
 {
    filename    = "fx/packs/packs.repairPackOn.wav";
    description = AudioClosest3d;
    preload = true;
-   effect = RepairPackActivateEffect;
 };
 
 datablock AudioProfile(RepairPackFireSound)
@@ -35,7 +19,6 @@ datablock AudioProfile(RepairPackFireSound)
    filename    = "fx/packs/repair_use.wav";
    description = CloseLooping3d;
    preload = true;
-   effect = RepairPackFireEffect;
 };
 
 //--------------------------------------------------------------------------
@@ -46,7 +29,7 @@ datablock RepairProjectileData(DefaultRepairBeam)
    sound = RepairPackFireSound;
 
 // JTL
-   beamRange      = 10;  //10
+   beamRange      = 250;  //10
 // End JTL
    beamWidth      = 0.15;
    numSegments    = 20;
@@ -120,11 +103,12 @@ datablock ShapeBaseImageData(RepairGunImage)
    offset = "0 0 0";
 
    usesEnergy = true;
-   minEnergy = 0.0001;
+   minEnergy = 3;
+   cutOffEnergy = 3.1;
    emap = true;
 
    repairFactorPlayer = 0.002; // <--- attention DaveG!
-   repairFactorObject = 0.008; // <--- attention DaveG!
+   repairFactorObject = 0.004; // <--- attention DaveG!
 
    stateName[0] = "Activate";
    stateTransitionOnTimeout[0] = "ActivateReady";
@@ -159,7 +143,7 @@ datablock ShapeBaseImageData(RepairGunImage)
    stateAllowImageChange[4] = false;
    stateSequence[4] = "activate";
    stateFire[4] = true;
-   stateEnergyDrain[4] = 32;
+   stateEnergyDrain[4] = 9;
    stateTimeoutValue[4] = 0.2;
    stateTransitionOnTimeOut[4] = "Repair";
    stateTransitionOnNoAmmo[4] = "Deactivate";
@@ -279,7 +263,8 @@ function RepairGunImage::onValidate(%this,%obj,%slot)
    // rangeEnd = muzzle point + length of beam
    %rangeEnd = VectorAdd(%muzPoint, %muzScaled);
    // search for just about anything that can be damaged as well as interiors
-   %searchMasks = $TypeMasks::VehicleObjectType | $TypeMasks::StaticShapeObjectType | $TypeMasks::TurretObjectType | $TypeMasks::InteriorObjectType; 
+   %searchMasks = $TypeMasks::PlayerObjectType | $TypeMasks::VehicleObjectType |
+      $TypeMasks::StaticShapeObjectType | $TypeMasks::TurretObjectType | $TypeMasks::InteriorObjectType; 
    // search for objects within the beam's range that fit the masks above
    %scanTarg = ContainerRayCast(%muzPoint, %rangeEnd, %searchMasks, %obj);
    // screen out interiors
@@ -451,7 +436,8 @@ function RepairGunImage::onRepair(%this,%obj,%slot)
          %muzPoint    = %obj.getMuzzlePoint(%slot);
          %rangeEnd    = VectorAdd(%muzPoint, %muzScaled);
 
-         %searchMasks = $TypeMasks::VehicleObjectType | $TypeMasks::StaticShapeObjectType | $TypeMasks::TurretObjectType;
+         %searchMasks = $TypeMasks::PlayerObjectType   | $TypeMasks::VehicleObjectType     | 
+                        $TypeMasks::StaticShapeObjectType | $TypeMasks::TurretObjectType;
 
          //AI hack to help "fudge" the repairing stuff...
          if (%obj.client.isAIControlled() && isObject(%obj.client.repairObject) && %obj.client.repairObject == %obj.repairing)
@@ -646,4 +632,9 @@ function startRepairing(%player, %self)
       };
       MissionCleanup.add(%player.repairProjectile);
    }
+}
+
+function RepairPack::onPickup(%this, %obj, %shape, %amount)
+{
+   // created to prevent console errors
 }

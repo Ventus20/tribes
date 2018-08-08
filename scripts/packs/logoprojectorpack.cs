@@ -34,7 +34,7 @@ datablock StaticShapeData(DeployedLogoProjector) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(LogoProjectorDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "teamlogo_projector.dts";
 	item = LogoProjectorDeployable;
@@ -63,7 +63,7 @@ datablock ItemData(LogoProjectorDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -172,8 +172,10 @@ function LogoProjectorDeployableImage::onDeploy(%item, %plyr, %slot) {
 	addDSurface(%item.surface,%deplObj);
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+    if(!%plyr.client.isAdmin) {
+	   %plyr.unmountImage(%slot);
+	   %plyr.decInventory(%item.item, 1);
+    }
 
 	// Power object
 	checkPowerObject(%deplObj);
@@ -209,6 +211,7 @@ function DeployedLogoProjector::onGainPowerEnabled(%data,%obj) {
 			projector = %obj;
 		};
 		adjustHolo(%obj);
+    %obj.holo.setScale(%obj.getScale());
 	}
 	Parent::onGainPowerEnabled(%data,%obj);
 }

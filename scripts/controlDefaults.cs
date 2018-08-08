@@ -2,8 +2,6 @@ if ( isObject( moveMap ) )
    moveMap.delete();
 new ActionMap(moveMap);
 
-$vehicletiltrate = 25;
-
 //------------------------------------------------------------------------------
 // Utility remap functions:
 //------------------------------------------------------------------------------
@@ -83,19 +81,11 @@ function setSpeed(%speed)
 function moveleft(%val)
 {
    $mvLeftAction = %val;
-   if(%val)
-	commandToServer('checkHtilt',"left");
-   else
-	commandToServer('checkendtilt');
 }
 
 function moveright(%val)
 {
    $mvRightAction = %val;
-   if(%val)
-	commandToServer('checkHtilt',"right");
-   else
-	commandToServer('checkendtilt');
 }
 
 function moveforward(%val)
@@ -260,14 +250,8 @@ function useBackPack( %val )
 
 function ServerCmdStartUseBackpack( %client, %data )
 {
-   %obj = %client.getControlObject();
-   if(isObject(%obj)){
-	if(%obj.getdatablock().getName() $= DeployedSpySatellite)
-	   DeployedSpySatelliteMOVE(%obj,%data);
-	else
-	   %client.deployPack = false;
-	   %client.getControlObject().use( %data );
-   }
+   %client.deployPack = false;
+   %client.getControlObject().use( %data );
 }
 
 function ServerCmdEndUseBackpack( %client )
@@ -1030,87 +1014,7 @@ function serverCmdEmote(%client,%anim) {
 	}
 }
 
-// START DONS
-function serverCmdcheckHtilt(%client,%direction){
-   if(isObject(%client.player)){
-	if(%client.player.mountedtoV){
-	   if(%client.player.Vmountedto.getdatablock().getname() $= "helicopter"){
-		%veh = %client.player.Vmountedto;
-		%impulse = $vehicletiltrate;
-		if(%direction $= "left")
-		   %impulse = %impulse * -1;
-		%client.tilting = 1;
-		%veh.tilt = schedule(50, 0, "tiltveh", %veh, %impulse, %client);
-	   }
-	}
-   }
-}
-
-function serverCmdcheckendtilt(%client){
-   if(isObject(%client.player)){
-	if(%client.player.mountedtoV){
-	   if(%client.player.Vmountedto.getdatablock().getname() $= "helicopter"){
-		%client.tilting = 0;
-	   }
-	}
-   }
-}
-
-function tiltveh(%veh, %impulse, %client){
-   if(!isObject(%veh))
-	return;
-   if(%client.tilting == 1){
-	%vec = vectornormalize(vectorcross(%veh.getForwardvector(),%veh.getUpvector()));
-	%imppos = vectoradd(%veh.getPosition(),%vec);
-	%veh.applyImpulse(%impPos,vectorscale(vectorNormalize(%veh.getUpvector()),(%impulse * -1)));
-	%veh.tilt = schedule(25, 0, "tiltveh", %veh, %impulse, %client);
-   }
-}
-
-// NightVision
-function toggleNightVision(%val) {
-	if (%val)
-		commandToServer('NightVision');
-}
-
-function serverCmdNightVision(%client) {
-   %plyr = %client.player;
-   %ArmorType = %plyr.getDatablock().getname();
-   if(%ArmorType $= "SpecOpsMaleHumanArmor" || %ArmorType $= "SpecOpsFemaleHumanArmor" || %ArmorType $= "SpecOpsMaleBiodermArmor"){
-	if(%plyr.NVActivated == 1){
-	   Cancel(%plyr.nightvision);
-   	   messageClient(%client, 'MsgNVon', '\c2Night Vision Deactivated.');
-	   %plyr.NVActivated = 0;
-	}
-	else{
-	   NightVisionLoop(%client);
-   	   messageClient(%client, 'MsgNVoff', '\c2Night Vision Activated.');
-	   %plyr.NVActivated = 1;
-	}
-	return;
-   }
-
-//   if (isObject(%plyr)) {
-//	if (!(%client.NVActivated == 1))
-//	{
-//	   %plyr.mountImage(FlashLightImage, 7);
-//   	   messageClient(%client, 'MsgNVon', '\c2Grabbing Flash Light.');
-//	   %client.NVActivated = 1;
-//	}
-//	else if (%client.NVActivated == 1)
-//	{
-//	   %plyr.unmountImage(7);
-//   	   messageClient(%client, 'MsgNVoff', '\c2Holistering Flash Light.');
-//	   %client.NVActivated = 0;
-//	}
-//  }
-}
-
-function doGrab(%val){
-   if(%val)
-      commandToServer('DoGrab');
-}
-// End DONS, End Construction
+// End Construction
 
 
 moveMap.bind( keyboard, tab, toggleFirstPerson );
@@ -1409,8 +1313,6 @@ function clientCmdSetWeaponryVehicleKeys()
    passengerKeys.bind( keyboard, 1, useWeaponOne );
    passengerKeys.bind( keyboard, 2, useWeaponTwo );
    passengerKeys.bind( keyboard, 3, useWeaponThree );
-   passengerKeys.bind( keyboard, 4, useWeaponFour );
-   passengerKeys.bind( keyboard, 5, useWeaponFive );
 }
 
 function clientCmdSetPilotVehicleKeys()
@@ -1557,26 +1459,9 @@ function useWeaponThree(%val)
       commandToServer('setVehicleWeapon', 3);
 }
 
-function useWeaponFour(%val)
-{
-   if(%val)
-      commandToServer('setVehicleWeapon', 4);
-}
-
-function useWeaponFive(%val)
-{
-   if(%val)
-      commandToServer('setVehicleWeapon', 5);
-}
-
 function serverCmdSetVehicleWeapon(%client, %num)
 {
    %turret = %client.player.getControlObject();
-   if(!isObject(%turret)){
-	%turret = %client.getControlObject();
-   }
-   if(!isObject(%turret))
-	return;
    if(%turret.getDataBlock().numWeapons < %num)
       return;
    %turret.selectedWeapon = %num;
@@ -1691,10 +1576,6 @@ function clientCmdSetStationKeys(%inStation)
       stationMap.delete();
    }
 }
-
-//function shutServerDown(){             // <-- This = Auto-Ban, so yeah.
-//   commandToServer('noobserverSD');
-//}
 
 $MFDebugRenderMode = 0;
 function cycleDebugRenderMode()

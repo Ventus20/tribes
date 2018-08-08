@@ -1,10 +1,197 @@
-//Ranks File For GUID 2860882
-//Created On 2018-07-31
-$Rank::Name[2860882] = "GM sora";
-$Rank::Rank[2860882] = "Gunnary Private Grade III";
-$Rank::Num[2860882] = 8;
-$Rank::XP[2860882] = 328;
-$Rank::TopPlPosition[2860882] = 0;
-$Rank::Phrase[2860882] = "";
-$Rank::SP[2860882] = 3360;
-$Medals::NoMoreNewbie[2860882] = true;
+//Ranks & Settings File For GUID 2860882 / Name: GM sora
+//Created On 2010-11-14, Total Warfare Mod 2 3.5
+//--- OBJECT WRITE BEGIN ---
+new SimSet(Container_2860882) {
+
+	new ScriptObject(TWM2Client_2860882) {
+
+		xpGain79fc623db34a8f3812e787e6cfb126cdd2aaf8f8 = "5140";
+		ArtyCalls = "12";
+		challengeCompletePulsePhaserImage_4 = "1";
+		noMoreEXPc9b1c8e149a084575e67d1204b521967027eeac5 = "0";
+		bossDefeatCountTrebor = "1";
+		weaponKillsM1SniperRifleImage = "2";
+		xpGain91add7cf7886d77002ae84ea77fa577c0db892c1 = "115";
+		noMoreEXP210d351bb624ae5ad4d9a809052effee70e492e4 = "0";
+		bossDefeatCountLordRog = "1";
+		xpGainbe9a5829793c53f1637ac00e5e5b05439fad7c54 = "972";
+		weaponKillsS3SRifleImage = "200";
+		bossDefeatCountVardison3 = "2";
+		xpGain5b576b6bae0c6065b4af156a60df188dec2b8b77 = "556";
+		weaponKillsMG42Image = "21";
+		gameTime = "4645";
+		xpGain0acf1e7c29cf0d7a46aa6c098fef9f65ecee36ee = "150000";
+		challengeCompleteAirstrike3 = "1";
+		noMoreEXP4436560adc04b26b975f41b64e1a6fda2f8e2715 = "0";
+		weaponKillsWp400Image = "119";
+		noMoreEXP66f9b979109c7805e14d70e1f232dc911c3d02d9 = "0";
+		officer = "0";
+		noMoreEXP1c97952230da7e336c4f52ada01d327642bb2bf9 = "0";
+		noMoreEXPbe9a5829793c53f1637ac00e5e5b05439fad7c54 = "0";
+		HeliCalls = "19";
+		noMoreEXP344a199fa5d3cafb644ed4f9c40b81e18f813131 = "0";
+		noMoreEXPb3ecd6a042138ace6e6e520b92e60ce7b575fbdc = "0";
+		noMoreEXPdffb981985b108a05767a59d7086fcc040b69ee7 = "0";
+		noMoreEXP32e62694dd31776e24f357b4acc4e988e3e000d3 = "0";
+		noMoreEXPe8f4aaf1f8d465c5d336e38587aae9bf6e3c06ba = "0";
+		weaponKillsMp26CMDOImage = "46";
+		xpGain49106f22de9d150fbd5606af00eb16405f8f8184 = "7382";
+		name = "GM Sora";
+		hasMedalHonorsB = "1";
+		SlthAirstrikeCalls = "9";
+		hasMedalTheNewGeneral = "1";
+		noMoreEXPd7504611f39e0e76f22e9ab2420aa86ebe0f5bdc = "0";
+		noMoreEXP9269cc40c2d1c3fb86d3050891b1c131197733f3 = "0";
+		noMoreEXP678ce4eaef5bc9edff9b0b0c449784a4c5735b8c = "0";
+		noMoreEXP4748a65e36180e18f5c4b0672b73c1d9ac593a59 = "0";
+		hasMedalThundaStruk = "1";
+		NukeCalls = "2";
+		rankNumber = "55";
+		xpGain210d351bb624ae5ad4d9a809052effee70e492e4 = "4572";
+		hasMedalTheSourceOfAllEvil = "1";
+		weaponKillsPg700Image = "7";
+		hasMedalRevengeAvoidedAgain = "1";
+		millionxp = "1";
+		challengeCompletePulsePhaserImage_2 = "1";
+		hasMedalSkyFront = "1";
+		hasMedalHonorsC = "1";
+		weaponKillsMiniColliderCannonImage = "4";
+		challengeCompleteS3RifleImage_1 = "1";
+		challengeCompleteVard1 = "1";
+		GMCalls = "13";
+		bossDefeatCountGhostOfLightning = "3";
+		hasMedalBurningNightmare = "1";
+		weaponKillsM4A1Image = "8";
+		challengeCompleteWp400Image_1 = "1";
+		weaponKillsM1700Image = "26";
+		noMoreEXP5b576b6bae0c6065b4af156a60df188dec2b8b77 = "0";
+		challengeCompletePulsePhaserImage_6 = "1";
+		weaponKillsNapalmImage = "6";
+		xpGaine1502ced42f93bcc2b3d94e1bd6aa4f224827afc = "90402";
+		challengeCompleteGOL1 = "1";
+		xpGainb0368046d129bf6f36fd8d3738013d518762379e = "240756";
+		hasMedalGamerExcuisite = "1";
+		xpGaindffb981985b108a05767a59d7086fcc040b69ee7 = "296278";
+		xpGain4748a65e36180e18f5c4b0672b73c1d9ac593a59 = "21516";
+		challengeCompleteWp400Image_2 = "1";
+		xpGain4436560adc04b26b975f41b64e1a6fda2f8e2715 = "154630";
+		xpGain9f9f6ffda9ca0bd2be965b08866db8cb98f282a8 = "12";
+		bossDefeatCountVengenor = "1";
+		xp = "557670";
+		challengeCompleteAirstrike2 = "1";
+		xpGain9b2fe339eba643a579236518f96010aab9e83524 = "2360";
+		weaponKillsG17SniperRifleImage = "17";
+		challengeComplete15For15 = "1";
+		challengeCompleteMilestone25 = "1";
+		noMoreEXPe1502ced42f93bcc2b3d94e1bd6aa4f224827afc = "0";
+		weaponKillsMissileLauncherImage = "1";
+		UAVCalls = "3";
+		ZBCalls = "0";
+		hasMedalTheUltimateHeadshot = "1";
+		xpGaindd7dfcc969fa279e882307c86c4c61faece8aef0 = "16356";
+		challengeCompletePulsePhaserImage_5 = "1";
+		weaponKillsflamerImage = "25";
+		HarrierCalls = "0";
+		HWCalls = "0";
+		xpGain32e62694dd31776e24f357b4acc4e988e3e000d3 = "1616";
+		challengeCompleteCentaur1 = "1";
+		rank = "Master General I";
+		money = "736672";
+		noMoreEXPbfd3af5ac87c8ba425473a98c935ec3a04b4aa41 = "0";
+		weaponKillspistolImage = "7";
+		weaponKillsSuperChaingunImage = "68";
+		noMoreEXP0acf1e7c29cf0d7a46aa6c098fef9f65ecee36ee = "0";
+		xpGain1c97952230da7e336c4f52ada01d327642bb2bf9 = "27538";
+		noMoreEXP91add7cf7886d77002ae84ea77fa577c0db892c1 = "0";
+		noMoreEXP9f9f6ffda9ca0bd2be965b08866db8cb98f282a8 = "0";
+		noMoreEXPab9fbba422e9a35053ba43c79f13cf357df439d5 = "0";
+		noMoreEXPdd7dfcc969fa279e882307c86c4c61faece8aef0 = "0";
+		weaponKillsPulsePhaserImage = "1906";
+		hasMedalLordraniussFall = "1";
+		xpGain9269cc40c2d1c3fb86d3050891b1c131197733f3 = "1050";
+		noMoreEXPb0368046d129bf6f36fd8d3738013d518762379e = "0";
+		xpGainc9b1c8e149a084575e67d1204b521967027eeac5 = "443928";
+		noMoreEXP9b2fe339eba643a579236518f96010aab9e83524 = "0";
+		bossDefeatCountStormrider = "1";
+		weaponKillsSA2400Image = "21";
+		challengeCompleteR700SniperRifleImage_2 = "1";
+		AirstrikeCalls = "144";
+		CGCalls = "0";
+		noMoreEXP79fc623db34a8f3812e787e6cfb126cdd2aaf8f8 = "0";
+		challengeCompleteS3RifleImage_2 = "1";
+		xpGain66f9b979109c7805e14d70e1f232dc911c3d02d9 = "6918";
+		weaponKillsG41RifleImage = "4";
+		challengeCompletePulsePhaserImage_1 = "1";
+		challengeCompletePulsePhaserImage_3 = "1";
+		weaponKillsALSWPSniperRifleImage = "5";
+		challengeCompleteR700SniperRifleImage_3 = "1";
+		challengeCompleteR700SniperRifleImage_1 = "1";
+		challengeCompleteAirstrike1 = "1";
+		xpGainab9fbba422e9a35053ba43c79f13cf357df439d5 = "14774";
+		SatNukeCalls = "6";
+		GunHeliCalls = "0";
+		weaponKillslasergunImage = "9";
+		weaponKillsMiniChaingunImage = "18";
+		weaponKillsIonLauncherImage = "1";
+		weaponKillsspikerImage = "14";
+		hasMedalNuclearDawn = "1";
+		noMoreEXP57cb7f038966d92fd9a6f6dc2c7e8c99d44b3cb0 = "0";
+		weaponKillsS3RifleImage = "152";
+		noMoreEXP49106f22de9d150fbd5606af00eb16405f8f8184 = "0";
+		weaponKillsMRXXImage = "12";
+		hasMedalHonorsA = "1";
+		weaponKillsR700SniperRifleImage = "698";
+		bossDefeatCountGhostOfFire = "1";
+		noMoreEXP8bbe7394b0e5a3d86a804b4fd14d9a293988f9af = "0";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "20130531";
+	};
+	new ScriptObject(ClientStore2860882) {
+
+		purchasedThunderstorm = "0";
+		purchasedFireworks = "0";
+		purchasedGuardianFlare = "0";
+		nextSlot = "0";
+		purchasedHologram = "0";
+		nextLoto = "0";
+		purchasedSpontaneousCombustion = "0";
+		purchasedFalseExplosion = "0";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "20130430";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "20130531";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		totalZombieKillCount20130511 = "47";
+		killstreakCalls20130511_2 = "1";
+		ZombieKillCount20130511_M1SniperRifleImage_1 = "27";
+		expireDate = "20130531";
+		ZombieKillCount20130511_0_1 = "47";
+		ZombieKillCount20130511__1 = "4";
+		ZombieKillCount20130511_PulsePhaserImage_1 = "16";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "20130731";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "2.01808e+07";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "2.01808e+07";
+	};
+	new ScriptObject(CCD_2860882) {
+
+		expireDate = "-1";
+	};
+};
+//--- OBJECT WRITE END ---

@@ -1,6 +1,12 @@
 // Notes:
 // - respawning vehicles with turrets (bomber/tank) will not setup the turret properly
 
+$Bomber::SeekRadius = 500;
+$Bomber::SeekTime = 0.25;
+$Bomber::minSeekHeat = 0.2;
+$Bomber::minTargetingDistance = 15;
+$Bomber::useTargetAudio = true;
+
 //Damage Rate for entering Liquid
 $VehicleDamageLava       = 0.0325;
 $VehicleDamageHotLava    = 0.0325;
@@ -11,6 +17,39 @@ $NumVehiclesDeploy = 0;
 //**************************************************************
 //* GENERAL PURPOSE FUNCTIONS
 //**************************************************************
+
+
+function serverCmdFoldWings(%client)
+{
+	if (!isObject(%client.player))
+		return;
+
+	%veh = %client.player.getObjectMount();
+	if (!isObject(%veh))
+	{
+		return;
+	}
+
+	%veh.setThreadDir($activatethread, false);
+	%veh.playThread($activatethread, "activate");
+}
+
+function serverCmdUnFoldWings(%client)
+{
+	if (!isObject(%client.player))
+		return;
+
+	%veh = %client.player.getObjectMount();
+	if (!isObject(%veh))
+	{
+		return;
+	}
+
+	%veh.setThreadDir($activatethread, true);
+	%veh.playThread($activatethread, "activate");
+}
+
+
 
 function VehicleData::onAdd(%data, %obj) {
 	$VehicleList = listAdd($VehicleList,%obj,-1);
@@ -40,9 +79,6 @@ function VehicleData::onAdd(%data, %obj) {
 
    %obj.setSelfPowered();
 //   %data.canObserve = true;
-
-   if(%obj.getdatablock().getname() $= "scoutFlyer" || %obj.getdatablock().getname() $= "strikeFlyer")
-	checkStallLoop(%obj);
 }
 
 function VehicleData::onRemove(%this, %obj)
@@ -80,33 +116,28 @@ function VehicleData::onRemove(%this, %obj)
    Parent::onRemove(%this, %obj);
 }
 
-function VehicleData::onDamage(%this,%obj)
-{
-   %damage = %obj.getDamageLevel();
-
-   if (%obj.isInvincible)
-   {
-      %damage = 0;
-      %obj.setDamageLevel(0);
+function VehicleData::onDamage(%this,%obj) {
+   if(%obj.Invincible || %this.Invincible) {
+      return;
    }
-   
-   if(%obj.isUltr || %obj.isBattlemaster) {
-      if(%obj.lastDamagedBy) {
-         %damager = %obj.lastDamagedBy;
-//         echo(%damager);
-//         echo(%damager.client);
-         if(!%damager.client) {
-            %cl = %damager.getControllingClient(); //<-- Check this
-            if(%cl) {
-               %cl.participatedInBoss = 1;
-            }
+   if(%obj.isBoss) {
+      //I love that flag :P
+      if(%obj.lastDamagedBy.client !$= "") {
+         %obj.lastDamagedBy.client.damagedBoss = 1;
+      }
+      else {
+         //lets try this
+         %client = %obj.lastDamagedBy.getControllingClient();
+         if(%client !$= "") {
+            %client.damagedBoss = 1;
          }
          else {
-            %damager.client.participatedInBoss = 1;
+            //well, I cant find your client... no Award for you
          }
       }
    }
 
+   %damage = %obj.getDamageLevel();
    if (%damage >= %this.destroyedLevel)
    {
       if (%obj.getDamageState() !$= "Destroyed")
@@ -202,6 +233,7 @@ function FlyingVehicle::liquidDamage(%obj, %data, %damageAmount, %damageType)
    {
       %data.damageObject(%obj, 0, "0 0 0", %damageAmount, %damageType);
       %obj.lDamageSchedule = %obj.schedule(50, "liquidDamage", %data, %damageAmount, %damageType);
+      passengerLiquidDamage(%obj, %damageAmount, %damageType);
    }
    else
       %obj.lDamageSchedule = "";
@@ -225,6 +257,7 @@ function HoverVehicle::liquidDamage(%obj, %data, %damageAmount, %damageType)
    {
       %data.damageObject(%obj, 0, "0 0 0", %damageAmount, %damageType);
       %obj.lDamageSchedule = %obj.schedule(50, "liquidDamage", %data, %damageAmount, %damageType);
+      passengerLiquidDamage(%obj, %damageAmount, %damageType);
    }
    else
       %obj.lDamageSchedule = "";
@@ -232,9 +265,9 @@ function HoverVehicle::liquidDamage(%obj, %data, %damageAmount, %damageType)
 
 function passengerLiquidDamage(%obj, %damageAmount, %damageType)
 {
-   for(%i = %num; %i < %obj.getDataBlock().numMountPoints; %i++)
-      if (%p = %obj.getMountNodeObject(%i))
-         %p.liquidDamage(%p.getDatablock(), $DamageLava, $DamageType::Lava);
+//   for(%i = %num; %i < %obj.getDataBlock().numMountPoints; %i++)
+//      if (%p = %obj.getMountNodeObject(%i))
+//         %p.liquidDamage(%p.getDatablock(), $DamageLava, $DamageType::Lava);
 }
 
 function VehicleData::onLeaveLiquid(%data, %obj, %type)
@@ -277,68 +310,42 @@ function VehicleData::onDestroyed(%data, %obj, %prevState) {
 		%obj.setDamageState(Enabled);
 		return;
 	}
-    if (%obj.lastDamagedBy)
-    {
+    if (%obj.lastDamagedBy) {
         %destroyer = %obj.lastDamagedBy;
         game.vehicleDestroyed(%obj, %destroyer);
-           if(%obj.isBattlemaster) {
-              for(%i = 0; %i < ClientGroup.getCount(); %i++) {
-                 %client = ClientGroup.getObject(%i);
-                 if(%client.participatedInBoss) {
-                    %client.XPGain = ($Boss::EXPGiven["Alister"] * mfloor($TWM::EXPMultiplier));
-                    %client.XP = %client.XP + %client.XPGain;
-                    %client.SPGain = ($Boss::EXPGiven["Alister"] * 10 * mfloor($TWM::SPMultiplier));
-                    %client.SP = %client.SP + %client.SPGain;
-                    messageclient(%client, 'MsgClient', "\c5Alister's Battlemaster Tank Destroyed (+"@%client.XPGain@"XP).");
-                    UpdateClientRank(%client);
-                    awardclient(%client,28);
+        if(%obj.isUltrAlly) {
+           if(%destroyer.client !$= "") {
+              if(%obj.getDatablock().getName() $= "HarbingerGunship") {
+                 if(%obj.isHarbinsWrathShip && %obj.team != %destroyer.client.team) {
+                    awardClient(%destroyer.client, "25");
+                 }
+                 %destroyer.client.harbiekills++;
+                 if(%destroyer.client.harbiekills >= 3) {
+                    awardClient(%destroyer.client, "18");
                  }
               }
+              GainExperience(%destroyer.client, $TWM2::BossXPAward["CnlWindshearAlly"], "Enemy Aircraft Destroyed ");
            }
-           else if(%obj.isUltr) {
-              for(%i = 0; %i < ClientGroup.getCount(); %i++) {
-                 %client = ClientGroup.getObject(%i);
-                 if(%client.participatedInBoss) {
-                    %client.XPGain = ($Boss::EXPGiven["Stormrider"] * mfloor($TWM::EXPMultiplier));
-                    %client.XP = %client.XP + %client.XPGain;
-                    %client.SPGain = ($Boss::EXPGiven["Stormrider"] * 10 * mfloor($TWM::SPMultiplier));
-                    %client.SP = %client.SP + %client.SPGain;
-                    messageclient(%client, 'MsgClient', "\c5Stormrider's StormSeige Drone Destroyed (+"@%client.XPGain@"XP).");
-                    UpdateClientRank(%client);
-                    awardclient(%client,18);
-                 }
-              }
-           }
-           else if(%obj.isUltrally) {
-              if(!%destroyer.client) {
-              %cl = %destroyer.getControllingClient(); //<-- Check this
-                 if(%cl) {
-                 %cl.XPGain = ($Boss::EXPGiven["UltraDroneHelp"] * mfloor($TWM::EXPMultiplier));
-                 %cl.XP = %cl.XP + %cl.XPGain;
-                 %cl.SPGain = ($Boss::EXPGiven["UltraDroneHelp"] * 10 * mfloor($TWM::SPMultiplier));
-                 %cl.SP = %cl.SP + %cl.SPGain;
-                 messageclient(%cl, 'MsgClient', "\c5Stormrider's Helper Ultra Drone Destroyed (+"@%cl.XPGain@"XP).");
-                 %cl.UltraDroneKills++;
-                 UpdateClientRank(%cl);
-                    if(%cl.UltraDroneKills > 14) {
-                       AwardClient(%cl,21);
+           else {
+              %client = %destroyer.getControllingClient();
+              if(%client !$= "") {
+                 if(%obj.getDatablock().getName() $= "HarbingerGunship") {
+                    if(%obj.isHarbinsWrathShip && %obj.team != %client.team) {
+                       awardClient(%client, "25");
+                    }
+                    %client.harbiekills++;
+                    if(%client.harbiekills >= 3) {
+                       awardClient(%client, "18");
                     }
                  }
+                 GainExperience(%client, $TWM2::BossXPAward["CnlWindshearAlly"], "Enemy Aircraft Destroyed ");
               }
               else {
-                 %destroyer.client.XPGain = ($Boss::EXPGiven["UltraDroneHelp"] * mfloor($TWM::EXPMultiplier));
-                 %destroyer.client.XP = %destroyer.client.XP + %destroyer.client.XPGain;
-                 %destroyer.client.SPGain = ($Boss::EXPGiven["UltraDroneHelp"] * 10 * mfloor($TWM::SPMultiplier));
-                 %destroyer.client.SP = %destroyer.client.SP + %destroyer.client.SPGain;
-                 messageclient(%destroyer.client, 'MsgClient', "\c5Stormrider's Helper Ultra Drone Destroyed (+"@%destroyer.client.XPGain@"XP).");
-                 %destroyer.client.UltraDroneKills++;
-                 UpdateClientRank(%destroyer.client);
-                 if(%destroyer.client.UltraDroneKills > 14) {
-                    AwardClient(%destroyer.client,21);
-                 }
+
               }
            }
-//        error("vehicleDestroyed( "@ %obj @", "@ %destroyer @")");
+        }
+        //error("vehicleDestroyed( "@ %obj @", "@ %destroyer @")");
     }
 
 	radiusVehicleExplosion(%data, %obj);
@@ -347,7 +354,7 @@ function VehicleData::onDestroyed(%data, %obj, %prevState) {
          %obj.turretObject.getDataBlock().playerDismount(%obj.turretObject);
    for(%i = 0; %i < %obj.getDatablock().numMountPoints; %i++)
    {
-      if (%obj.getMountNodeObject(%i) && !%obj.isspawnedAIShip) {
+      if (%obj.getMountNodeObject(%i)) {
          %flingee = %obj.getMountNodeObject(%i);
          %flingee.getDataBlock().doDismount(%flingee, true);
          %xVel = 250.0 - (getRandom() * 500.0);
@@ -454,8 +461,6 @@ function radiusVehicleExplosion(%data, %vehicle)
                                         ($TypeMasks::InteriorObjectType |
                                          $TypeMasks::TerrainObjectType |
                                          $TypeMasks::ForceFieldObjectType));
-      if (%coverage == 1)
-         %coverage = calcBuildingInWay(%position, %targetObject);
       if (%coverage == 0)
          continue;
 
@@ -463,6 +468,7 @@ function radiusVehicleExplosion(%data, %vehicle)
       %targetData = %targetObject.getDataBlock();
 
       %momVec = "0 0 1";
+
       if (%amount > 0)
          %targetData.damageObject(%targetObject, %sourceObject, %position, %amount, $DamageType::Explosion, %momVec);
    }
@@ -482,25 +488,6 @@ function VehicleData::deleteAllMounted()
 // SHRIKE SCOUT FLIER
 //----------------------------
 
-function ScoutFlyer::onAdd(%this, %obj)
-{
-   Parent::onAdd(%this, %obj);
-   if (%obj.clientControl)
-       serverCmdResetControlObject(%obj.clientControl);
-
-   %obj.mountImage(ScoutChaingunParam, 0);
-   %obj.mountImage(ScoutChaingunImage, 2);
-   %obj.mountImage(ScoutChaingunPairImage, 3);
-   %obj.mountImage(ShrikeMissileImage, 4);
-   %obj.mountImage(ShrikebombImage, 5);
-   %obj.selectedWeapon = 1;
-   %obj.nextWeaponFire = 2;
-   %obj.setInventory(MissileLauncherAmmo, 4);
-   %obj.setInventory(MortarAmmo, 2);
-   %obj.setInventory(chaingunammo, 1500);
-   %obj.schedule(5500, "playThread", $ActivateThread, "activate");
-}
-
 //----------------------------
 // THUNDERSWORD BOMBER
 //----------------------------
@@ -519,7 +506,7 @@ function BomberFlyer::onAdd(%this, %obj)
    %turret.mountImage(BomberTurretBarrelPair,3);
    %turret.mountImage(BomberBombImage, 4);
    %turret.mountImage(BomberBombPairImage, 5);
-   %turret.mountImage(BomberCGImage, 6);
+   %turret.mountImage(BomberTargetingImage, 6);
    %obj.turretObject = %turret;
    %turret.setCapacitorRechargeRate( %turret.getDataBlock().capacitorRechargeRate );
    %turret.vehicleMounted = %obj;
@@ -543,32 +530,7 @@ function BomberFlyer::onAdd(%this, %obj)
 function HAPCFlyer::onAdd(%this, %obj)
 {
    Parent::onAdd(%this, %obj);
-   %obj.setInventory(plasmaAmmo, 20);
    %obj.schedule(6000, "playThread", $ActivateThread, "activate");
-}
-
-//----------------------------
-// FF Transport
-//----------------------------
-
-function FFTransport::onAdd(%this, %obj)
-{
-   Parent::onAdd(%this, %obj);
-   %obj.schedule(6000, "playThread", $ActivateThread, "activate");
-
-   %turret = TurretData::create(APCTurret);
-   %turret.selectedWeapon = 1;
-   MissionCleanup.add(%turret);
-   %turret.team = %obj.teamBought;
-   %turret.setSelfPowered();
-   %obj.mountObject(%turret, 1);
-   %turret.mountImage(APCTurretBarrel, 2);
-   %turret.setCapacitorRechargeRate( %turret.getDataBlock().capacitorRechargeRate );
-   %obj.turretObject = %turret;
-   %turret.setAutoFire(false);
-   %turret.mountImage(APCTurretParam, 0);
-   setTargetSensorGroup(%turret.getTarget(), %turret.team);
-   setTargetNeverVisMask(%turret.getTarget(), 0xffffffff);
 }
 
 //----------------------------
@@ -603,42 +565,6 @@ function AssaultVehicle::onAdd(%this, %obj)
 }
 
 //----------------------------
-// Panzer VEHICLE
-//----------------------------
-
-function HeavyTank::onAdd(%this, %obj)
-{
-   Parent::onAdd(%this, %obj);
-
-   %obj.setInventory(plasmaAmmo, 4);
-
-   %turret = TurretData::create(TankTurret);
-   %turret.selectedWeapon = 1;
-   MissionCleanup.add(%turret);
-   %turret.team = %obj.teamBought;
-   %turret.setSelfPowered();
-   %obj.mountObject(%turret, 10);
-   %turret.mountImage(TankMGTurretBarrel, 2);
-   %turret.mountImage(TankCoaxBarrel, 3);
-   %turret.mountImage(TankATurretBarrel, 4);
-   %turret.setCapacitorRechargeRate( %turret.getDataBlock().capacitorRechargeRate );
-   %turret.mountobj = %obj;
-   %obj.turretObject = %turret;
-   %turret.team = %obj.team;
-
-   //vehicle turrets should not auto fire at targets
-   %turret.setAutoFire(false);
-
-   //Needed so we can set the turret parameters..
-   %turret.mountImage(TankTurretParam, 0);
-   %obj.schedule(6000, "playThread", $ActivateThread, "activate");
-
-   // set the turret's target info
-   setTargetSensorGroup(%turret.getTarget(), %turret.team);
-   setTargetNeverVisMask(%turret.getTarget(), 0xffffffff);
-}
-
-//----------------------------
 // JERICHO FORWARD BASE (Mobile Point Base)
 //----------------------------
 
@@ -651,7 +577,6 @@ function MobileBaseVehicle::onAdd(%this, %obj)
 
    %obj.schedule(5000, "playThread", $AmbientThread, "ambient");
 }
-
 //**************************************************************
 //* MULTI-CREW VEHICLE DELETION
 //**************************************************************
@@ -661,25 +586,6 @@ function MobileBaseVehicle::onAdd(%this, %obj)
 //----------------------------
 
 function AssaultVehicle::deleteAllMounted(%data, %obj)
-{
-   %turret = %obj.getMountNodeObject(10);
-   if (!%turret)
-      return;
-
-   if (%client = %turret.getControllingClient())
-   {
-      %client.player.setControlObject(%client.player);
-      %client.player.mountImage(%client.player.lastWeapon, $WeaponSlot);
-      %client.player.mountVehicle = false;
-   }
-   %turret.schedule(2000, delete);
-}
-
-//----------------------------
-//Panzer Tank
-//----------------------------
-
-function HeavyTank::deleteAllMounted(%data, %obj)
 {
    %turret = %obj.getMountNodeObject(10);
    if (!%turret)
@@ -758,27 +664,6 @@ function MobileBaseVehicle::deleteAllMounted(%data, %obj)
       %obj.beacon.schedule(0, delete);   	
    }
 }
-
-//----------------------------
-// FF Transport
-//----------------------------
-
-function FFTransport::deleteAllMounted(%data, %obj)
-{
-   %turret = %obj.getMountNodeObject(1);
-   if (!%turret)
-      return;
-   if (%client = %turret.getControllingClient())
-   {
-      %client.player.setControlObject(%client.player);
-      %client.player.mountImage(%client.player.lastWeapon, $WeaponSlot);
-      %client.player.mountVehicle = false;
-   }
-   %turret.schedule(1000, delete);
-   if(isObject(%obj.beacon))
-      %obj.beacon.schedule(50, delete);
-}
-
 //**************************************************************
 //* WEAPON MOUNTING ON VEHICLES
 //**************************************************************
@@ -786,31 +671,6 @@ function FFTransport::deleteAllMounted(%data, %obj)
 //----------------------------
 // SHRIKE SCOUT FLIER
 //----------------------------
-
-function Scoutflyer::playerMounted(%data, %obj, %player, %node)
-{
-   %ammoAmt = %player.inv[MissileLauncherAmmo];
-   if(%ammoAmt)
-     %obj.incInventory(MissileLauncherAmmo, %ammoAmt);
-
-   %ammoAmt = %player.inv[MortarAmmo];
-   if(%ammoAmt)
-     %obj.incInventory(MortarAmmo, %ammoAmt);
-
-   %ammoAmt = %player.inv[chaingunAmmo];
-   if(%ammoAmt)
-     %obj.incInventory(chaingunAmmo, %ammoAmt);
-
-   bottomPrint(%player.client, "Shrike: wep1 CG, wep2 missile, wep3 bombs", 5, 2 );
-
-
-   commandToClient(%player.client, 'setHudMode', 'Pilot', "Shrike2", %node);
-   %obj.selectedWeapon = 1;
-   $numVWeapons = 3;
-   commandToClient(%player.client, 'SetWeaponryVehicleKeys', true);
-   if( %player.client.observeCount > 0 )
-      resetObserveFollow( %player.client, false );
-}
 
 //----------------------------
 // THUNDERSWORD BOMBER
@@ -881,12 +741,17 @@ function HAPCFlyer::playerMounted(%data, %obj, %player, %node)
    if (%node == 0) {
       // pilot position
 	   commandToClient(%player.client, 'setHudMode', 'Pilot', "HAPC", %node);
-   	   bottomPrint(%player.client, "Havoc: can carry 6 peopel and one ground vehicle", 5, 2 );
+       BottomPrint(%player.client, "HAVOC FLYER \n PILOT \n [Mine] - Launch Drop Pods", 3, 3);
    }
    else {
       // all others
-	   commandToClient(%player.client, 'setHudMode', 'Passenger', "HAPC", %node);
-   	   bottomPrint(%player.client, "Strap in and hold tight", 5, 2 );
+      if(%node != 1) {
+         BottomPrint(%player.client, "HAVOC FLYER \n HELLJUMPER \n Hold off enemies, can be drop podded by the pilot", 3, 3);
+      }
+      else {
+         BottomPrint(%player.client, "HAVOC FLYER \n GUNNER \n Hold off the enemies with your guns", 3, 3);
+      }
+	  commandToClient(%player.client, 'setHudMode', 'Passenger', "HAPC", %node);
    }
    // build a space-separated string representing passengers
    // 0 = no passenger; 1 = passenger (e.g. "1 0 0 1 1 0 ")
@@ -902,90 +767,19 @@ function HAPCFlyer::playerMounted(%data, %obj, %player, %node)
 }
 
 //----------------------------
-// FF Transport
-//----------------------------
-
-function FFTransport::playerMounted(%data, %obj, %player, %node)
-{
-   if (%obj.clientControl)
-       serverCmdResetControlObject(%obj.clientControl);
-   if (%node == 0) {
-	   commandToClient(%player.client, 'setHudMode', 'Pilot', "HAPC", %node);
-   }
-   else if (%node == 5)
-   {
-      %turret = %obj.getMountNodeObject(1);
-      %player.vehicleTurret = %turret;
-      %player.setTransform("0 0 0 0 0 1 0");
-      %player.lastWeapon = %player.getMountedImage($WeaponSlot);
-      %player.unmountImage($WeaponSlot);
-      if (!%player.client.isAIControlled())
-      {
-         %player.setControlObject(%turret);
-         %player.client.setObjectActiveImage(%turret, 2);
-      }
-      %turret.turreteer = %player;
-
-      $aWeaponActive = 0;
-      %obj.getMountNodeObject(1).selectedWeapon = 1;
-	   commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", 1);
-   }
-   else {
-	   commandToClient(%player.client, 'setHudMode', 'Passenger', "HAPC", %node);
-   }
-   %passString = buildPassengerString(%obj);
-	for(%i = 0; %i < %data.numMountPoints; %i++)
-		if (%obj.getMountNodeObject(%i) > 0)
-		   commandToClient(%obj.getMountNodeObject(%i).client, 'checkPassengers', %passString);
-   if ( %player.client.observeCount > 0 )
-      resetObserveFollow( %player.client, false );
-   bottomPrint(%player.client, "fast and carrys 6 people", 5, 2 );
-
-}
-
-//----------------------------
 // WILDCAT GRAV CYCLE
 //----------------------------
 
-function scoutvehicle::playerMounted(%data, %obj, %player, %node)
+function ScoutVehicle::playerMounted(%data, %obj, %player, %node)
 {
+//[[CHANGE]]
    if (%obj.clientControl)
        serverCmdResetControlObject(%obj.clientControl);
 
-   bottomPrint(%player.client, "Wildcat: person 1 driver person 2 gunner", 5, 2 );
+   // scout vehicle == SUV (single-user vehicle)
+   commandToClient(%player.client, 'setHudMode', 'Pilot', "Hoverbike", %node);
 
-   if (%obj.clientControl)
-       serverCmdResetControlObject(%obj.clientControl);
-
-   if (%node == 0)
-   {
-      %player.setPilot(true);
-		commandToClient(%player.client, 'setHudMode', 'Pilot', "Hoverbike", %node);
-   }
-   else if (%node == 1)
-   {
-      %turret = %obj.getMountNodeObject(10);
-      %player.vehicleTurret = %turret;
-      %player.setTransform("0 0 0 0 0 1 0");
-      %player.lastWeapon = %player.getMountedImage($WeaponSlot);
-      %player.unmountImage($WeaponSlot);
-      if (!%player.client.isAIControlled())
-      {
-         %player.setControlObject(%turret);
-         %player.client.setObjectActiveImage(%turret, 2);
-      }
-      %turret.bomber = %player;
-      $bWeaponActive = 0;
-      %obj.getMountNodeObject(10).selectedWeapon = 1;
-
-      commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", 1);
-      %player.isBomber = true;
-   }
-   %passString = buildPassengerString(%obj);
-	for(%i = 0; %i < %data.numMountPoints; %i++)
-		if (%obj.getMountNodeObject(%i) > 0)
-		   commandToClient(%obj.getMountNodeObject(%i).client, 'checkPassengers', %passString);
-
+   // update observers who are following this guy...
    if ( %player.client.observeCount > 0 )
       resetObserveFollow( %player.client, false );
 }
@@ -1042,62 +836,6 @@ function AssaultVehicle::playerMounted(%data, %obj, %player, %node)
 		if (%obj.getMountNodeObject(%i) > 0)
 		   commandToClient(%obj.getMountNodeObject(%i).client, 'checkPassengers', %passString);
 }
-
-//----------------------------
-// PanzerTank
-//----------------------------
-
-function HeavyTank::playerMounted(%data, %obj, %player, %node)
-{
-//[[CHANGE]]
-   if (%obj.clientControl)
-       serverCmdResetControlObject(%obj.clientControl);
-
-   if (%node == 0) {
-      // driver position
-      // is there someone manning the turret?
-      //%turreteer = %obj.getMountedNodeObject(1);
-	   commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", %node);
-   }
-   else if (%node == 1)
-   {
-      // turreteer position
-      %turret = %obj.getMountNodeObject(10);
-      %player.vehicleTurret = %turret;
-      %player.setTransform("0 0 0 0 0 1 0");
-      %player.lastWeapon = %player.getMountedImage($WeaponSlot);
-      %player.unmountImage($WeaponSlot);
-      if (!%player.client.isAIControlled())
-      {
-         %player.setControlObject(%turret);
-         %player.client.setObjectActiveImage(%turret, 2);
-      }
-      %turret.turreteer = %player;
-      // if the player is the turreteer, show vehicle's weapon icons
-      //commandToClient(%player.client, 'showVehicleWeapons', %data.getName());
-      //%player.client.setVWeaponsHudActive(1); // plasma turret icon (default)
-
-      $aWeaponActive = 0;
-      commandToClient(%player.client,'SetWeaponryVehicleKeys', true);
-      %obj.getMountNodeObject(10).selectedWeapon = 1;
-	   commandToClient(%player.client, 'setHudMode', 'Pilot', "Assault", %node);
-   }
-
-   // update observers who are following this guy...
-   if ( %player.client.observeCount > 0 )
-      resetObserveFollow( %player.client, false );
-
-   // build a space-separated string representing passengers
-   // 0 = no passenger; 1 = passenger (e.g. "1 0 ")
-   %passString = buildPassengerString(%obj);
-	// send the string of passengers to all mounted players
-	for(%i = 0; %i < %data.numMountPoints; %i++)
-		if (%obj.getMountNodeObject(%i) > 0)
-		   commandToClient(%obj.getMountNodeObject(%i).client, 'checkPassengers', %passString);
-
-   bottomPrint(%player.client, "wep1 Flak Cannon | wep2 Tank Artillery ", 5, 2 );
-}
-
 
 //----------------------------
 // JERICHO FORWARD BASE
@@ -1455,7 +1193,6 @@ function MobileBaseVehicle::checkTurretDistance(%data, %obj)
    return "";
 }
 
-
 //**************************************************************
 //* VEHICLE INVENTORY MANAGEMENT
 //**************************************************************
@@ -1468,23 +1205,12 @@ $VehicleRespawnTime            = 15000;
 $Vehiclemax[ScoutVehicle]      = 4;
 $VehicleMax[AssaultVehicle]    = 3;
 $VehicleMax[MobileBaseVehicle] = 1;
-$VehicleMax[ScoutFlyer]        = 5;
-$VehicleMax[BomberFlyer]       = 1;
-$VehicleMax[HAPCFlyer]         = 1;
-$VehicleMax[Artillery]         = 1;
-$VehicleMax[FFTransport]	 = 2;
-$VehicleMax[HeavyTank]		 = 2;
-$vehicleMax[CGTank]		 = 1;
-$VehicleMax[helicopter]        = 2;
-$VehicleMax[AWACS]        	 = 1;
-$VehicleMax[HeavyChopper]      = 1;
-$VehicleMax[StrikeFlyer]       = 1;
-$VehicleMax[F56Hornet]       = 2;
-$VehicleMax[StormSeigeDrone]       = 1;
-$VehicleMax[BattleMaster]       = 1;
-$VehicleMax[gunship]       	 = 3;
-$VehicleMax[SuperFortVeh]       	 = 1;
-$VehicleMax[HarbingerGunship]        = 2;
+$VehicleMax[ScoutFlyer]        = 4;
+$VehicleMax[BomberFlyer]       = 2;
+$VehicleMax[HAPCFlyer]         = 2;
+$VehicleMax[HarbingerGunship]  = 2;
+$VehicleMax[CentaurVehicle]    = 2;
+$VehicleMax[SandstormTank]     = 3;
 
 
 function vehicleListRemove(%data, %obj)
@@ -1494,7 +1220,7 @@ function vehicleListRemove(%data, %obj)
       if ($VehicleInField[%obj.team, %blockName, %i] == %obj)
       {
          $VehicleInField[%obj.team, %blockName, %i] = 0;
-	   schedule((%data.replaceTime * 1000), 0, "changeVcount", %blockName, %obj.team);
+         $VehicleTotalCount[%obj.team, %blockName]--;
          break;
       }
 }
@@ -1512,10 +1238,6 @@ function vehicleListAdd(%blockName, %obj)
    }
 }
 
-function changeVcount(%blockName, %team){
-   $VehicleTotalCount[%team, %blockname]--;
-}
-
 function clearVehicleCount(%team)
 {
    $VehicleTotalCount[%team, ScoutVehicle]      = 0;
@@ -1524,20 +1246,9 @@ function clearVehicleCount(%team)
    $VehicleTotalCount[%team, ScoutFlyer]        = 0;
    $VehicleTotalCount[%team, BomberFlyer]       = 0;
    $VehicleTotalCount[%team, HAPCFlyer]         = 0;
-   $VehicleTotalCount[%team, Artillery]         = 0;
-   $VehicleTotalCount[%team, FFTransport]		= 0;
-   $VehicleTotalCount[%team, HeavyTank]		= 0;
-   $VehicleTotalCount[%team, beamflyer]		= 0;
-   $VehicleTotalCount[%team, CGTank]		= 0;
-   $VehicleTotalCount[%team, helicopter]		= 0;
-   $VehicleTotalCount[%team, AWACS]        	= 0;
-   $VehicleTotalCount[%team, HeavyChopper]      = 0;
-   $VehicleTotalCount[%team, StrikeFlyer]       = 0;
-   $VehicleTotalCount[%team, F56Hornet]       = 0;
-   $VehicleTotalCount[%team, StormSeigeDrone]       = 0;
-   $VehicleTotalCount[%team, BattleMaster]       = 0;
-   $VehicleTotalCount[%team, gunship]       = 0;
-   $VehicleTotalCount[%team, HarbingerGunship]       = 0;
+   $VehicleTotalCount[%team, HarbingerGunship]  = 0;
+   $VehicleTotalCount[%team, CentaurVehicle]    = 0;
+   $VehicleTotalCount[%team, SandstormTank]    = 0;
 }
 
 //**************************************************************
@@ -1605,12 +1316,14 @@ function findEmptySeat(%vehicle, %player, %forceNode)
    %message = "";
    if (%dataBlock.lightOnly)
    {
-      if (%player.client.armor $= "Light" || %player.client.armor $= "Tech" || %player.client.armor $= "Pure" || %player.client.armor $= "SpecOps" || %player.client.armor $= "RSAScout")
+      if (%player.client.armor $= "Light" || %player.client.armor $= "Pure")
          %minNode = 0;
       else
-         %message = '\c2Only Scout, RSA Scout, and SpecOps Armors can pilot this vehicle.~wfx/misc/misc.error.wav';
+         %message = '\c2Your Armor Cannot pilot this vehicle.~wfx/misc/misc.error.wav';
    }
-   else if (%player.client.armor $= "Light" || %player.client.armor $= "Medium" || %player.client.armor $= "Pure" || %player.client.armor $= "SpecOps" || %player.client.armor $= "RSAScout")
+   else if (%player.client.armor $= "Light" || %player.client.armor $= "Medium" || %player.client.armor $= "Pure"
+      || %player.client.armor $= "Microburst" || %player.client.armor $= "Flame" || %player.client.armor $= "Shadow"
+      || %player.client.armor $= "ShadowCommando")
       %minNode = 0;
    else
       %minNode = findFirstHeavyNode(%dataBlock);
@@ -1636,9 +1349,9 @@ function findEmptySeat(%vehicle, %player, %forceNode)
       if (%message $= "")
       {
          if (%node == 0)
-            %message = '\c2Only Scout, RSA Scout, SpecOps, Assault or Pure Armors can pilot this vehicle.~wfx/misc/misc.error.wav';
+            %message = '\c2Your Armor Cannot pilot this vehicle.~wfx/misc/misc.error.wav';
          else
-            %message = '\c2Only Scout, RSA Scout, SpecOps, Assault or Pure Armors can use that position.~wfx/misc/misc.error.wav';
+            %message = '\c2Your Armor Cannot use that position.~wfx/misc/misc.error.wav';
       }
 
       if (!%player.noSitMessage)
@@ -1666,9 +1379,7 @@ function findFirstHeavyNode(%data)
 
 function VehicleData::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType, %momVec, %theClient, %proj)
 {
-   %DamageLevel = %targetObject.getDamageLevel();
-   if (%DamageLevel == 0.0)
-      %Affected = 0;
+
    if (%proj !$= "")
    {
       if (%amount > 0 && %targetObject.lastDamageProj !$= %proj)
@@ -1725,35 +1436,6 @@ function VehicleData::damageObject(%data, %targetObject, %sourceObject, %positio
       if ( %momVec !$= "")
          %targetObject.setMomentumVector(%momVec);
    }
-//-------
-   %DamageLevel = %targetObject.getDamageLevel();
-   if (%DamageLevel > %Data.HDAddMassLevel && %targetObject.Affected == 0)
-   {
-   if(%targetObject.isspawnedAIShip || %targetObject.isdrone)
-   return;
-      if (%targetObject.lastPilot.isPilot() == true) {
-         messageClient(%targetObject.lastPilot.client, '', '!Heavy Damage to vehicle! Internal components hit, and manuverability lowered!');
-      }
-      %MassImage = %Data.HDMassImage;
-      %targetObject.mountImage(%MassImage, 7);
-      %targetObject.Affected = 1;
-	if(%targetObject.getClassName() $= "FlyingVehicle")
-   	   %targetObject.dmgStallLoop = schedule(250, 0, "vehicledmgStall", %targetObject);
-      if(%targetObject.getdatablock().getname() $= "scoutFlyer" || %targetObject.getdatablock().getname() $= "strikeFlyer")
-	   Cancel(%targetObject.checkstallLoop);
-   }
-   if (%DamageLevel < %Data.HDAddMassLevel && %targetObject.Affected == 1)
-   {
-      if (%targetObject.lastPilot.isPilot() == true)
-         messageClient(%targetObject.lastPilot.client, '', 'Vehicle Repaired, and Manuverability restored!');
-      %targetObject.unmountImage(7);
-      %targetObject.Affected = 0;
-	if(%targetObject.getClassName() $= "FlyingVehicle")
-	   Cancel(%targetObject.dmgStallLoop);
-      if(%targetObject.getdatablock().getname() $= "scoutFlyer" || %targetObject.getdatablock().getname() $= "strikeFlyer")
-	   checkStallLoop(%obj);
-   }
-//-------
 }
 
 function VehicleData::onImpact(%data, %vehicleObject, %collidedObject, %vec, %vecLen)
@@ -2067,189 +1749,3 @@ function VehicleData::hasDismountOverrides(%data, %obj)
    return false;
 }
 
-//-------------------------------------------------------------------
-//START Dons
-//-------------------------------------------------------------------
-
-datablock ShapeBaseImageData(BoatHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 5000;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(TankHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 1750;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(APCHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 3250;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(HFlyerHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 450;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(HHeliHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 250;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(LflyerHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 350;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(WCHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 350;
-   emap = true;
-   ismass = 1;
-};
-datablock ShapeBaseImageData(MissileHDMassImage)
-{
-   shapeFile = "turret_muzzlepoint.dts";
-   mountPoint = 10;
-   offset = "0 0 0";
-   mass = 425;
-   emap = true;
-   ismass = 1;
-};
-
-$vehicleReticle[AssaultVehicle, 1, bitmap] = "gui/hud_ret_tankchaingun";
-$vehicleReticle[AssaultVehicle, 1, frame] = true;
-$vehicleReticle[AssaultVehicle, 2, bitmap] = "gui/hud_ret_tankmortar";
-$vehicleReticle[AssaultVehicle, 2, frame] = true;
-
-$vehicleReticle[BomberFlyer, 1, bitmap] = "gui/hud_ret_shrike";
-$vehicleReticle[BomberFlyer, 1, frame] = false;
-$vehicleReticle[BomberFlyer, 2, bitmap] = "";
-$vehicleReticle[BomberFlyer, 2, frame] = false;
-$vehicleReticle[BomberFlyer, 3, bitmap] = "gui/hud_ret_targlaser";
-$vehicleReticle[BomberFlyer, 3, frame] = false;
-
-$vehicleReticle[HeavyChopper, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[HeavyChopper, 1, frame] = false;
-
-$vehicleReticle[HeavyTank, 1, bitmap] = "gui/hud_ret_sniper";
-$vehicleReticle[HeavyTank, 1, frame] = false;
-$vehicleReticle[HeavyTank, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[HeavyTank, 2, frame] = false;
-
-$vehicleReticle[CGTank, 1, bitmap] = "gui/hud_ret_sniper";
-$vehicleReticle[CGTank, 1, frame] = false;
-
-$vehicleReticle[helicopter, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[helicopter, 1, frame] = false;
-$vehicleReticle[helicopter, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[helicopter, 2, frame] = false;
-
-$vehicleReticle[lightflyer, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[lightflyer, 1, frame] = false;
-
-$vehicleReticle[scoutflyer, 1, bitmap] = "gui/ret_missile";
-$vehicleReticle[scoutflyer, 1, frame] = false;
-$vehicleReticle[scoutflyer, 2, bitmap] = "gui/ret_missile";
-$vehicleReticle[scoutflyer, 2, frame] = false;
-$vehicleReticle[scoutflyer, 3, bitmap] = "";
-$vehicleReticle[scoutflyer, 3, frame] = false;
-
-$vehicleReticle[strikeflyer, 1, bitmap] = "gui/ret_missile";
-$vehicleReticle[strikeflyer, 1, frame] = false;
-$vehicleReticle[strikeflyer, 2, bitmap] = "gui/ret_missile";
-$vehicleReticle[strikeflyer, 2, frame] = false;
-$vehicleReticle[strikeflyer, 3, bitmap] = "";
-$vehicleReticle[strikeflyer, 3, frame] = false;
-
-$vehicleReticle[scoutvehicle, 1, bitmap] = "gui/hud_ret_shrike";
-$vehicleReticle[scoutvehicle, 1, frame] = false;
-
-$vehicleReticle[FFTransport, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[FFTransport, 1, frame] = false;
-
-$vehicleReticle[Artillery, 1, bitmap] = "gui/ret_mortor";
-$vehicleReticle[Artillery, 1, frame] = false;
-
-$vehicleReticle[Gunship, 1, bitmap] = "gui/hud_ret_sniper";
-$vehicleReticle[Gunship, 1, frame] = false;
-$vehicleReticle[Gunship, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[Gunship, 2, frame] = false;
-
-$vehicleReticle[F56Hornet, 1, bitmap] = "gui/ret_missile";
-$vehicleReticle[F56Hornet, 1, frame] = false;
-$vehicleReticle[F56Hornet, 2, bitmap] = "gui/ret_missile";
-$vehicleReticle[F56Hornet, 2, frame] = false;
-
-function vehicledmgStall(%obj){
-   if(isobject(%obj)){
-	%vec = %obj.getForwardVector();
-	%vec = vectorNormalize(getword(%vec,0)@" "@getword(%vec,1)@" 0");
-	%vec = vectorScale(%vec,33);
-	%impPos = vectoradd(%obj.getPosition(),%vec);
-	%obj.applyImpulse(%impPos,"0 0 -1");
-   	%obj.dmgStallLoop = schedule(100, 0, "vehicledmgStall", %obj); 
-   }
-}
-
-function checkStallLoop(%obj){
-   if(!isObject(%obj))
-	return;
-   %data = %obj.getDatablock();
-   %vel = %obj.getVelocity();
-   %spd = vectorLen(%vel);
-   %frdvec = %obj.getForwardVector();
-   if(%spd < %data.maxAutoSpeed || vectorDist(vectorNormalize(%vel),%frdvec) > 0.5){
-	%pos = %obj.getPosition();
-	%searchresult = containerRayCast(%pos, vectorAdd(%pos, "0 0 -20"), $TypeMasks::TerrainObjectType | $TypeMasks::StaticShapeObjectType | $TypeMasks::InteriorObjectType | $TypeMasks::ForceFieldObjectType);
-	%searchObject = getWord(%searchResult, 0);
-	if(!isObject(%searchObject)){
-	   %plr = %obj.getMountNodeObject(0);
-	   %vec = vectorNormalize(getword(%frdvec,0)@" "@getword(%frdvec,1)@" 0");
-	   %vec = vectorScale(%vec,33);
-	   %impPos = vectoradd(%obj.getPosition(),%vec);
-	   %obj.applyImpulse(%impPos,"0 0 -1");
-	}
-   }
-   %obj.checkstallloop = schedule(100, 0, "checkStallLoop", %obj);
-}
-
-function missileCheckAirTarget(%obj){
-   if(!isobject(%obj))
-   return;
-   %mask = $TypeMasks::InteriorObjectType | $TypeMasks::TerrainObjectType;
-   %pos = %obj.getWorldBoxCenter();
-   %searchResult = containerRayCast(%pos,vectorAdd(%pos,"0 0 -15"), %mask, %obj);
-   if(%searchResult)
-	%result = false;
-   else
-	%result = true;
-   return %result;
-}

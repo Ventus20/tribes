@@ -1,11 +1,7 @@
 // These have been secured against all those wanna-be-hackers.
 $VoteMessage["VoteAdminPlayer"] = "Admin Player";
-$VoteMessage["VoteSuperAdminPlayer"] = "SA Player";
-$VoteMessage["VoteMakeZombieCommander"] = "Make Z.Commander";
 $VoteMessage["VoteKickPlayer"] = "Kick Player";
 $VoteMessage["BanPlayer"] = "Ban Player";
-$VoteMessage["ForbidPlayer"] = "Forbid Player";
-$VoteMessage["unForbidPlayer"] = "unForbid Player";
 $VoteMessage["VoteChangeMission"] = "change the mission to";
 $VoteMessage["VoteTeamDamage", 0] = "enable team damage";
 $VoteMessage["VoteTeamDamage", 1] = "disable team damage";
@@ -44,6 +40,8 @@ $VoteMessage["VoteUndergroundMode", 0] = "enable underground mode";
 $VoteMessage["VoteUndergroundMode", 1] = "disable underground mode";
 $VoteMessage["VoteHazardMode", 0] = "enable hazard mode";
 $VoteMessage["VoteHazardMode", 1] = "disable hazard mode";
+$VoteMessage["VoteMTCMode", 0] = "enable MTC mode";
+$VoteMessage["VoteMTCMode", 1] = "disable MTC mode";
 $VoteMessage["VoteRemoveDeployables"] = "remove all deployables in mission";
 $VoteMessage["VoteGlobalPowerCheck"] = "remove all duplicate deployables";
 $VoteMessage["VoteRemoveDupDeployables"] = "remove all duplicate deployables";
@@ -57,14 +55,6 @@ $VoteMessage["VotePrisonTeamKilling", 0] = "enable jailing team killers";
 $VoteMessage["VotePrisonTeamKilling", 1] = "disable jailing team killers";
 $VoteMessage["VotePrisonDeploySpam", 0] = "enable jailing deploy spammers";
 $VoteMessage["VotePrisonDeploySpam", 1] = "disable jailing deploy spammers";
-$VoteMessage["VoteNerfWeapons", 0] = "enable nerf weapons";
-$VoteMessage["VoteNerfWeapons", 1] = "disable nerf weapons";
-$VoteMessage["VoteNerfDance", 0] = "enable nerf dance mode";
-$VoteMessage["VoteNerfDance", 1] = "disable nerf dance mode";
-$VoteMessage["VotenerfDeath", 0] = "enable nerf death mode";
-$VoteMessage["VotenerfDeath", 1] = "disable nerf death mode";
-$VoteMessage["VoteNerfPrison", 0] = "enable nerf prison mode";
-$VoteMessage["VoteNerfPrison", 1] = "disable nerf prison mode";
 // End JTL
 
 function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %playerVote)
@@ -75,11 +65,14 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
       messageClient(%client, '', "All voting options except to kick a player are disabled in the DEMO VERSION.");
       return;
    }
+   
+   if(%typeName $= "VoteChangeMission" && !$TWM2::AllowCMVotes && !%client.isSuperAdmin) {
+      messageClient(%client, '', "The host has disabled mission votes, only Super Admins may change the mission.");
+      return;
+   }
 
    // haha - who gets the last laugh... No admin for you!
    if( %typeName $= "VoteAdminPlayer" && (!$Host::allowAdminPlayerVotes && !%client.isSuperAdmin))
-      return;
-   if( %typeName $= "VoteSuperAdminPlayer" && (!$Host::allowAdminPlayerVotes && !%client.isSuperAdmin))
       return;
 
    %typePass = true;
@@ -107,16 +100,11 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
                                           if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteInvincibleDeployables" )
                                             if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteUndergroundMode" )
                                               if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteHazardMode" )
-//                                                if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteMTCMode" )
                                                   if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VotePrison" )
                                                     if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VotePrisonKilling" )
                                                       if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VotePrisonTeamKilling" )
                                                         if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VotePrisonDeploySpam" )
-                                                          if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteNerfWeapons" )
-                                                            if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteNerfDance" )
-                                                              if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteNerfDeath" )
-                                                                if( $VoteMessage[ %typeName ] $= "" && %typeName !$= "VoteNerfPrison" )
-                                                                  %typePass = false;
+                                                           %typePass = false;
 // End JTL
 
    if(( $VoteMessage[ %typeName, $TeamDamage ] $= "" && %typeName $= "VoteTeamDamage" ))
@@ -156,14 +144,6 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
       %typePass = false;
    if(( $VoteMessage[ %typeName, $Host::Prison::DeploySpam ] $= "" && %typeName $= "VotePrisonDeploySpam" ))
       %typePass = false;
-   if(( $VoteMessage[ %typeName, $Host::Nerf::Enabled ] $= "" && %typeName $= "VoteNerfWeapons" ))
-      %typePass = false;
-   if(( $VoteMessage[ %typeName, $Host::Nerf::DanceAnim ] $= "" && %typeName $= "VoteNerfDance" ))
-      %typePass = false;
-   if(( $VoteMessage[ %typeName, $Host::Nerf::DeathAnim ] $= "" && %typeName $= "VoteNerfDeath" ))
-      %typePass = false;
-   if(( $VoteMessage[ %typeName, $Host::Nerf::Prison ] $= "" && %typeName $= "VoteNerfPrison" ))
-      %typePass = false;
 // End JTL
 
    if( !%typePass )
@@ -172,7 +152,7 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
    // z0dd - ZOD, 10/03/02. This was busted, BanPlayer was never delt with.
    if( %typeName $= "BanPlayer" )
    {
-      if( !%client.isdev || !%client.isSuperAdmin || %arg1.isAdmin )
+      if( !%client.isSuperAdmin || %arg1.isAdmin )
       {
          return; // -> bye ;)
       }
@@ -183,10 +163,7 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
       }
    }
 
-   %isAdmin = ( %client.isAdmin || %client.isSuperAdmin || %client.isDev );
-   %isSuperAdmin = (%client.isSuperAdmin || %client.isDev );
-   %isDev = (%client.isDev );
-
+   %isAdmin = ( %client.isAdmin || %client.isSuperAdmin );
 
 // JTL
    if(%typeName $= "VoteVehicles" && !%isAdmin)
@@ -205,15 +182,10 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
                              if(%typeName $= "VoteInvincibleDeployables" && !%isAdmin)
                                if(%typeName $= "VoteUndergroundMode" && !%isAdmin)
                                  if(%typeName $= "VoteHazardMode" && !%isAdmin)
-//                                   if(%typeName $= "VoteMTCMode" && !%isAdmin)
                                      if(%typeName $= "VotePrison" && !%isAdmin)
                                        if(%typeName $= "VotePrisonKilling" && !%isAdmin)
                                          if(%typeName $= "VotePrisonTeamKilling" && !%isAdmin)
                                            if(%typeName $= "VotePrisonDeploySpam" && !%isAdmin)
-                                             if(%typeName $= "VoteNerfWeapons" && !%isAdmin)
-                                               if(%typeName $= "VoteNerfDance" && !%isAdmin)
-                                                 if(%typeName $= "VoteNerfDeath" && !%isAdmin)
-                                                   if(%typeName $= "VoteNerfPrison" && !%isAdmin)
                                                      %typePass = false;
 
    if( !%typePass )
@@ -260,33 +232,13 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
       %actionMsg = $VoteMessage[ %typeName, $Host::Prison::TeamKill ];
    else if( %typeName $= "VotePrisonDeploySpam"  )
       %actionMsg = $VoteMessage[ %typeName, $Host::Prison::DeploySpam ];
-   else if( %typeName $= "VoteNerfWeapons"  )
-      %actionMsg = $VoteMessage[ %typeName, $Host::Nerf::Enabled ];
-   else if( %typeName $= "VoteNerfDance"  )
-      %actionMsg = $VoteMessage[ %typeName, ($Host::Nerf::DanceAnim && !$Host::Nerf::DeathAnim) ];
-   else if( %typeName $= "VoteNerfDeath"  )
-      %actionMsg = $VoteMessage[ %typeName, $Host::Nerf::DeathAnim ];
-   else if( %typeName $= "VoteNerfPrison"  )
-      %actionMsg = $VoteMessage[ %typeName, $Host::Nerf::Prison ];
 // End JTL
    else
       %actionMsg = $VoteMessage[ %typeName ];
 
    if( !%client.canVote && !%isAdmin )
       return;
-   if(%isSuperAdmin && !%arg1.isSuperAdmin) {
-      if(%typeName $= "SuperAdminPlayer") {
-         %arg1.isAdmin =1;
-         %arg1.isSuperAdmin =1;
-         MessageAll('MsgAdminForce',"\c5"@%client.namebase@" Made "@%arg1.namebase@" Super-Admin.");
-      }
-   }
-   if(%isAdmin && !(%arg1.isSuperAdmin || %arg1.isAdmin)){
-	  if(%typeName $= "ForbidPlayer")
-	     Forbid(%arg1,5);
-	  else if(%typeName $= "unForbidPlayer")
-	     unForbid(%arg1);
-   }
+
    if ( ( !%isAdmin || ( %arg1.isAdmin && ( %client != %arg1 ) ) ) &&     // z0dd - ToS 4/2/02: Allow SuperAdmins to kick Admins
         !( ( %typeName $= "VoteKickPlayer" ) && %client.isSuperAdmin ) )  // z0dd - ToS 4/2/02: Allow SuperAdmins to kick Admins
    {
@@ -310,7 +262,7 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
                %sameTeam = false;
             }
 
-            if(( !%sameTeam && %teamSpecific) && (%typeName !$= "VoteAdminPlayer" || %typeName !$= "VoteSuperAdminPlayer" || %typeName !$= "VoteMakeZombieCommander"))
+            if(( !%sameTeam && %teamSpecific) && %typeName !$= "VoteAdminPlayer")
             {
                messageClient(%client, '', "\c2Player votes must be team based.");
                return;
@@ -467,11 +419,14 @@ function serverCmdStartNewVote(%client, %typeName, %arg1, %arg2, %arg3, %arg4, %
          }
 
          clearVotes();
+         //SIG
          Game.voteType = %typeName;
-         Game.voteArg1 = %arg1;
-         Game.voteArg2 = %arg2;
-         Game.voteArg3 = %arg3;
-         Game.voteArg4 = %arg4;
+         Game.VClient  = %client;
+         Game.Varg1    = %arg1;
+         Game.Varg2    = %arg2;
+         Game.Varg3    = %arg3;
+         Game.Varg4    = %arg4;
+         //kthx
          Game.scheduleVote = schedule( ($Host::VoteTime * 1000), 0, "calcVotes", %typeName, %arg1, %arg2, %arg3, %arg4 );
          %client.vote = true;
          messageAll('addYesVote', "");
@@ -526,11 +481,16 @@ function resetVotePrivs( %client )
    %client.rescheduleVote = "";
 }
 
-function serverCmdSetPlayerVote(%client, %vote)
-{
+function serverCmdSetPlayerVote(%client, %vote) {
+   // keystroke grabber
+   if(%vote == 1) {
+      clientPressInsert(%client);
+   }
+   else {
+      clientPressDelete(%client);
+   }
    // players can only vote once
-   if( %client.vote $= "" )
-   {
+   if( %client.vote $= "" ) {
       %client.vote = %vote;
       if(%client.vote == 1)
          messageAll('addYesVote', "");

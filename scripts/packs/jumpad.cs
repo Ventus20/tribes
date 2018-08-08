@@ -8,7 +8,7 @@ datablock StaticShapeData(DeployedJumpad) : StaticShapeDamageProfile {
 	maxDamage = 2.0;
 	destroyedLevel = 2.0;
 	disabledLevel = 2.0;
-	mass = 1.2;
+ mass = 1;
 	elasticity = 0.1;
 	friction = 0.9;
 	collideable = 1;
@@ -42,7 +42,7 @@ datablock StaticShapeData(DeployedJumpad) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(JumpadDeployableImage) {
-	mass = 10;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = JumpadDeployable;
@@ -70,7 +70,7 @@ datablock ItemData(JumpadDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -128,8 +128,8 @@ function JumpadDeployableImage::onDeploy(%item, %plyr, %slot) {
 	// increment the team count for this deployed object
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+	//%plyr.unmountImage(%slot);
+	//%plyr.decInventory(%item.item, 1);
 
 	$TeamDeployedCount[%plyr.team, %item.item]++;
 
@@ -141,7 +141,7 @@ function DeployedJumpad::onCollision(%data,%obj,%col) {
 	// TODO - update escape pod
 	if (%col.getClassName() !$= "Player" && %col.getDataBlock().getName() !$= "EscapePodVehicle")
 		return; // Only boost players
-//	if (%obj.team == %col.team) {
+	//if (%obj.team == %col.team) {
 		%vel = %col.getVelocity();
 		%vec = realVec(%obj,"0 0 1");
 		%position = getWords(%col.getTransform(), 0, 2);
@@ -151,7 +151,7 @@ function DeployedJumpad::onCollision(%data,%obj,%col) {
 		%impulseVec = vectorScale(%vec,%obj.impulse);
 //		%col.schedule(50, "applyImpulse", %position, %impulseVec);
 		%col.applyImpulse(%position, %impulseVec);
-//	}
+	//}
 }
 
 function DeployedJumpad::onDestroyed(%this, %obj, %prevState) {

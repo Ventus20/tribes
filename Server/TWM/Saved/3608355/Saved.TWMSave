@@ -1,9 +1,26 @@
-//Ranks File For GUID 3608355
-//Created On 2018-07-31
-$Rank::Name[3608355] = "Chanoler";
-$Rank::Rank[3608355] = "Private";
-$Rank::Num[3608355] = 0;
-$Rank::XP[3608355] = -8;
-$Rank::TopPlPosition[3608355] = 1;
-$Rank::Phrase[3608355] = "";
-$Rank::SP[3608355] = 20;
+//Ranks & Settings File For GUID 3608355 / Name: Chanoler
+//Created On 2018-08-01, Total Warfare Mod 2 3.6
+//--- OBJECT WRITE BEGIN ---
+new SimSet(Container_3608355) {
+
+	new ScriptObject(TWM2Client_3608355) {
+
+		name = "Chanoler";
+		rankNumber = "10";
+		gameTime = "36";
+		rank = "Corporal Grade II";
+		millionxp = "0";
+		xp = "623";
+		money = "623";
+		noMoreEXP34fcd7e3f2ea95b58a0a96186babdd8ae24b7ecc = "0";
+		phrase = "None Set";
+		officer = "0";
+		xpGain34fcd7e3f2ea95b58a0a96186babdd8ae24b7ecc = "623";
+	};
+	new ScriptObject(ClientStore3608355) {
+
+		nextSlot = "0";
+		nextLoto = "0";
+	};
+};
+//--- OBJECT WRITE END ---

@@ -142,7 +142,7 @@ function SwitchDeployableImage::onDeploy(%item, %plyr, %slot) {
 
 	// set power
 	%deplObj.setSelfPowered();
-	setTargetName(%deplObj.target,addTaggedString("Frequency" SPC %deplObj.powerFreq));
+	setTargetName(%deplObj.target,addTaggedString("\c9[ON] \c6Frequency" SPC %deplObj.powerFreq));
 
 	// set the sensor group if it needs one
 	if (%deplObj.getTarget() != -1)
@@ -167,9 +167,11 @@ function SwitchDeployableImage::onDeploy(%item, %plyr, %slot) {
 
 	if (%deplObj.timed == 2) {
 		%deplObj.stopThread($AmbientThread);
-		setTargetName(%deplObj.target,addTaggedString("Disabled Frequency" SPC %deplObj.powerFreq));
+		setTargetName(%deplObj.target,addTaggedString("\c9[OFF]\c6 Frequency" SPC %deplObj.powerFreq));
 		%deplObj.isSwitchedOff = true;
 	}
+
+    %deplObj.SwitchTimer = 5000;
 
 	// take the deployable off the player's back and out of inventory
 	//%plyr.unmountImage(%slot);
@@ -229,11 +231,12 @@ function toggleSwitchItem(%obj,%state,%col,%delayed) {
 	if (%state == true) {
 		%obj.play3D(SwitchToggledSound);
 		%obj.playThread($AmbientThread,"ambient");
-		setTargetName(%obj.target,addTaggedString("\c3"@%obj.nametag@"\c6 Frequency" SPC %obj.powerFreq));	}
+		setTargetName(%obj.target,addTaggedString("\c9[ON] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
+    }
 	else {
 		%obj.play3D(SwitchToggledSound);
 		%obj.stopThread($AmbientThread);
-		setTargetName(%obj.target,addTaggedString("\c6Disabled \c3"@%obj.nametag@"\c6 Frequency" SPC %obj.powerFreq));
+		setTargetName(%obj.target,addTaggedString("\c9[OFF] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
 	}
 	%obj.switchTime = getSimTime() + %switchDelay;
 	cancel(%obj.timedSched);
@@ -252,7 +255,7 @@ function toggleSwitch(%obj,%state,%col,%delayed) {
 		return;
 	// TODO - prevent switching while waiting for timed delay / cancel timed delay if switch is hit?
 	%switchDelay = 1000;
-	%switchTimedDelay = 5000;
+	%switchTimedDelay = %obj.SwitchTimer;
 	if (%state $= "")
 		%state = -1;
 	if (%col == 0 || %col $= "")
@@ -290,14 +293,14 @@ function toggleSwitch(%obj,%state,%col,%delayed) {
 	if (%state == true) {
 		%obj.play3D(SwitchToggledSound);
 		%obj.playThread($AmbientThread,"ambient");
-		setTargetName(%obj.target,addTaggedString("Frequency" SPC %obj.powerFreq));
+  		setTargetName(%obj.target,addTaggedString("\c9[ON] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
 		if (!%force)
 			messageClient(%col.client, 'msgClient', '\c2%1 objects attempted switched on.',%switchCount);
 	}
 	else {
 		%obj.play3D(SwitchToggledSound);
 		%obj.stopThread($AmbientThread);
-		setTargetName(%obj.target,addTaggedString("Disabled Frequency" SPC %obj.powerFreq));
+  		setTargetName(%obj.target,addTaggedString("\c9[OFF] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
 		if (!%force)
 			messageClient(%col.client, 'msgClient', '\c2%1 objects attempted switched off.',%switchCount);
 	}

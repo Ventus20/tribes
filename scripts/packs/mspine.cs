@@ -40,7 +40,7 @@ datablock StaticShapeData(DeployedMSpinering) : DeployedMSpine {
 };
 
 datablock ShapeBaseImageData(mspineDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = mspineDeployable;
@@ -68,7 +68,7 @@ datablock ItemData(mspineDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -82,6 +82,14 @@ datablock ItemData(mspineDeployable) {
 
 function mspineDeployableImage::testObjectTooClose(%item) {
 	return "";
+}
+
+function mspineDeployableImage::testNoTerrainFound(%item) {
+	// don't check this for non-Landspike turret deployables
+}
+
+function mspineDeployable::onPickup(%this, %obj, %shape, %amount) {
+	// created to prevent console errors
 }
 
 function mspineDeployableImage::onDeploy(%item, %plyr, %slot) {

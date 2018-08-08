@@ -34,7 +34,6 @@ datablock StaticShapeData(DeployedLightBase) : StaticShapeDamageProfile {
 	debrisShapeName		= "debris_generic_small.dts";
 	debris			= DeployableDebris;
 	heatSignature		= 0;
-	needsPower = true;
 };
 
 datablock ItemData(DeployedLight) {
@@ -128,7 +127,7 @@ datablock ItemData(DeployedLight13) : DeployedLight {
 };
 
 datablock ShapeBaseImageData(LightDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = LightDeployable;
@@ -156,7 +155,7 @@ datablock ItemData(LightDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -195,8 +194,6 @@ function LightDeployableImage::onDeploy(%item, %plyr, %slot) {
 		dataBlock = %item.deployed;
 	};
 
-	%deplObj.LgtColor = %plyr.packset;
-
 	%deplObj.light = new Item() {
 		datablock = DeployedLight @ %plyr.packSet;
 		static = true;
@@ -214,7 +211,6 @@ function LightDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%deplObj.team = %plyr.client.Team;
 	%deplObj.setOwner(%plyr);
 	%deplObj.light.lightBase = %deplObj;
-    %deplObj.isdeployedlightbase = 1;
 
 	// set the sensor group if it needs one
 	if (%deplObj.getTarget() != -1)
@@ -238,14 +234,8 @@ function LightDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%deplObj.playThread($AmbientThread,"ambient");
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
-
-	// set power frequency
-	%deplObj.powerFreq = %plyr.powerFreq;
-
-	// Power object
-	checkPowerObject(%deplObj);
+	//%plyr.unmountImage(%slot);
+	//%plyr.decInventory(%item.item, 1);
 
 	return %deplObj;
 }
@@ -280,26 +270,4 @@ function LightDeployableImage::onMount(%data, %obj, %node) {
 function LightDeployableImage::onUnmount(%data, %obj, %node) {
 	%obj.hasLight = "";
 	%obj.packSet = 0;
-}
-
-function DeployedLightBase::onGainPowerEnabled(%data,%obj) {
-   if (isObject(%obj.light))
-	%obj.light.delete();
-   %Obj.light = new Item() {
-	datablock = DeployedLight @ %Obj.LgtColor;
-	static = true;
-   };
-   // set orientation
-   %obj.nopower = 0;
-   %obj.killrad = 10;
-   adjustLight(%Obj);
-   scanforrapiers(%Obj);
-   scanforplayers(%Obj);
-   Parent::onGainPowerEnabled(%data,%obj);
-}
-
-function DeployedLightBase::onLosePowerDisabled(%data,%obj) {
-   %obj.nopower = 1;
-   %obj.light.delete();
-   Parent::onLosePowerDisabled(%data,%obj);
 }

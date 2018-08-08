@@ -3,19 +3,19 @@
 //---------------------------------------------------------
 
 // Translucencies
-%fieldTrans = 1.0;
-%powerOffTrans = 0.25;
+$fieldTransGrav = 1.0;
+$powerOffTransGrav = 0.25;
 
 // RGB
-%colourOn = 0.6;
-%colourOff = 0.15;
-%dimDiv = 3;
+$colourOnGrav = 0.6;
+$colourOffGrav = 0.15;
+$dimDivGrav = 3;
 
 datablock ForceFieldBareData(DeployedGravityField) {
 	className = "gravityfield";
 	fadeMS = 1000;
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
 	color         = "1.0 1.0 1.0";
@@ -40,11 +40,11 @@ datablock ForceFieldBareData(DeployedGravityField) {
 
 // slow
 datablock ForceFieldBareData(DeployedGravityField0) : DeployedGravityField {
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOff/%dimDiv SPC %colourOn/%dimDiv SPC %colourOff/%dimDiv;
+	color         = $colourOffGrav/$dimDivGrav SPC $colourOnGrav/$dimDivGrav SPC $colourOffGrav/$dimDivGrav;
 	powerOffColor = "0.0 0.0 0.0";
 	velocityMod = 1;
 	gravityMod = 0;
@@ -52,11 +52,11 @@ datablock ForceFieldBareData(DeployedGravityField0) : DeployedGravityField {
 
 // fast
 datablock ForceFieldBareData(DeployedGravityField1) : DeployedGravityField {
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOff SPC %colourOn SPC %colourOff;
+	color         = $colourOffGrav SPC $colourOnGrav SPC $colourOffGrav;
 	powerOffColor = "0.0 0.0 0.0";
 	velocityMod = 1;
 	gravityMod = 0;
@@ -64,11 +64,11 @@ datablock ForceFieldBareData(DeployedGravityField1) : DeployedGravityField {
 
 // zero gravity
 datablock ForceFieldBareData(DeployedGravityField2) : DeployedGravityField {
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOn SPC %colourOff;
+	color         = $colourOnGrav SPC $colourOnGrav SPC $colourOffGrav;
 	powerOffColor = "0.0 0.0 0.0";
 	velocityMod = 1;
 	gravityMod = 0;
@@ -76,11 +76,11 @@ datablock ForceFieldBareData(DeployedGravityField2) : DeployedGravityField {
 
 // fastfield
 datablock ForceFieldBareData(DeployedGravityField3) : DeployedGravityField {
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn/%dimDiv SPC %colourOff/%dimDiv SPC %colourOn/%dimDiv;
+	color         = $colourOnGrav/$dimDivGrav SPC $colourOffGrav/$dimDivGrav SPC $colourOnGrav/$dimDivGrav;
 	powerOffColor = "0.0 0.0 0.0";
 	velocityMod = 1.5;
 	gravityMod = 0;
@@ -88,18 +88,18 @@ datablock ForceFieldBareData(DeployedGravityField3) : DeployedGravityField {
 
 // super fastfield
 datablock ForceFieldBareData(DeployedGravityField4) : DeployedGravityField {
-	baseTranslucency = %fieldTrans;
-	powerOffTranslucency = %powerOffTrans;
+	baseTranslucency = $fieldTransGrav;
+	powerOffTranslucency = $powerOffTransGrav;
 	teamPermiable = true;
 	otherPermiable = true;
-	color         = %colourOn SPC %colourOff SPC %colourOn;
+	color         = $colourOnGrav SPC $colourOffGrav SPC $colourOnGrav;
 	powerOffColor = "0.0 0.0 0.0";
 	velocityMod = 1.7;
 	gravityMod = 0;
 };
 
 datablock ShapeBaseImageData(GravityFieldDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "ammo_chaingun.dts";
 	item = GravityFieldDeployable;
@@ -127,7 +127,7 @@ datablock ItemData(GravityFieldDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;

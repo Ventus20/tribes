@@ -1,42 +1,26 @@
 //--------------------------------------------------------------------------
 // Large Missile Turret
 // 
-// z0dd - ZOD, 4/25/02. Labels for sound datablocks were wrong.
-//-------------------------------------------------------------
-
+// 
 //--------------------------------------------------------------------------
-// Sounds
-//--------------------------------------
-datablock EffectProfile(MILSwitchEffect)
-{
-   effectname = "powered/turret_heavy_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
 
-datablock EffectProfile(MILFireEffect)
-{
-   effectname = "powered/turret_missile_fire";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
 
+//datablock AudioProfile(MBLSwitchSound)
 datablock AudioProfile(MILSwitchSound)
 {
    filename    = "fx/powered/turret_missile_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = MILSwitchEffect;
+
 };
 
+//datablock AudioProfile(MBLFireSound)
 datablock AudioProfile(MILFireSound)
 {
    filename    = "fx/powered/turret_missile_fire.wav";
    description = AudioDefault3d;
    preload = true;
-   effect = MILFireEffect;
 };
-
 
 //--------------------------------------------------------------------------
 // Particle effects: Note that we pull the below datablocks from
@@ -77,7 +61,7 @@ datablock SeekerProjectileData(TurretMissile)
    puffEmitter         = MissilePuffEmitter;
 
    lifetimeMS          = 20000;
-   muzzleVelocity      = 90.0; // z0dd - ZOD, 3/27/02. Was 80. Velocity of projectile
+   muzzleVelocity      = 80.0;
    turningSpeed        = 90.0;
    
    proximityRadius     = 4;
@@ -93,74 +77,17 @@ datablock SeekerProjectileData(TurretMissile)
 };
 
 //--------------------------------------------------------------------------
-// Projectile
-//--------------------------------------
-datablock SeekerProjectileData(sidewinder_Turret)
-{
-   casingShapeName     = "weapon_missile_casement.dts";
-   projectileShapeName = "weapon_missile_projectile.dts";
-   hasDamageRadius     = true;
-   indirectDamage      = 1.0;
-   damageRadius        = 3.0;
-   radiusDamageType    = $DamageType::Missile;
-   kickBackStrength    = 650;
-
-   explosion           = "MissileExplosion";
-   splash              = MissileSplash;
-   velInheritFactor    = 1.0;    // to compensate for slow starting velocity, this value
-                                 // is cranked up to full so the missile doesn't start
-                                 // out behind the player when the player is moving
-                                 // very quickly - bramage
-
-   baseEmitter         = MissileSmokeEmitter;
-   delayEmitter        = MissileFireEmitter;
-   puffEmitter         = MissilePuffEmitter;
-   bubbleEmitter       = GrenadeBubbleEmitter;
-   bubbleEmitTime      = 1.0;
-
-   exhaustEmitter      = MissileLauncherExhaustEmitter;
-   exhaustTimeMs       = 300;
-   exhaustNodeName     = "muzzlePoint1";
-
-   lifetimeMS          = 15000; // z0dd - ZOD, 4/14/02. Was 6000
-   muzzleVelocity      = 80.0;
-   maxVelocity         = 350.0; // z0dd - ZOD, 4/14/02. Was 80.0
-   turningSpeed        = 58.0;
-   acceleration        = 75.0;
-
-   proximityRadius     = 3;
-
-   terrainAvoidanceSpeed         = 180;
-   terrainScanAhead              = 25;
-   terrainHeightFail             = 12;
-   terrainAvoidanceRadius        = 100;  
-   
-   flareDistance = 200;
-   flareAngle    = 30;
-   minSeekHeat   = 0.0;
-
-   sound = MissileProjectileSound;
-
-   hasLight    = true;
-   lightRadius = 5.0;
-   lightColor  = "0.2 0.05 0";
-
-   useFlechette = true;
-   flechetteDelayMs = 1000;
-   casingDeb = FlechetteDebris;
-
-   explodeOnWaterImpact = false;
-};
-
-//--------------------------------------------------------------------------
 //-------------------------------------- Fusion Turret Image
 //
 datablock TurretImageData(MissileBarrelLarge)
 {
    shapeFile = "turret_missile_large.dts";
-   item      = MissileBarrelPack; // z0dd - ZOD, 4/25/02. Was wrong: MissileBarrelLargePack
+   // ---------------------------------------------
+   // z0dd - ZOD, 5/8/02. Incorrect parameter value
+   //item      = MissileBarrelLargePack;
+   item = MissileBarrelPack;
 
-   projectile = SideWinder_Turret;
+   projectile = TurretMissile;
    projectileType = SeekerProjectile;
 
    usesEnergy = true;
@@ -168,20 +95,20 @@ datablock TurretImageData(MissileBarrelLarge)
    minEnergy = 60.0;
 
    isSeeker     = true;
-   seekRadius   = 400;
+   seekRadius   = 300;
    maxSeekAngle = 30;
-   seekTime     = 0.35;
+   seekTime     = 1.0;
    minSeekHeat  = 0.6;
    emap = true;
    minTargetingDistance = 40;
 
    // Turret parameters
-   activationMS      = 175; // z0dd - ZOD, 3/27/02. Was 250. Amount of time it takes turret to unfold
+   activationMS      = 250;
    deactivateDelayMS = 500;
-   thinkTimeMS       = 140; // z0dd - ZOD, 3/27/02. Was 200. Amount of time before turret starts to unfold (activate)
+   thinkTimeMS       = 200;
    degPerSecTheta    = 580;
    degPerSecPhi      = 1080;
-   attackRadius      = 400;
+   attackRadius      = 250;
 
    // State transitions
    stateName[0]                  = "Activate";
@@ -190,7 +117,11 @@ datablock TurretImageData(MissileBarrelLarge)
 
    stateName[1]                  = "ActivateReady";
    stateSequence[1]              = "Activate";
-   stateSound[1]                 = MILSwitchSound; // z0dd - ZOD, 3/27/02. Was MBLSwitchSound, changed for sound fix.
+   // ----------------------------------------------
+   // z0dd - ZOD, 3/27/02. Changed for sound fix.
+   //stateSound[1]                 = MBLSwitchSound;
+   stateSound[1] = MILSwitchSound;
+
    stateTimeoutValue[1]          = 2;
    stateTransitionOnTimeout[1]   = "Ready";
    stateTransitionOnNotLoaded[1] = "Deactivate";
@@ -208,7 +139,11 @@ datablock TurretImageData(MissileBarrelLarge)
    stateRecoil[3]              = LightRecoil;
    stateAllowImageChange[3]    = false;
    stateSequence[3]            = "Fire";
-   stateSound[3]               = MILFireSound; // z0dd - ZOD, 3/27/02. Was MBLFireSound, changed for sound fix.
+   // ----------------------------------------------
+   // z0dd - ZOD, 3/27/02. Changed for sound fix.
+   //stateSound[3]               = MBLFireSound;
+   stateSound[3] = MILFireSound;
+
    stateScript[3]              = "onFire";
 
    stateName[4]                  = "Reload";
@@ -234,93 +169,3 @@ datablock TurretImageData(MissileBarrelLarge)
    stateSequence[7]         = "NoAmmo";
 };
 
-
-//AT6 Turret
-datablock TurretImageData(AT6BarrelLarge)
-{
-   shapeFile = "turret_missile_large.dts";
-   // ---------------------------------------------
-   // z0dd - ZOD, 5/8/02. Incorrect parameter value
-   //item      = MissileBarrelLargePack;
-   //item = MissileBarrelPack;
-
-   projectile = LShoulderMissile;
-   projectileType = SeekerProjectile;
-
-   usesEnergy = true;
-   fireEnergy = 30.0;
-   minEnergy = 60.0;
-   emap = true;
-
-   // Turret parameters
-   activationMS      = 250;
-   deactivateDelayMS = 500;
-   thinkTimeMS       = 100;
-   degPerSecTheta    = 580;
-   degPerSecPhi      = 1080;
-   attackRadius      = 500;
-
-   // State transitions
-   stateName[0]                  = "Activate";
-   stateTransitionOnNotLoaded[0] = "Dead";
-   stateTransitionOnLoaded[0]    = "ActivateReady";
-
-   stateName[1]                  = "ActivateReady";
-   stateSequence[1]              = "Activate";
-   // ----------------------------------------------
-   // z0dd - ZOD, 3/27/02. Changed for sound fix.
-   //stateSound[1]                 = MBLSwitchSound;
-   stateSound[1] = MILSwitchSound;
-
-   stateTimeoutValue[1]          = 0.5;
-   stateTransitionOnTimeout[1]   = "Ready";
-   stateTransitionOnNotLoaded[1] = "Deactivate";
-   stateTransitionOnNoAmmo[1]    = "NoAmmo";
-
-   stateName[2]                    = "Ready";
-   stateTransitionOnNotLoaded[2]   = "Deactivate";
-   stateTransitionOnTriggerDown[2] = "Fire";
-   stateTransitionOnNoAmmo[2]      = "NoAmmo";
-
-   stateName[3]                = "Fire";
-   stateTransitionOnTimeout[3] = "Reload";
-   stateTimeoutValue[3]        = 0.3;
-   stateFire[3]                = true;
-   stateRecoil[3]              = LightRecoil;
-   stateAllowImageChange[3]    = false;
-   stateSequence[3]            = "Fire";
-   // ----------------------------------------------
-   // z0dd - ZOD, 3/27/02. Changed for sound fix.
-   //stateSound[3]               = MBLFireSound;
-   stateSound[3] = MILFireSound;
-
-   stateScript[3]              = "onFire";
-
-   stateName[4]                  = "Reload";
-   stateTimeoutValue[4]          = 0.6;
-   stateAllowImageChange[4]      = false;
-   stateSequence[4]              = "Reload";
-   stateTransitionOnTimeout[4]   = "Ready";
-   stateTransitionOnNotLoaded[4] = "Deactivate";
-   stateTransitionOnNoAmmo[4]    = "NoAmmo";
-
-   stateName[5]                = "Deactivate";
-   stateSequence[5]            = "Activate";
-   stateDirection[5]           = false;
-   stateTimeoutValue[5]        = 0.5;
-   stateTransitionOnLoaded[5]  = "ActivateReady";
-   stateTransitionOnTimeout[5] = "Dead";
-
-   stateName[6]               = "Dead";
-   stateTransitionOnLoaded[6] = "ActivateReady";
-
-   stateName[7]             = "NoAmmo";
-   stateTransitionOnAmmo[7] = "Reload";
-   stateSequence[7]         = "NoAmmo";
-};
-
-
-function AT6BarrelLarge::onFire(%data,%obj,%slot) {
-   %p = Parent::onFire(%data,%obj,%slot);
-   %p.AT4lockon = schedule(875, 0, "AT4LockOnToTarget", %p);
-}

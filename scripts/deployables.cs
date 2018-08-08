@@ -10,17 +10,15 @@ $Host::CRCTextures = 0;
 $TurretIndoorSpaceRadius  = 1;  // deployed turrets must be this many meters apart
 $InventorySpaceRadius  = 1;  // deployed inventory must be this many meters apart
 $TurretIndoorSphereRadius = 1;  // radius for turret frequency check
-$TurretIndoorMaxPerSphere = 9999;   // # of turrets allowed in above radius
+$TurretIndoorMaxPerSphere = 999;   // # of turrets allowed in above radius
 
 $TurretOutdoorSpaceRadius  = 1;  // deployed turrets must be this many meters apart
 $TurretOutdoorSphereRadius = 1;  // radius for turret frequency check
-$TurretOutdoorMaxPerSphere = 9999;   // # of turrets allowed in above radius
+$TurretOutdoorMaxPerSphere = 999;   // # of turrets allowed in above radius
 
 $TeamDeployableMax[InventoryDeployable]      = 9999;
 $TeamDeployableMax[TurretIndoorDeployable]   = 9999;
 $TeamDeployableMax[TurretOutdoorDeployable]  = 9999;
-$TeamDeployableMax[TurretPlasOutdoorDeployable]   = 9999;
-$TeamDeployableMax[TurretIndoor30calDeployable]   = 9999;
 $TeamDeployableMax[PulseSensorDeployable]    = 9999;
 $TeamDeployableMax[MotionSensorDeployable]   = 9999;
 
@@ -36,9 +34,9 @@ $TeamDeployableMax[wWallDeployable] = 9999;
 $TeamDeployableMax[SpineDeployable] = 9999;
 $TeamDeployableMax[mSpineDeployable] = 9999;
 $TeamDeployableMax[JumpadDeployable] = 9999;
-$TeamDeployableMax[EscapePodDeployable] = 9999;
-$TeamDeployableMax[EnergizerDeployable] = 9999;
-$TeamDeployableMax[TreeDeployable] = 9999;
+$TeamDeployableMax[EscapePodDeployable] = 50;
+$TeamDeployableMax[EnergizerDeployable] = 50;
+$TeamDeployableMax[TreeDeployable] = 100;
 $TeamDeployableMax[CrateDeployable] = 9999;
 $TeamDeployableMax[DecorationDeployable] = 9999;
 $TeamDeployableMax[LogoProjectorDeployable] = 9999;
@@ -48,51 +46,28 @@ $TeamDeployableMax[ForceFieldDeployable] = 9999;
 $TeamDeployableMax[GravityFieldDeployable] = 9999;
 $TeamDeployableMax[TelePadPack] = 9999;
 $TeamDeployableMax[DoorDeployable] = 9999;
-$TeamDeployableMax[ZSpawnDeployable] = 9999;
-$TeamDeployableMax[SpawnPointPack] = 9999;
-$TeamDeployableMax[waypointDeployable] = 9999;
-$TeamDeployableMax[RepairPadDeployable] = 5;
 
 $TeamDeployableMax[TurretBasePack] = 9999;
-$TeamDeployableMax[TurretLaserDeployable] = 9999;
-$TeamDeployableMax[DiscTurretDeployable] = 9999;
-$TeamDeployableMax[TurretMissileRackDeployable] = 9999;
 
 //This could also be in "pack".cs but what the heck
 //[most]
-$TeamDeployableMax[TurretMpm_Anti_Deployable] = 9999;
 $TeamDeployableMax[VehiclePadPack] = 9999;
 $TeamDeployableMax[EmitterDepPack] = 9999;
 $TeamDeployableMax[AudioDepPack] = 9999;
 $TeamDeployableMax[DispenserDepPack] = 9999;
-$TeamDeployableMax[MPM_BeaconPack] = 9999;
-$TeamDeployableMax[DetonationDepPack] = 9999;
-//noone cares
-$TeamDeployableMax[MpmFuelPack] = 9999;
-$TeamDeployableMax[MpmAmmoPack] = 9999;
 
 //[most]
-
 $TeamDeployableMin[TurretIndoorDeployable] = 9999;
 $TeamDeployableMin[TurretOutdoorDeployable] = 9999;
-$TeamDeployableMin[TurretPlasOutdoorDeployable] = 9999;
-$TeamDeployableMin[TurretIndoor30calDeployable]   = 9999;
 $TeamDeployableMin[TurretBasePack] = 9999;
-$TeamDeployableMin[TurretLaserDeployable] = 9999;
-$TeamDeployableMin[DiscTurretDeployable] = 9999;
-$TeamDeployableMin[TurretMissileRackDeployable] = 9999;
+
 
 //[most]
-$TeamDeployableMin[TurretMpm_Anti_Deployable] = 9999;
 $TeamDeployableMin[VehiclePadPack] = 9999;
 $TeamDeployableMin[EmitterDepPack] = 9999;
 $TeamDeployableMin[AudioDepPack] = 9999;
 $TeamDeployableMin[DispenserDepPack] = 9999;
-$TeamDeployableMin[MPM_BeaconPack] = 9999;
-$TeamDeployableMin[DetonationDepPack] = 9999;
-//noone cares
-$TeamDeployableMin[MpmFuelPack] = 9999;
-$TeamDeployableMin[MpmAmmoPack] = 9999;
+
 
 //[most]
 
@@ -108,41 +83,10 @@ $NotDeployableReason::TurretTooClose            =  8;
 $NotDeployableReason::TurretSaturation          =  9;
 $NotDeployableReason::SurfaceTooNarrow          =  10;
 $NotDeployableReason::InventoryTooClose         =  11;
+$NotDeployableReason::CantDeploySecure          =  12;
 
-$MinDeployableDistance                       =  2.5;
+$MinDeployableDistance                       =  0.0001;
 $MaxDeployableDistance                       =  5.0;  //meters from body
-
-// --------------------------------------------
-// effect datablocks
-// --------------------------------------------
-
-datablock EffectProfile(TurretDeployEffect)
-{
-   effectname = "packs/generic_deploy";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(SensorDeployEffect)
-{
-   effectname = "powered/sensor_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(MotionSensorDeployEffect)
-{
-   effectname = "powered/motion_sensor_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(StationDeployEffect)
-{
-   effectname = "packs/inventory_deploy";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
 
 // --------------------------------------------
 // sound datablocks
@@ -153,7 +97,6 @@ datablock AudioProfile(TurretDeploySound)
    fileName = "fx/packs/turret_place.wav";
    description = AudioClose3d;
    preload = true;
-   effect = TurretDeployEffect;
 };
 
 datablock AudioProfile(DSound)
@@ -169,7 +112,6 @@ datablock AudioProfile(SensorDeploySound)
    fileName = "fx/powered/sensor_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = SensorDeployEffect;
    // z0dd - ZOD - Durt, 6/24/02. Eh? This shouldn't be in here.
    //effect = MotionSensorDeployEffect;
 };
@@ -180,7 +122,6 @@ datablock AudioProfile(MotionSensorDeploySound)
    description = AudioClose3d;
    preload = true;
    // z0dd - ZOD - Durt, 6/24/02. This should be in here.
-   effect = MotionSensorDeployEffect;
 };
 
 datablock AudioProfile(StationDeploySound)
@@ -188,7 +129,6 @@ datablock AudioProfile(StationDeploySound)
    fileName = "fx/packs/inventory_deploy.wav";
    description = AudioClose3d;
    preload = true;
-   effect = StationDeployEffect;
 };
 
 // --------------------------------------------
@@ -521,7 +461,7 @@ datablock ItemData(TurretOutdoorDeployable)
    pickupRadius = 1;
    rotate = false;
    image = "TurretOutdoorDeployableImage";
-   pickUpName = "a anti-personal Mortar pack";
+   pickUpName = "a landspike turret pack";
 
    computeCRC = true;
    emap = true;
@@ -568,106 +508,7 @@ datablock ItemData(TurretIndoorDeployable)
    pickupRadius = 1;
    rotate = false;
    image = "TurretIndoorDeployableImage";
-   pickUpName = "a Implacement Turret pack";
-
-   computeCRC = true;
-   emap = true;
-
-};
-
-// --------------------------------------------
-// deployable outdoor fission turret
-
-datablock ShapeBaseImageData(TurretPlasOutdoorDeployableImage)
-{
-   mass = 15;
-
-   shapeFile = "pack_deploy_turreto.dts";
-   item = TurretPlasOutdoorDeployable;
-   mountPoint = 1;
-   offset = "0 0 0";
-   deployed = TurretplasDeployedOutdoor;
-
-   stateName[0] = "Idle";
-   stateTransitionOnTriggerDown[0] = "Activate";
-
-   stateName[1] = "Activate";
-   stateScript[1] = "onActivate";
-   stateTransitionOnTriggerUp[1] = "Idle";
-
-   maxDamage = 4.5;
-   destroyedLevel = 4.5;
-   disabledLevel = 4.0;
-
-   isLarge = true;
-   emap = true;
-
-   maxDepSlope = 40;
-   deploySound = TurretDeploySound;
-
-   minDeployDis                       =  0.5;
-   maxDeployDis                       =  5.0;  //meters from body
-};
-
-datablock ItemData(TurretPlasOutdoorDeployable)
-{
-   className = Pack;
-   catagory = "Deployables";
-   shapeFile = "pack_deploy_turreto.dts";
-   mass = 3.0;
-   elasticity = 0.2;
-   friction = 0.6;
-   pickupRadius = 1;
-   rotate = false;
-   image = "TurretPlasOutdoorDeployableImage";
-   pickUpName = "a plasma fission pack";
-
-   computeCRC = true;
-   emap = true;
-
-};
-
-// --------------------------------------------
-// deployable indoor turret(30-Caliber Version)
-
-datablock ShapeBaseImageData(TurretIndoor30calDeployableImage)
-{
-   mass = 15;
-
-   shapeFile = "pack_deploy_turreti.dts";
-   item = TurretIndoor30calDeployable;
-   mountPoint = 1;
-   offset = "0 0 0";
-
-   stateName[0] = "Idle";
-   stateTransitionOnTriggerDown[0] = "Activate";
-
-   stateName[1] = "Activate";
-   stateScript[1] = "onActivate";
-   stateTransitionOnTriggerUp[1] = "Idle";
-
-   isLarge = true;
-   emap = true;
-
-   maxDepSlope = 360;
-   deploySound = TurretDeploySound;
-
-   minDeployDis                       =  0.5;
-   maxDeployDis                       =  5.0;  //meters from body
-};
-
-datablock ItemData(TurretIndoor30calDeployable)
-{
-   className = Pack;
-   catagory = "Deployables";
-   shapeFile = "pack_deploy_turreti.dts";
-   mass = 3.0;
-   elasticity = 0.2;
-   friction = 0.6;
-   pickupRadius = 1;
-   rotate = false;
-   image = "TurretIndoor30calDeployableImage";
-   pickUpName = "a automated 30-caliber turret pack";
+   pickUpName = "a spider clamp turret pack";
 
    computeCRC = true;
    emap = true;
@@ -800,12 +641,37 @@ function Deployables::searchView(%obj, %searchRange, %mask)
 // Deployable Procedures //
 //-----------------------//
 
+function ShapeBaseImageData::testDeploySecure(%item, %plyr) {
+   %mask = $TypeMasks::StationObjectType | $TypeMasks::GeneratorObjectType
+    | $TypeMasks::SensorObjectType | $TypeMasks::TurretObjectType
+    | $TypeMasks::ForceFieldObjectType | $TypeMasks::StaticObjectType;
+
+   InitContainerRadiusSearch(%item.surfacePt, 4, %mask);
+   while ((%hitObj = containerSearchNext()) != 0) {
+      if(%hitObj.squareSize !$= "") {
+         return false; //terrain!
+      }
+      %owner = %hitObj.getOwner();
+
+      if(%owner != %plyr.client) {
+         //echo(%hitObj.getOwner());
+         if(%owner.pieceSecured) {
+            return true;
+         }
+         else {
+            return false;
+         }
+      }
+      else {
+         return false;
+      }
+   }
+}
+
 //-------------------------------------------------
 function ShapeBaseImageData::testMaxDeployed(%item, %plyr) {
 	if (%item.item $= TurretOutdoorDeployable
 		 || %item.item $= TurretIndoorDeployable
-		 || %item.item $= TurretPlasOutdoorDeployable
-		 || %item.item $= TurretIndoor30calDeployable
 		 || %item.item $= TurretBasePack
 		 || %item.item $= TurretLaserDeployable
 		 || %item.item $= TurretMissileRackDeployable
@@ -869,11 +735,6 @@ function TurretOutdoorDeployableImage::testNoTerrainFound(%item)
    return %item.surface.getClassName() !$= TerrainBlock;
 }
 
-function TurretPlasOutdoorDeployableImage::testNoTerrainFound(%item)
-{
-   return %item.surface.getClassName() !$= TerrainBlock;
-}
-
 function ShapeBaseImageData::testNoTerrainFound(%item, %surface)
 {
    //don't check this for non-Landspike turret deployables
@@ -905,31 +766,6 @@ function TurretIndoorDeployableImage::testNoInteriorFound(%item) {
 	return %item.surface.getClassName() !$= InteriorInstance;
 }
 
-function TurretIndoor30calDeployableImage::testNoInteriorFound(%item) {
-	if (%item.surface.getType() & $TypeMasks::StaticShapeObjectType) {
-		%className = %item.surface.getDataBlock().className;
-		if (%className $= "Wall")
-			return 0;
-		else if (%className $= "wWall")
-			return 0;
-		else if (%className $= "spine")
-			return 0;
-		else if (%className $= "mspine")
-			return 0;
-		else if (%className $= "item")
-			return 0;
-		else if (%className $= "floor")
-			return 0;
-		else if (%className $= "tree")
-			return 0;
-		else if (%className $= "crate")
-			return 0;
-		else if (%className $= "decoration")
-			return 0;
-	}
-	return %item.surface.getClassName() !$= InteriorInstance;
-}
-
 function ShapeBaseImageData::testNoInteriorFound(%item, %surface)
 {
    //don't check this for non-Clasping turret deployables
@@ -937,13 +773,6 @@ function ShapeBaseImageData::testNoInteriorFound(%item, %surface)
 
 //-------------------------------------------------
 function TurretIndoorDeployableImage::testHavePurchase(%item, %xform)
-{
-   %footprintRadius = 0.34;
-   %collMask = $TypeMasks::InteriorObjectType;
-   return %item.deployed.checkDeployPurchase(%xform, %footprintRadius, %collMask);
-}
-
-function TurretIndoor30calDeployableImage::testHavePurchase(%item, %xform)
 {
    %footprintRadius = 0.34;
    %collMask = $TypeMasks::InteriorObjectType;
@@ -990,10 +819,6 @@ function isDeployedTurret(%obj) {
 	|| (%dataBlockName $= TurretDeployedWallIndoor)
 	|| (%dataBlockName $= TurretDeployedCeilingIndoor)
 	|| (%dataBlockName $= TurretDeployedOutdoor)
-	|| (%dataBlockName $= TurretDeployedFloor30Indoor)   //New
-	|| (%dataBlockName $= TurretDeployedWall30Indoor)
-	|| (%dataBlockName $= TurretDeployedCeiling30Indoor)
-	|| (%dataBlockName $= TurretplasDeployedOutdoor)      //End New
 	|| (%dataBlockName $= TurretDeployedBase)
 	|| (%dataBlockName $= LaserDeployed)
 	|| (%dataBlockName $= MissileRackTurretDeployed)
@@ -1007,8 +832,6 @@ function isDeployedTurret(%obj) {
 function isDeployableTurret(%item) {
 	if ((%item $= TurretIndoorDeployable)
 	|| (%item $= TurretOutdoorDeployable)
-	|| (%item $= TurretIndoor30calDeployable)
-	|| (%item $= TurretPlasOutdoorDeployable)
 	|| (%item $= TurretBasePack)
 	|| (%item $= TurretLaserDeployable)
 	|| (%item $= TurretMissileRackDeployable)
@@ -1069,14 +892,6 @@ function TurretMpm_Anti_DeployableImage::testTurretTooClose(%item, %plyr) {
 
 
 function DiscTurretDeployableImage::testTurretTooClose(%item, %plyr) {
-	return TurretOutdoorDeployableImage::testTurretTooClose(%item, %plyr);
-}
-
-function TurretIndoor30calDeployableImage::testTurretTooClose(%item, %plyr) {
-	return TurretIndoorDeployableImage::testTurretTooClose(%item, %plyr);
-}
-
-function TurretPlasOutdoorDeployableImage::testTurretTooClose(%item, %plyr) {
 	return TurretOutdoorDeployableImage::testTurretTooClose(%item, %plyr);
 }
 
@@ -1151,14 +966,6 @@ function TurretMpm_Anti_DeployableImage::testTurretSaturation(%item, %plyr) {
 }
 
 function DiscTurretDeployableImage::testTurretSaturation(%item, %plyr) {
-	return TurretOutdoorDeployableImage::testTurretSaturation(%item, %plyr);
-}
-
-function TurretIndoor30calDeployableImage::testTurretSaturation(%item, %plyr) {
-	return TurretIndoorDeployableImage::testTurretSaturation(%item, %plyr);
-}
-
-function TurretPlasOutdoorDeployableImage::testTurretSaturation(%item, %plyr) {
 	return TurretOutdoorDeployableImage::testTurretSaturation(%item, %plyr);
 }
 
@@ -1324,6 +1131,9 @@ function ShapeBaseImageData::testInvalidDeployConditions(%item, %plyr, %slot) {
    {
       %disqualified = $NotDeployableReason::TurretSaturation;
    }
+   else if (%item.testDeploySecure(%plyr)) {
+      %disqualified = $NotDeployableReason::CantDeploySecure;
+   }
    else if (%disqualified == $NotDeployableReason::None)
    {
       // Test that there are no obstructing objects that this object
@@ -1474,6 +1284,9 @@ function Deployables::displayErrorMsg(%item, %plyr, %slot, %error)
       case $NotDeployableReason::InventoryTooClose:
          %msg = '\c2Interference from a nearby inventory prevents placement here.%1';
 
+      case $NotDeployableReason::CantDeploySecure:
+         %msg = '\c2Deploy rights on these pieces are secured.%1';
+
       default:
          %msg = '\c2Deploy failed.';
    }
@@ -1509,8 +1322,8 @@ function ShapeBaseImageData::onDeploy(%item, %plyr, %slot)
    else
    {
       // take the deployable off the player's back and out of inventory
-      %plyr.unmountImage(%slot);
-      %plyr.decInventory(%item.item, 1);
+      //%plyr.unmountImage(%slot);
+      //%plyr.decInventory(%item.item, 1);
    }
 
    // create the actual deployable !!!!!!!!!!!!!!!!STOP AND LOOK AT ME!!!!!!!!!!!!!!!!! ???????WHY??????
@@ -1729,33 +1542,12 @@ function TurretIndoorDeployableImage::getInitialRotation(%item, %plyr)
       %item.deployed = TurretDeployedFloorIndoor;
 }
 
-function TurretIndoor30calDeployableImage::getInitialRotation(%item, %plyr)
-{
-   %surfaceAngle = getTerrainAngle(%item.surfaceNrm);
-   if (%surfaceAngle > 155)
-      %item.deployed = TurretDeployedCeiling30Indoor;
-   else if (%surfaceAngle > 45)
-      %item.deployed = TurretDeployedWall30Indoor;
-   else
-      %item.deployed = TurretDeployedFloor30Indoor;
-}
-
 function TurretIndoorDeployable::onPickup(%this, %obj, %shape, %amount)
 {
    // created to prevent console errors
 }
 
 function TurretOutdoorDeployable::onPickup(%this, %obj, %shape, %amount)
-{
-   // created to prevent console errors
-}
-
-function TurretIndoor30calDeployable::onPickup(%this, %obj, %shape, %amount)
-{
-   // created to prevent console errors
-}
-
-function TurretPlasOutdoorDeployable::onPickup(%this, %obj, %shape, %amount)
 {
    // created to prevent console errors
 }
@@ -1860,11 +1652,6 @@ function DeployedTurret::onDestroyed(%this, %obj, %prevState) {
 		// decrement team count
 		$TeamDeployedCount[%obj.team, %turType]--;
 		remDSurface(%obj);
-
-		if (%obj.getDataBlock().barrel $= "DeployableIndoorBarrel") {
-	    	   %obj.Base.schedule(10, "delete");
-		}
-
 		%obj.schedule(700, "delete");
 	}
 	Parent::onDestroyed(%this, %obj, %prevState);
@@ -2076,6 +1863,16 @@ function cascade(%obj,%cascade) {
 function disassemble(%data,%plyr,%obj) {
 	if (!isObject(%obj))
 		return;
+
+    //
+    if(isObject(%obj)) {
+       if(isSet(%plyr)) {
+          %table = pullObjectDetails(%obj);   //saves all of the object's info to a var, tables are in the module
+          %plyr.client.specifyLastContructionAction("delete", %obj, %table);
+       }
+    }
+    //
+
 	if (%obj.lMain) {
 		if (isObject(%obj.lMain)) {
 			%obj.lMain.getDataBlock().disassemble(%plyr,%obj.lMain);
@@ -2101,7 +1898,7 @@ function disassemble(%data,%plyr,%obj) {
 		%obj.trigger.delete();
         if (isObject(%obj.emitter))
                 %obj.emitter.delete();
-	%obj.schedule(500,"delete");	
+	%obj.schedule(500,"delete");
 	%revItem = %obj.getDataBlock().getName();
 	%newPack = $ReverseDeployItem[%revItem];
 	if (getWord(%newPack,0) $= "poof")
@@ -2121,9 +1918,6 @@ function StaticShapeData::disassemble(%data,%plyr,%obj) {
 		if (%loc !$= "")
 			$PowerList = listDel($PowerList,%loc);
 		%obj.isRemoved = true;
-	}
-	if (%obj.getDataBlock().barrel $= "DeployableIndoorBarrel") {
-	    %obj.Base.schedule(10, "delete");
 	}
 	disassemble(%data,%plyr,%obj);
 }

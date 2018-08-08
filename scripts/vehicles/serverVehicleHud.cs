@@ -1,121 +1,102 @@
-//Each menu has a name which must begin with the letters mnu. The data associated with each menu is as follows:
-
-//$VehicleMenuNumEntries[menuname] = the number of items on this menu.
-
-//Then for each menu entry (zero-indexed) you must have:
-
-//$VehicleMenu[menuname, index, "submenu"] = true/false depending on whether this menu entry will take you to a submenu.
-
-//$VehicleMenu[menuname, index, "displayed"] = what should be displayed in the menu button
-
-//$VehicleMenu[menuname, index, "datablock"] = the datablock that should be triggered. If you want to produce a submenu, this datablock must be a menu name (mnuSomething)
-
 // bill - menu definitions
 // Each menu has a name beginning with mnu - this defines the number of entries
-$VehicleMenuNumEntries["mnuMain"] = 5;
+$VehicleMenuNumEntries["mnuMain"] = 7;
 // mnuName, index, field = data
 // submenu - whether or not it is a submenu
 // datablock - the associated datablock
 // displayed - what should be displayed
 $VehicleMenu["mnuMain", 0, "submenu"] = true;
 $VehicleMenu["mnuMain", 0, "datablock"] = mnuLightFlyers;
-$VehicleMenu["mnuMain", 0, "displayed"] = "Fighters -->";
+$VehicleMenu["mnuMain", 0, "displayed"] = "Light Flyers -->";
 $VehicleMenu["mnuMain", 1, "submenu"] = true;
 $VehicleMenu["mnuMain", 1, "datablock"] = mnuAssaultFlyers;
-$VehicleMenu["mnuMain", 1, "displayed"] = "Heavy Aircraft -->";
+$VehicleMenu["mnuMain", 1, "displayed"] = "Assault Flyers -->";
 $VehicleMenu["mnuMain", 2, "submenu"] = true;
-$VehicleMenu["mnuMain", 2, "datablock"] = mnuHeavyGround;
-$VehicleMenu["mnuMain", 2, "displayed"] = "Tanks -->";
+$VehicleMenu["mnuMain", 2, "datablock"] = mnuLightGround;
+$VehicleMenu["mnuMain", 2, "displayed"] = "Light Ground -->";
 $VehicleMenu["mnuMain", 3, "submenu"] = true;
-$VehicleMenu["mnuMain", 3, "datablock"] = mnuDeployables;
-$VehicleMenu["mnuMain", 3, "displayed"] = "Base Vehicles -->";
+$VehicleMenu["mnuMain", 3, "datablock"] = mnuHeavyGround;
+$VehicleMenu["mnuMain", 3, "displayed"] = "Heavy Ground -->";
 $VehicleMenu["mnuMain", 4, "submenu"] = true;
-$VehicleMenu["mnuMain", 4, "datablock"] = mnuTrns2;
-$VehicleMenu["mnuMain", 4, "displayed"] = "Helicopters -->";
-
+$VehicleMenu["mnuMain", 4, "datablock"] = mnuTransports;
+$VehicleMenu["mnuMain", 4, "displayed"] = "Transports -->";
+$VehicleMenu["mnuMain", 5, "submenu"] = true;
+$VehicleMenu["mnuMain", 5, "datablock"] = mnuDeployables;
+$VehicleMenu["mnuMain", 5, "displayed"] = "Deployables -->";
+$VehicleMenu["mnuMain", 6, "submenu"] = true;
+$VehicleMenu["mnuMain", 6, "datablock"] = mnuHelicopters;
+$VehicleMenu["mnuMain", 6, "displayed"] = "Helicopters -->";
 
 // Light Flyers menu
-$VehicleMenuNumEntries["mnuLightFlyers"] = 3;
+$VehicleMenuNumEntries["mnuLightFlyers"] = 2;
 $VehicleMenu["mnuLightFlyers", 0, "submenu"] = false;
 $VehicleMenu["mnuLightFlyers", 0, "datablock"] = ScoutFlyer;
-$VehicleMenu["mnuLightFlyers", 0, "displayed"] = "F39 RaptorII Interceptor";
+$VehicleMenu["mnuLightFlyers", 0, "displayed"] = "F-39 Fighter";
 $VehicleMenu["mnuLightFlyers", 1, "submenu"] = false;
-$VehicleMenu["mnuLightFlyers", 1, "datablock"] = StrikeFlyer;
-$VehicleMenu["mnuLightFlyers", 1, "displayed"] = "F41 Awring Strike Fighter";
-$VehicleMenu["mnuLightFlyers", 2, "submenu"] = false;
-$VehicleMenu["mnuLightFlyers", 2, "datablock"] = F56Hornet;
-$VehicleMenu["mnuLightFlyers", 2, "displayed"] = "F56 Hornet";
-
+$VehicleMenu["mnuLightFlyers", 1, "datablock"] = Harrier;
+$VehicleMenu["mnuLightFlyers", 1, "displayed"] = "Plasma Harrier";
 
 // Assault Flyers menu
-$VehicleMenuNumEntries["mnuAssaultFlyers"] = 4;
+$VehicleMenuNumEntries["mnuAssaultFlyers"] = 3;
 $VehicleMenu["mnuAssaultFlyers", 0, "submenu"] = false;
 $VehicleMenu["mnuAssaultFlyers", 0, "datablock"] = BomberFlyer;
-$VehicleMenu["mnuAssaultFlyers", 0, "displayed"] = "B-34 Bomber";
+$VehicleMenu["mnuAssaultFlyers", 0, "displayed"] = "Thundersword Bomber";
 $VehicleMenu["mnuAssaultFlyers", 1, "submenu"] = false;
-$VehicleMenu["mnuAssaultFlyers", 1, "datablock"] = AWACS;
-$VehicleMenu["mnuAssaultFlyers", 1, "displayed"] = "AWACS Aerial Transport";
+$VehicleMenu["mnuAssaultFlyers", 1, "datablock"] = HarbingerGunship;
+$VehicleMenu["mnuAssaultFlyers", 1, "displayed"] = "Harbinger Gunship";
 $VehicleMenu["mnuAssaultFlyers", 2, "submenu"] = false;
-$VehicleMenu["mnuAssaultFlyers", 2, "datablock"] = gunship;
-$VehicleMenu["mnuAssaultFlyers", 2, "displayed"] = "AC-290 Saber Gunship";
-$VehicleMenu["mnuAssaultFlyers", 3, "submenu"] = false;
-$VehicleMenu["mnuAssaultFlyers", 3, "datablock"] = StormSeigeDrone;
-$VehicleMenu["mnuAssaultFlyers", 3, "displayed"] = "Stormseige Drone";
+$VehicleMenu["mnuAssaultFlyers", 2, "datablock"] = AC130;
+$VehicleMenu["mnuAssaultFlyers", 2, "displayed"] = "AC-130 Gunship";
+
+// Light Ground menu
+$VehicleMenuNumEntries["mnuLightGround"] = 1;
+$VehicleMenu["mnuLightGround", 0, "submenu"] = false;
+$VehicleMenu["mnuLightGround", 0, "datablock"] = ScoutVehicle;
+$VehicleMenu["mnuLightGround", 0, "displayed"] = "Wildcat Hoverbike";
 
 // Heavy Ground menu
-$VehicleMenuNumEntries["mnuHeavyGround"] = 4;
+$VehicleMenuNumEntries["mnuHeavyGround"] = 3;
 $VehicleMenu["mnuHeavyGround", 0, "submenu"] = false;
 $VehicleMenu["mnuHeavyGround", 0, "datablock"] = AssaultVehicle;
-$VehicleMenu["mnuHeavyGround", 0, "displayed"] = "M4A1 Wolf Light Tank";
+$VehicleMenu["mnuHeavyGround", 0, "displayed"] = "Beowulf Assault Tank";
 $VehicleMenu["mnuHeavyGround", 1, "submenu"] = false;
-$VehicleMenu["mnuHeavyGround", 1, "datablock"] = CGTank;
-$VehicleMenu["mnuHeavyGround", 1, "displayed"] = "Banshee Chaingun Tank";
+$VehicleMenu["mnuHeavyGround", 1, "datablock"] = SandstormTank;
+$VehicleMenu["mnuHeavyGround", 1, "displayed"] = "Sandstorm AA Tank";
 $VehicleMenu["mnuHeavyGround", 2, "submenu"] = false;
-$VehicleMenu["mnuHeavyGround", 2, "datablock"] = HeavyTank;
-$VehicleMenu["mnuHeavyGround", 2, "displayed"] = "M3A2 Faustes Assault Tank";
-$VehicleMenu["mnuHeavyGround", 3, "submenu"] = false;
-$VehicleMenu["mnuHeavyGround", 3, "datablock"] = BattleMaster;
-$VehicleMenu["mnuHeavyGround", 3, "displayed"] = "Battlemaster Siege Tank";
+$VehicleMenu["mnuHeavyGround", 2, "datablock"] = CentaurVehicle;
+$VehicleMenu["mnuHeavyGround", 2, "displayed"] = "Centaur Advanced Artillery";
+
+// Transports menu
+$VehicleMenuNumEntries["mnuTransports"] = 1;
+$VehicleMenu["mnuTransports", 0, "submenu"] = false;
+$VehicleMenu["mnuTransports", 0, "datablock"] = HAPCFlyer;
+$VehicleMenu["mnuTransports", 0, "displayed"] = "Havoc Aerial APC";
 
 //Deployables menu
-$VehicleMenuNumEntries["mnuDeployables"] = 2;
+$VehicleMenuNumEntries["mnuDeployables"] = 1;
 $VehicleMenu["mnuDeployables", 0, "submenu"] = false;
-$VehicleMenu["mnuDeployables", 0, "datablock"] = mobileBaseVehicle;
+$VehicleMenu["mnuDeployables", 0, "datablock"] = MobileBaseVehicle;
 $VehicleMenu["mnuDeployables", 0, "displayed"] = "Jericho Mobile Base";
-$VehicleMenu["mnuDeployables", 1, "submenu"] = false;
-$VehicleMenu["mnuDeployables", 1, "datablock"] = Artillery;
-$VehicleMenu["mnuDeployables", 1, "displayed"] = "Grendel Heavy Artillery";
 
-//Transports
-$VehicleMenuNumEntries["mnuTrns2"] = 2;
-$VehicleMenu["mnuTrns2", 0, "submenu"] = false;
-$VehicleMenu["mnuTrns2", 0, "datablock"] = heavychopper;
-$VehicleMenu["mnuTrns2", 0, "displayed"] = "Eagle VII Transport Chopper";
-$VehicleMenu["mnuTrns2", 1, "submenu"] = false;
-$VehicleMenu["mnuTrns2", 1, "datablock"] = helicopter;
-$VehicleMenu["mnuTrns2", 1, "displayed"] = "WhiteHorse Assault Helicopter";
+// Helicopters
+$VehicleMenuNumEntries["mnuHelicopters"] = 3;
+$VehicleMenu["mnuHelicopters", 0, "submenu"] = false;
+$VehicleMenu["mnuHelicopters", 0, "datablock"] = CombatHelicopter;
+$VehicleMenu["mnuHelicopters", 0, "displayed"] = "Combat Helicopter";
+$VehicleMenu["mnuHelicopters", 1, "submenu"] = false;
+$VehicleMenu["mnuHelicopters", 1, "datablock"] = GunshipHelicopter;
+$VehicleMenu["mnuHelicopters", 1, "displayed"] = "Gunship Helicopter";
+$VehicleMenu["mnuHelicopters", 2, "submenu"] = false;
+$VehicleMenu["mnuHelicopters", 2, "datablock"] = ApacheHelicopter;
+$VehicleMenu["mnuHelicopters", 2, "displayed"] = "Apache Helicopter";
+
 
 //------------------------------------------------------------------------------
-datablock EffectProfile(VehicleAppearEffect)
-{
-   effectname = "vehicles/inventory_pad_appear";
-   minDistance = 5;
-   maxDistance = 10;
-};
-
-datablock EffectProfile(ActivateVehiclePadEffect)
-{
-   effectname = "powered/vehicle_pad_on";
-   minDistance = 20;
-   maxDistance = 30;
-};
-
 datablock AudioProfile(VehicleAppearSound)
 {
    filename    = "fx/vehicles/inventory_pad_appear.wav";
    description = AudioClosest3d;
    preload = true;
-   effect = VehicleAppearEffect;
 };
 
 datablock AudioProfile(ActivateVehiclePadSound)
@@ -123,7 +104,6 @@ datablock AudioProfile(ActivateVehiclePadSound)
    filename = 	"fx/powered/vehicle_pad_on.wav";
    description = AudioClose3d;
    preload = true;
-   effect = ActivateVehiclePadEffect;
 };
 
 datablock StationFXVehicleData( VehicleInvFX )
@@ -168,16 +148,9 @@ datablock StationFXVehicleData( VehicleInvFX )
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function serverCmdBuyVehicle(%client, %blockName) {
-   if(%client.isrestrictedfromVehs) {
-      BottomPrint(%client,"You Are Not Permitted To Buy Vehicles",5,1);
-      return;
-   }
-   if(%blockName $= "StormSeigeDrone" && !$Medals::StormEnder[%client.GUID]) {
-      BottomPrint(%client,"Knowladge of how to construct this weapon is not known to you.",5,1);
-      return;
-   }
-   if(%blockName $= "BattleMaster" && !$Medals::WhosTank[%client.GUID]) {
-      BottomPrint(%client,"Knowladge of how to construct this weapon is not known to you.",5,1);
+   if(!%client.canUseVeh(%blockName)) {
+      //Hi thyth, lookie lookie, I patched it! Sincerely, Phantom139
+      bottomPrint(%client, "Trying to magicly spawn locked vehicles, Eh?", 2, 2);
       return;
    }
          // NEW CODE BEGINS HERE
@@ -197,6 +170,7 @@ function serverCmdBuyVehicle(%client, %blockName) {
          // otherwise they are buying a vehicle
 // NEW CODE ENDS HERE
    %team = %client.getSensorGroup();
+
    if(vehicleCheck(%blockName, %team))
    {
       %station = %client.player.station.pad;
@@ -221,7 +195,7 @@ function serverCmdBuyVehicle(%client, %blockName) {
          ///Updated Build code for rotatable vehicle pad.
          %p = vectorAdd(%p, RealVec(%station,VectorAdd(%blockName.spawnOffset,"0 0 1")));
          %forward = VectorCross(VectorCross("0 0 1",realvec(%station,"1 0 0")),"0 0 1");
-
+          
          %rot = FullRot("0 0 1",%forward);
          %rrot = RotAdd(%rot,"0 0 1 3.14");
          //%rrot= %rot;
@@ -308,22 +282,22 @@ function createVehicle(%client, %station, %blockName, %team , %pos, %rot, %angle
       %station.playAudio($ActivateSound, ActivateVehiclePadSound);
       %ppos = VectorAdd(%station.getTransform(),RealVec(%station,"0 0 2"));
       if (%station.getDatablock().getName() $= "DeployableVehiclePad")
-         {
+         {    
          %station.playThread($ActivateThread,"activate2");
          %up = realvec(%station,"0 0 1");
-         %forward = realvec(%station,"1 0 0");
+         %forward = realvec(%station,"1 0 0");         
          %p1 = CreateEmitter(%ppos,DVPADE);
          %p2 = CreateEmitter(%ppos,DVPADE);
          %p1.setRotation(FullRot(%up,%forward));
          %p2.setRotation(FullRot(VectorScale(%up,-1),%forward));
          %p1.schedule(5000,"delete");
-         %p2.schedule(5000,"delete");
+         %p2.schedule(5000,"delete");         
          }
       else if (%station.getDatablock().getName() $= "DeployableVehiclePad2")
          {
          %station.playThread($ActivateThread,"activate");
          %up = realvec(%station,"0 0 1");
-         %forward = realvec(%station,"1 0 0");
+         %forward = realvec(%station,"1 0 0");         
          %p1 = CreateEmitter(%ppos,DVPADE);
          %p2 = CreateEmitter(%ppos,DVPADE);
          %p1.setRotation(FullRot(%up,%forward));
@@ -422,7 +396,7 @@ function vehicleCheck(%blockName, %team)
 function VehicleHud::updateHud( %obj, %client, %tag )
 {
    %station = %client.player.station;
-   for ( %i = 0; %i < 7; %i++ )
+   for ( %i = 0; %i < 7; %i++ )   //Thanx BadShot
       messageClient( %client, 'RemoveLineHud', "", %tag, %i ); //Thanx BadShot
    %team = %client.getSensorGroup();
 
@@ -444,16 +418,18 @@ function VehicleHud::updateHud( %obj, %client, %tag )
             %numAvail = 0;
         //echo("sending to client i " @ %i @ " submenu " @ %submenu @ " dbname " @ %dbName @ " displayed " @ %displayed @ " numAvail " @ %numAvail);
         // Send update to client
-         messageClient( %client, 'SetLineHud', "", %tag, %i, %displayed, "", %dbName, %numAvail );
+         if(%client.canUseVeh(%dbName)) {
+            messageClient( %client, 'SetLineHud', "", %tag, %i, %displayed, "", %dbName, %numAvail );
+         }
+         else {
+            messageClient( %client, 'SetLineHud', "", %tag, %i, "LOCKED - Schematics Not Found", "", mnuMain, 1);
+         }
    }
-
+   // Add a "return to main menu" option if we aren't there already
    if(%menu !$= "mnuMain") {
      messageClient( %client, 'SetLineHud', "", %tag, %i, "<-- Main Menu", "", mnuMain, 1);
      %station.lastCount = %i + 1;
-   }
-   else {
-      %station.lastCount = %i;
-   }
+   } else %station.lastCount = %i;
 
    // Reset the selection var
    %client.vehicleHudSelection = "";
@@ -463,6 +439,8 @@ function VehicleHud::updateHud( %obj, %client, %tag )
 }
 // end new code
 
+
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function VehicleHud::clearHud( %obj, %client, %tag, %count ) {
 	for ( %i = 0; %i < %count; %i++ )
@@ -481,4 +459,68 @@ function checkVehSet(%obj, %initpos) {
 function serverCmdEnableVehicleTeleport( %client, %enabled )
 {
    %client.setVehicleTeleportEnabled( %enabled );
+}
+
+
+//CAN USE
+function GameConnection::canUseVeh(%client, %dbName) {
+   if(%dbName $= "HarbingerGunship") {
+      if(%client.hasMedal(8)) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "CentaurVehicle") {
+      if(%client.hasMedal(15)) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "Harrier") {
+      if(%client.CheckNWChallengeCompletion("Harrier3")) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "CombatHelicopter") {
+      if(%client.CheckNWChallengeCompletion("Helicopter3")) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "GunshipHelicopter") {
+      if(%client.CheckNWChallengeCompletion("GunHeli3")) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "ApacheHelicopter") {
+      if(%client.CheckNWChallengeCompletion("Apache3")) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else if(%dbName $= "AC130") {
+      if(%client.CheckNWChallengeCompletion("Gunship3")) {
+         return 1;
+      }
+      else {
+         return 0;
+      }
+   }
+   else {
+      return 1;
+   }
 }

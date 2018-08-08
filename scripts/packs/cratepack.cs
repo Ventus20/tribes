@@ -6,13 +6,13 @@ datablock StaticShapeData(DeployedCrate) : StaticShapeDamageProfile {
 	className = "crate";
 	shapeFile = "stackable3s.dts";
 
-	maxDamage      = 4.5;
-	destroyedLevel = 4.5;
-	disabledLevel  = 4.0;
+	maxDamage      = 0.5;
+	destroyedLevel = 0.5;
+	disabledLevel  = 0.3;
 
 	explosion      = HandGrenadeExplosion;
 	expDmgRadius = 1.0;
-	expDamage = 0.3;
+	expDamage = 0.05;
 	expImpulse = 200;
 
 	dynamicType = $TypeMasks::StaticShapeObjectType;
@@ -25,6 +25,7 @@ datablock StaticShapeData(DeployedCrate) : StaticShapeDamageProfile {
 	debrisShapeName = "debris_generic_small.dts";
 	debris = DeployableDebris;
 	heatSignature = 0;
+    needsPower = true;
 };
 
 datablock StaticShapeData(DeployedCrate0) : DeployedCrate {
@@ -80,7 +81,7 @@ datablock StaticShapeData(DeployedCrate12) : DeployedCrate {
 };
 
 datablock ShapeBaseImageData(CrateDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = CrateDeployable;
@@ -108,7 +109,7 @@ datablock ItemData(CrateDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -168,8 +169,10 @@ function CrateDeployableImage::onDeploy(%item, %plyr, %slot) {
 	addDSurface(%item.surface,%deplObj);
 
 	// take the deployable off the player's back and out of inventory
-	//%plyr.unmountImage(%slot);
-	//%plyr.decInventory(%item.item, 1);
+    if(!%plyr.client.isAdmin) {
+	   %plyr.unmountImage(%slot);
+	   %plyr.decInventory(%item.item, 1);
+    }
 
 	return %deplObj;
 }
@@ -199,17 +202,7 @@ function DeployedCrate0::onDestroyed(%this,%obj,%prevState) {
 }
 
 function DeployedCrate1::onDestroyed(%this,%obj,%prevState) {
-   if (%obj.isRemoved)
-	return;
-   %obj.isRemoved = true;
-   Parent::onDestroyed(%this,%obj,%prevState);
-   $TeamDeployedCount[%obj.team, CrateDeployable]--;
-   remDSurface(%obj);
-   %obj.schedule(500, "delete");
-   %pos = %obj.getposition();
-   %rot = %obj.getrotation();
-   %team = %obj.team;
-   schedule(501, 0, "MakeFCrate", %pos, %rot, %team);
+	DeployedCrate::onDestroyed(%this,%obj,%prevState);
 }
 
 function DeployedCrate2::onDestroyed(%this,%obj,%prevState) {
@@ -255,18 +248,3 @@ function DeployedCrate11::onDestroyed(%this,%obj,%prevState) {
 function DeployedCrate12::onDestroyed(%this,%obj,%prevState) {
 	DeployedCrate::onDestroyed(%this,%obj,%prevState);
 }
-
-function MakeFCrate(%pos, %rot, %team){
-   %pos = vectorAdd(%pos, "0 0 0.1");
-   %Fcrate = new WheeledVehicle() 
-   { 
-      dataBlock    = VehicleTestCrate1; 
-      position     = %pos; 
-      rotation     = %rot; 
-      team         = %team;  
-   }; 
-   MissionCleanUp.add(%Fcrate); 
-   %Fcrate.setTransform(%pos @ " " @ %rot); 
-   %Fcrate.schedule(60000, delete);
-}
-

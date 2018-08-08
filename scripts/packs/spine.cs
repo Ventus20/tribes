@@ -6,11 +6,11 @@ datablock StaticShapeData(DeployedSpine) : StaticShapeDamageProfile {
 	className = "spine";
 	shapeFile = "Pmiscf.dts";
 
-	maxDamage      = 15.0;
-	destroyedLevel = 15.0;
-	disabledLevel  = 12.5;
+	maxDamage      = 0.5;
+	destroyedLevel = 0.5;
+	disabledLevel  = 0.3;
 
-	isShielded = false;
+	isShielded = true;
 	energyPerDamagePoint = 240;
 	maxEnergy = 50;
 	rechargeRate = 0.25;
@@ -36,9 +36,9 @@ datablock StaticShapeData(DeployedSpine2) : StaticShapeDamageProfile {
 	className = "spine";
 	shapeFile = "Xmiscf.dts";
 
-	maxDamage      = 25.0;
-	destroyedLevel = 25.0;
-	disabledLevel  = 24.0;
+	maxDamage      = 0.5;
+	destroyedLevel = 0.5;
+	disabledLevel  = 0.3;
 
 	isShielded = true;
 	energyPerDamagePoint = 240;
@@ -93,46 +93,15 @@ datablock StaticShapeData(DeployedSpine3) : StaticShapeDamageProfile {
 	heatSignature = 0;
 	needsPower = true;
 };
-datablock StaticShapeData(DeployedPad) : StaticShapeDamageProfile {
-	className = "spine";
-	shapeFile = "Pmiscf.dts";
-
-	maxDamage      = 15.0;
-	destroyedLevel = 15.0;
-	disabledLevel  = 12.5;
-
-	isShielded = false;
-	energyPerDamagePoint = 240;
-	maxEnergy = 50;
-	rechargeRate = 0.25;
-
-	explosion    = HandGrenadeExplosion;
-	expDmgRadius = 3.0;
-	expDamage    = 0.1;
-	expImpulse   = 200.0;
-
-	dynamicType = $TypeMasks::StaticShapeObjectType;
-	deployedObject = true;
-	cmdCategory = "DSupport";
-	cmdIcon = CMDSensorIcon;
-	cmdMiniIconName = "commander/MiniIcons/com_deploymotionsensor";
-	targetNameTag = 'Light Support Beam';
-	deployAmbientThread = true;
-	debrisShapeName = "debris_generic_small.dts";
-	debris = DeployableDebris;
-	heatSignature = 0;
-	needsPower = true;
-};
-
 datablock StaticShapeData(DeployedWoodSpine) : StaticShapeDamageProfile {
 	className = "spine";
 	shapeFile = "stackable5m.dts";
 
-	maxDamage      = 5.0;
-	destroyedLevel = 5.0;
-	disabledLevel  = 4.0;
+	maxDamage      = 0.5;
+	destroyedLevel = 0.5;
+	disabledLevel  = 0.3;
 
-	isShielded = false;
+	isShielded = true;
 	energyPerDamagePoint = 240;
 	maxEnergy = 50;
 	rechargeRate = 0.25;
@@ -156,7 +125,7 @@ datablock StaticShapeData(DeployedWoodSpine) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(spineDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "ammo_plasma.dts";
 	item = spineDeployable;
@@ -184,7 +153,7 @@ datablock ItemData(spineDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -230,19 +199,19 @@ function spineDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%scale = getWords($packSetting["spine",%plyr.packSet],0,2);
 	%dataBlock = %item.deployed;
 
-	if (%plyr.packSet == 5) {
+	if (%plyr.packSet == 9) {
 		%space = rayDist(%item.surfacePt SPC %item.surfaceNrm,%scale,$AllObjMask);
 		if (%space != getWord(%scale,1))
 			%type  = true;
 		%scale = getWord(%scale,0) SPC getWord(%scale,0) SPC %space;
 	}
-	else if (%plyr.packSet == 6 || %plyr.packSet == 7) {
+	else if (%plyr.packSet == 10 || %plyr.packSet == 11) {
 		%mCenter = "0 0 -0.5";
 		%pad = pad(%item.surfacePt SPC %item.surfaceNrm SPC %item.surfaceNrm2,%scale,%mCenter);
 		%scale = getWords(%pad,0,2);
 		%item.surfacePt = getWords(%pad,3,5);
 		%rot = getWords(%pad,6,9);
-		if (%plyr.packSet == 7) {
+		if (%plyr.packSet == 11) {
 			%scale = vectorMultiply(%scale,1.845 SPC 2 SPC 1.744); // Update dfunctions.cs if changed!
 			%scaleIsSet = 1;
 			%item.surfacePt = vectorAdd(%item.surfacePt,vectorScale(%item.surfaceNrm3,0.5));
@@ -320,18 +289,6 @@ function spineDeployableImage::onDeploy(%item, %plyr, %slot) {
 /////////////////////////////////////
 
 function DeployedSpine::onDestroyed(%this, %obj, %prevState) {
-	if (%obj.isRemoved)
-		return;
-	%obj.isRemoved = true;
-	Parent::onDestroyed(%this, %obj, %prevState);
-	$TeamDeployedCount[%obj.team, spineDeployable]--;
-	remDSurface(%obj);
-	%obj.schedule(500, "delete");
-	cascade(%obj);
-	fireBallExplode(%obj,1);
-}
-
-function DeployedSpine2::onDestroyed(%this, %obj, %prevState) {
 	if (%obj.isRemoved)
 		return;
 	%obj.isRemoved = true;

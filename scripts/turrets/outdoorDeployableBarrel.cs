@@ -2,29 +2,12 @@
 // Outdoor Deployable Turret barrel
 // --------------------------------------------------------------
 
-// --------------------------------------------------------------
-// Sound datablocks
-// --------------------------------------------------------------
-datablock EffectProfile(OBLSwitchEffect)
-{
-   effectname = "powered/turret_light_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(OBLFireEffect)
-{
-   effectname = "powered/turret_outdoor_fire";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
 
 datablock AudioProfile(OBLSwitchSound)
 {
    filename    = "fx/powered/turret_light_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = OBLSwitchEffect;
 };
 
 datablock AudioProfile(OBLFireSound)
@@ -32,39 +15,51 @@ datablock AudioProfile(OBLFireSound)
    filename    = "fx/powered/turret_outdoor_fire.wav";
    description = AudioDefault3d;
    preload = true;
-   effect = OBLFireEffect;
 };
 
 // --------------------------------------------------------------
 // Projectile data
 // --------------------------------------------------------------
 
-datablock GrenadeProjectileData(AntiPersonnelMortar)
+datablock TracerProjectileData(FusionBolt)
 {
-   projectileShapeName = "grenade_projectile.dts";
-   emitterDelay        = -1;
+   doDynamicClientHits = true;
+
+   projectileShapeName = "";
    directDamage        = 0.0;
+   directDamageType    = $DamageType::OutdoorDepTurret;
    hasDamageRadius     = true;
-   indirectDamage      = 0.5;
-   damageRadius        = 20.0;
-   radiusDamageType    = $DamageType::MortarTurret;
-   kickBackStrength    = 2000;
-   bubbleEmitTime      = 1.0;
+   indirectDamage      = 0.24;
+   damageRadius        = 4.0;
+   kickBackStrength    = 0.0;
+   radiusDamageType    = $DamageType::OutdoorDepTurret;
+   sound          	   = BlasterProjectileSound;
+   explosion           = PlasmaBoltExplosion;
 
-   sound               = GrenadeProjectileSound;
-   explosion           = "GrenadeExplosion";
-   underwaterExplosion = "UnderwaterGrenadeExplosion";
-   velInheritFactor    = 0.85; // z0dd - ZOD, 3/30/02. Was 0.5
-   splash              = GrenadeSplash;
+   dryVelocity       = 60.0;
+   wetVelocity       = 40.0;
+   velInheritFactor  = 1.0;
+   fizzleTimeMS      = 4000;
+   lifetimeMS        = 6000;
+   explodeOnDeath    = false;
+   reflectOnWaterImpactAngle = 0.0;
+   explodeOnWaterImpact      = true;
+   deflectionOnWaterImpact   = 0.0;
+   fizzleUnderwaterMS        = -1;
 
-   baseEmitter         = GrenadeSmokeEmitter;
-   bubbleEmitter       = GrenadeBubbleEmitter;
+   activateDelayMS = 100;
 
-   grenadeElasticity = 0.30;
-   grenadeFriction   = 0.2;
-   armingDelayMS     = 100;
-   muzzleVelocity    = 50.0;
-   gravityMod        = 1.0;
+   tracerLength    = 5;
+   tracerAlpha     = false;
+   tracerMinPixels = 3;
+   tracerColor     = "1 0 0 1";
+	tracerTex[0]  	 = "special/landSpikeBolt";
+	tracerTex[1]  	 = "special/landSpikeBoltCross";
+	tracerWidth     = 0.35;
+   crossSize       = 0.79;
+   crossViewAng    = 0.990;
+   renderCross     = true;
+   emap = true;
 };
 
 // --------------------------------------------------------------
@@ -117,9 +112,9 @@ datablock TurretData(TurretDeployedOutdoor) : TurretDamageProfile
    rechargeRate = 0.15;
 
    mass = 5.0;
-   maxDamage = 1.2;
-   destroyedLevel = 1.2;
-   disabledLevel = 0.9;
+   maxDamage = 0.80;
+   destroyedLevel = 0.80;
+   disabledLevel = 0.35;
    explosion      = HandGrenadeExplosion;
       expDmgRadius = 5.0;
       expDamage = 0.3;
@@ -135,7 +130,7 @@ datablock TurretData(TurretDeployedOutdoor) : TurretDamageProfile
    yawVariance          = 30.0; // these will smooth out the elf tracking code.
    pitchVariance        = 30.0; // more or less just tolerances
 
-   isShielded = false;
+   isShielded = true;
    energyPerDamagePoint = 110;
    maxEnergy = 60;
    renderWhenDestroyed = true;
@@ -146,7 +141,7 @@ datablock TurretData(TurretDeployedOutdoor) : TurretDamageProfile
    cmdCategory = "DTactical";
    cmdIcon = CMDTurretIcon;
    cmdMiniIconName = "commander/MiniIcons/com_turret_grey";
-   targetNameTag = 'AntiPersonnel Mortar';
+   targetNameTag = 'Landspike';
    targetTypeTag = 'Turret';
    sensorData = DeployedOutdoorTurretSensor;
    sensorRadius = DeployedOutdoorTurretSensor.detectRadius;
@@ -161,13 +156,16 @@ datablock TurretData(TurretDeployedOutdoor) : TurretDamageProfile
 datablock TurretImageData(DeployableOutdoorBarrel)
 {
    shapeFile = "turret_muzzlepoint.dts";
+   // ---------------------------------------------
+   // z0dd - ZOD, 5/8/02. Incorrect parameter value
+   //item      = OutdoorTurretBarrel;
    item = TurretOutdoorDeployable;
 
-   projectileType = GrenadeProjectile;
-   projectile = AntiPersonnelMortar;
+   projectileType = TracerProjectile;
+   projectile = FusionBolt;
    usesEnergy = true;
-   fireEnergy = 30.0;
-   minEnergy = 30.0;
+   fireEnergy = 11.0;
+   minEnergy = 11.0;
 
    lightType = "WeaponFireLight";
    lightColor = "0.25 0.25 0.15 0.2";
@@ -182,7 +180,7 @@ datablock TurretImageData(DeployableOutdoorBarrel)
    thinkTimeMS       = 200;
    degPerSecTheta    = 580;
    degPerSecPhi      = 960;
-   attackRadius      = 240;
+   attackRadius      = 100;
 
    // State transitions
    stateName[0]                  = "Activate";
@@ -214,7 +212,7 @@ datablock TurretImageData(DeployableOutdoorBarrel)
    stateScript[3]              = "onFire";
 
    stateName[4]                  = "Reload";
-   stateTimeoutValue[4]          = 2.0;
+   stateTimeoutValue[4]          = 1.2;
    stateAllowImageChange[4]      = false;
    stateSequence[4]              = "Reload";
    stateTransitionOnTimeout[4]   = "Ready";

@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------
 
 datablock ShapeBaseImageData(LargeSensorDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = LargeSensorDeployable;
@@ -31,7 +31,7 @@ datablock ItemData(LargeSensorDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -101,8 +101,10 @@ function LargeSensorDeployableImage::onDeploy(%item, %plyr, %slot) {
 //	%deplObj.playThread($PowerThread,"Power");
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+    if(!%plyr.client.isAdmin) {
+	   %plyr.unmountImage(%slot);
+	   %plyr.decInventory(%item.item, 1);
+    }
 
 	// Power object
 	checkPowerObject(%deplObj);
@@ -111,14 +113,14 @@ function LargeSensorDeployableImage::onDeploy(%item, %plyr, %slot) {
 }
 
 function SensorLargePulse::onDestroyed(%data,%obj,%prevState) {
-//	if (%obj.isRemoved)
-//		return;
-//	if (%obj.deployed) {
-//		%obj.isRemoved = true;
-//		$TeamDeployedCount[%obj.team,LargeSensorDeployable]--;
-//		remDSurface(%obj);
-//		%obj.schedule(500,"delete");
-//	}
+	if (%obj.isRemoved)
+		return;
+	if (%obj.deployed) {
+		%obj.isRemoved = true;
+		$TeamDeployedCount[%obj.team,LargeSensorDeployable]--;
+		remDSurface(%obj);
+		%obj.schedule(500,"delete");
+	}
 	Parent::onDestroyed(%data,%obj,%prevState);
 }
 

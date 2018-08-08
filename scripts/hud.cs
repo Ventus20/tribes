@@ -41,68 +41,6 @@ function clientCmdResetHud()
 }
 
 //--------------------------------------------------------------------------
-$vehicleReticle[AssaultVehicle, 1, bitmap] = "gui/hud_ret_tankchaingun";
-$vehicleReticle[AssaultVehicle, 1, frame] = true;
-$vehicleReticle[AssaultVehicle, 2, bitmap] = "gui/hud_ret_tankmortar";
-$vehicleReticle[AssaultVehicle, 2, frame] = true;
-
-$vehicleReticle[BomberFlyer, 1, bitmap] = "gui/hud_ret_shrike";
-$vehicleReticle[BomberFlyer, 1, frame] = false;
-$vehicleReticle[BomberFlyer, 2, bitmap] = "";
-$vehicleReticle[BomberFlyer, 2, frame] = false;
-$vehicleReticle[BomberFlyer, 3, bitmap] = "gui/hud_ret_targlaser";
-$vehicleReticle[BomberFlyer, 3, frame] = false;
-
-$vehicleReticle[boat, 1, bitmap] = "gui/ret_mortor";
-$vehicleReticle[boat, 1, frame] = false;
-
-$vehicleReticle[HeavyChopper, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[HeavyChopper, 1, frame] = false;
-
-$vehicleReticle[HeavyTank, 1, bitmap] = "gui/hud_ret_sniper";
-$vehicleReticle[HeavyTank, 1, frame] = false;
-$vehicleReticle[HeavyTank, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[HeavyTank, 2, frame] = false;
-
-$vehicleReticle[helicopter, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[helicopter, 1, frame] = false;
-$vehicleReticle[helicopter, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[helicopter, 2, frame] = false;
-
-$vehicleReticle[lightflyer, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[lightflyer, 1, frame] = false;
-
-$vehicleReticle[scoutflyer, 1, bitmap] = "gui/ret_missile";
-$vehicleReticle[scoutflyer, 1, frame] = false;
-$vehicleReticle[scoutflyer, 2, bitmap] = "gui/ret_missile";
-$vehicleReticle[scoutflyer, 2, frame] = false;
-$vehicleReticle[scoutflyer, 3, bitmap] = "";
-$vehicleReticle[scoutflyer, 3, frame] = false;
-
-$vehicleReticle[strikeflyer, 1, bitmap] = "gui/ret_missile";
-$vehicleReticle[strikeflyer, 1, frame] = false;
-$vehicleReticle[strikeflyer, 2, bitmap] = "gui/ret_missile";
-$vehicleReticle[strikeflyer, 2, frame] = false;
-$vehicleReticle[strikeflyer, 3, bitmap] = "";
-$vehicleReticle[strikeflyer, 3, frame] = false;
-
-$vehicleReticle[scoutvehicle, 1, bitmap] = "gui/hud_ret_shrike";
-$vehicleReticle[scoutvehicle, 1, frame] = false;
-
-$vehicleReticle[FFTransport, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[FFTransport, 1, frame] = false;
-
-$vehicleReticle[Artillery, 1, bitmap] = "gui/ret_mortor";
-$vehicleReticle[Artillery, 1, frame] = false;
-
-$vehicleReticle[Sub, 1, bitmap] = "gui/ret_chaingun";
-$vehicleReticle[Sub, 1, frame] = false;
-
-$vehicleReticle[Gunship, 1, bitmap] = "gui/hud_ret_sniper";
-$vehicleReticle[Gunship, 1, frame] = false;
-$vehicleReticle[Gunship, 2, bitmap] = "gui/ret_mortor";
-$vehicleReticle[Gunship, 2, frame] = false;
-
 function GameConnection::setVWeaponsHudActive(%client, %slot)
 {
    %veh = %client.player.getObjectMount();
@@ -156,36 +94,21 @@ function clientCmdSetWeaponsHudBitmap(%slot, %name, %bitmap)
 //----------------------------------------------------------------------------
 function GameConnection::setWeaponsHudItem(%client, %name, %ammoAmount, %addItem)
 {
-   //error("GC:SWHI name="@%name@",ammoAmount="@%ammoAmount@",addItem="@%addItem);
-//    for(%i = 0; %i < $WeaponsHudCount; %i++)
-//       if($WeaponsHudData[%i, itemDataName] $= %name)
-//       {
-//          if($WeaponsHudData[%i, ammoDataName] !$= "") {
-//             %ammoInv = %client.player.inv[$WeaponsHudData[%i, ammoDataName]];
-//             //error("  ----- player has " @ %ammoInv SPC $WeaponsHudData[%i, ammoDataName]);
-//             //error("SWHI:Setting weapon "@%name@" ("@%i@") ammo to " @ %ammoInv);
-//             commandToClient(%client, 'setWeaponsHudItem',%i,%ammoInv, %addItem);
-//          }
-//          else {
-//             //error("SWHI:Setting weapon "@%name@" ("@%i@") ammo to infinite");
-//             commandToClient(%client, 'setWeaponsHudItem',%i,-1, %addItem);
-//          }
-//          break;
-//       }
-
-
-   // My try...
    for(%i = 0; %i < $WeaponsHudCount; %i++)
       if($WeaponsHudData[%i, itemDataName] $= %name)
       {
          if($WeaponsHudData[%i, ammoDataName] !$= "") {
             %ammoInv = %client.player.inv[$WeaponsHudData[%i, ammoDataName]];
-            //error("  ----- player has " @ %ammoInv SPC $WeaponsHudData[%i, ammoDataName]);
-            //error("SWHI:Setting weapon "@%name@" ("@%i@") ammo to " @ %ammoInv);
-            commandToClient(%client, 'setWeaponsHudItem',%i,%ammoInv, %addItem);
+            %plyr = %client.player;
+            if(%name.Image.ShowsClipInHud || $TWM2::PlayingHelljump) {
+               %ClipInv = %plyr.ClipCount[%name.Image.ClipName];
+               commandToClient(%client, 'setWeaponsHudItem', %i, %ClipInv, %addItem);
+            }
+            else {
+               commandToClient(%client, 'setWeaponsHudItem',%i,%ammoInv, %addItem);
+            }
          }
          else {
-            //error("SWHI:Setting weapon "@%name@" ("@%i@") ammo to infinite");
             commandToClient(%client, 'setWeaponsHudItem',%i,-1, %addItem);
          }
          break;
@@ -211,9 +134,17 @@ function GameConnection::setWeaponsHudAmmo(%client, %name, %ammoAmount)
    for(%i = 0; %i < $WeaponsHudCount; %i++)
       if($WeaponsHudData[%i, ammoDataName] $= %name)
       {
-         //error("SWHA:Setting ammo "@%name@" for weapon "@%i@" to " @ %ammoAmount);
-         commandToClient(%client, 'setWeaponsHudAmmo',%i, %ammoAmount);
-         break;
+         %WName = strReplace(%name, "Ammo", "");
+         %plyr = %client.player;
+         if(%WName.Image.ShowsClipInHud || $TWM2::PlayingHelljump) {
+            %clipAmount = %plyr.ClipCount[%WName.Image.ClipName];
+            commandToClient(%client, 'setWeaponsHudAmmo',%i, %clipAmount);
+            break;
+         }
+         else {
+            commandToClient(%client, 'setWeaponsHudAmmo',%i, %ammoAmount);
+            break;
+         }
       }
 }
 
@@ -489,12 +420,8 @@ $BackpackHudData[46, itemDataName] = "TurretMissileRackDeployable";
 $BackpackHudData[46, bitmapName] = "gui/hud_new_packinventory";
 $BackpackHudData[47, itemDataName] = "TurretBasePack";
 $BackpackHudData[47, bitmapName] = "gui/hud_new_packinventory";
-$BackpackHudData[48, itemDataName] = "artillerybarrelpack";
-$BackpackHudData[48, bitmapName] = "gui/hud_new_packturret.png";
-$BackpackHudData[49, itemDataName] = "ParachutePack";
-$BackpackHudData[49, bitmapName] = "gui/hud_new_packenergy";
 
-$BackpackHudCount = 50;
+$BackpackHudCount = 48;
 
 function GameConnection::clearBackpackIcon(%client)
 {
@@ -628,30 +555,16 @@ $InventoryHudData[8, bitmapName]   = "gui/hud_handgren";
 $InventoryHudData[8, itemDataName] = TR2Grenade;
 $InventoryHudData[8, ammoDataName] = TR2Grenade;
 $InventoryHudData[8, slot]         = 0;
-
-$InventoryHudData[9, bitmapName]   = "gui/hud_handgren";
-$InventoryHudData[9, itemDataName] = SmokeGrenade;
-$InventoryHudData[9, ammoDataName] = SmokeGrenade;
-$InventoryHudData[9, slot]         = 0;
+$InventoryHudData[9, bitmapName]   = "gui/hud_new_packsatchel";
+$InventoryHudData[9, itemDataName] = C4;
+$InventoryHudData[9, ammoDataName] = C4;
+$InventoryHudData[9, slot]         = 1;
 $InventoryHudData[10, bitmapName]   = "gui/hud_handgren";
-$InventoryHudData[10, itemDataName] = BeaconSmokeGrenade;
-$InventoryHudData[10, ammoDataName] = BeaconSmokeGrenade;
+$InventoryHudData[10, itemDataName] = StaticGrenade;
+$InventoryHudData[10, ammoDataName] = StaticGrenade;
 $InventoryHudData[10, slot]         = 0;
-$InventoryHudData[11, bitmapName]   = "gui/hud_handgren";
-$InventoryHudData[11, itemDataName] = IncindinaryGrenade;
-$InventoryHudData[11, ammoDataName] = IncindinaryGrenade;
-$InventoryHudData[11, slot]         = 0;
 
-$InventoryHudData[12, bitmapName]   = "gui/hud_mine";
-$InventoryHudData[12, itemDataName] = CrispMine;
-$InventoryHudData[12, ammoDataName] = CrispMine;
-$InventoryHudData[12, slot]         = 1;
-$InventoryHudData[13, bitmapName]   = "gui/hud_mine";
-$InventoryHudData[13, itemDataName] = ZapMine;
-$InventoryHudData[13, ammoDataName] = ZapMine;
-$InventoryHudData[13, slot]         = 1;
-
-$InventoryHudCount = 14;
+$InventoryHudCount = 11;
 
 
 //----------------------------------------------------------------------------

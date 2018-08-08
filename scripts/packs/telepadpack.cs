@@ -3,7 +3,7 @@
 //---------------------------------------------------------
 
 datablock ShapeBaseImageData(TelePadDeployableImage) {
-	mass = 15;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = TelePadPack;
@@ -31,7 +31,7 @@ datablock ItemData(TelePadPack) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 3.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -92,6 +92,27 @@ datablock StaticShapeData(TelePadDeployedBase) : StaticShapeDamageProfile {
 	sensorRadius = TelePadBaseSensorObj.detectRadius;
 	sensorColor = "0 212 45";
 	firstPersonOnly = true;
+
+	lightType = "PulsingLight";
+	lightColor = "0 1 0 1";
+	lightTime = 1200;
+	lightRadius = 6;
+};
+
+datablock StaticShapeData(TelePadBeam) {
+	className = "Station";
+	catagory = "DSupport";
+	shapefile = "nexus_effect.dts";
+	collideable = 1;
+	needsNoPower = true;
+	emap="true";
+	sensorData = TelePadBaseSensorObj;
+	sensorRadius = TelePadBaseSensorObj.detectRadius;
+	sensorColor = "0 212 45";
+
+	cmdCategory = "DSupport";
+	targetNameTag = 'Teleport';
+	targetTypeTag = 'Pad';
 
 	lightType = "PulsingLight";
 	lightColor = "0 1 0 1";
@@ -171,10 +192,13 @@ function TelePadDeployedBase::onDestroyed(%this,%obj,%prevState) {
 	$TeamDeployedCount[%obj.team,TelePadPack]--;
 	%obj.isRemoved = true;
 	remDSurface(%obj);
+	%obj.beam.schedule(150,"delete");
 	%obj.schedule(500,"delete");
 }
 
 function TelePadDeployedBase::disassemble(%data,%plyr,%obj) {
+	if (isObject(%obj.beam))
+		%obj.beam.delete();
 	%obj.isRemoved = true;
 	disassemble(%data,%plyr,%obj);
 }
@@ -211,10 +235,9 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 		return;
 
 	// verify pad.team is team associated and is on player's team
-	if (%obj.team != %col.team && %obj.teleMode != 1 && %obj.frequency > 0 && %obj.ishacked != 1) {
+	if (%obj.team != %col.team && %obj.team != 0 && %obj.teleMode != 1 && %obj.frequency > 0) {
 		%obj.play3D(TelePadAccessDeniedSound);
-           if(%col.client)
-           messageClient(%col.client,'msgClient','\c2Access Denied -- Wrong team use, /hack help , to hack this teleport.');
+		messageClient(%col.client,'msgClient','\c2Access Denied -- Wrong team.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -223,7 +246,7 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 	// verify that pad can transmit
 	if (%obj.teleMode == 3) {
 		%obj.play3D(TelePadAccessDeniedSound);
-		messageClient(%col.client,'msgClient','\c2Error : This Telepad is Recieve Only.');
+		messageClient(%col.client,'msgClient','\c2Access Denied -- This pad can only receive.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -255,13 +278,13 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 	if (!%obj.isPowered() || !%obj.isEnabled()) {
 		%obj.play3D(TelePadAccessDeniedSound);
 		if (!%obj.isPowered() && !%obj.isEnabled())
-			messageClient(%col.client,'msgClient','\c2The Target Telepad is Damaged and is not Powered.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, telepad is damaged and has no power.');
 		else if (!%obj.isEnabled())
-			messageClient(%col.client,'msgClient','\c2The Target Telepad is Damaged.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, telepad is damaged.');
 		else if (!%obj.isPowered())
-			messageClient(%col.client,'msgClient','\c2The Target Telepad is currently offline.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, telepad is not powered.');
 		else
-			messageClient(%col.client,'msgClient','\c2Telepad Malfunction, Unable to teleport.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, telepad malfunction.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -270,9 +293,9 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 	if (!%destPad) {
 		%obj.play3D(TelePadAccessDeniedSound);
 		if (%notEnabled)
-			messageClient(%col.client,'msgClient','\c2Error : Destination Damaged or has no power.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, destination is damaged, has no power or is recharging.');
 		else
-			messageClient(%col.client,'msgClient','\c2Error : No other telepads detected.');
+			messageClient(%col.client,'msgClient','\c2Unable to teleport, no other pads to teleport to.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -280,7 +303,7 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 
 	if (tp_isBlocked(%destPad,%col)) {
 		%obj.play3D(TelePadAccessDeniedSound);
-		messageClient(%col.client,'msgClient','\c2Target Error : Destination Blocked.');
+		messageClient(%col.client,'msgClient','\c2Unable to teleport, destination is blocked.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -288,7 +311,7 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 
 	if (%obj.getEnergyLevel() < %obj.getDataBlock().maxEnergy) {
 		%obj.play3D(TelePadAccessDeniedSound);
-		messageClient(%col.client,'msgClient','\c2Telepad recharging, Please return in a few seconds.');
+		messageClient(%col.client,'msgClient','\c2Unable to teleport, telepad is recharging.');
 		%col.justTeleported = true;
 		schedule(2000,0,"unTeleport",%col);
 		return;
@@ -306,9 +329,17 @@ function TelePadDeployedBase::onCollision(%data,%obj,%col) {
 	tp_fadePadIn(%obj);
 	tp_fadePadIn(%destPad);
 
+	// fade out beams
+	schedule(600,0,"tp_fadeOut",%obj);
+	schedule(750,0,"tp_fadeOut",%destPad);
+
 	// pad power down effect
 	schedule(1500,0,"tp_fadePadOut",%obj);
 	schedule(1550,0,"tp_fadePadOut",%destPad);
+
+	// fade in beams
+	schedule(3000,0,"tp_fadeIn",%obj);
+	schedule(3050,0,"tp_fadeIn",%destPad);
 
 	// Zap energy
 	%obj.setEnergyLevel(0);
@@ -348,14 +379,12 @@ function tp_isBlocked(%pad,%obj) {
 // player
 function pl_fadeIn(%obj) {
 	%obj.startFade(500,0,false);
-    if(%obj.client)
-	messageClient(%obj.client,'msgClient',"~wfx/misc/diagnostic_on.wav");
+	messageClient(%col.client,'msgClient',"~wfx/misc/diagnostic_on.wav");
 }
 
 function pl_fadeOut(%obj) {
 	%obj.startFade(500,0,true);
-    if(%obj.client)
-	messageClient(%obj.client,'msgClient',"~wfx/misc/diagnostic_on.wav");
+	messageClient(%col.client,'msgClient',"~wfx/misc/diagnostic_on.wav");
 }
 
 // beam and sound
@@ -363,14 +392,14 @@ function tp_fadeIn(%obj,%silent) {
 	if (%obj.isPowered() && %obj.isEnabled()) {
 		if (!%silent)
 			%obj.play3D(DiscReloadSound);
-//		%obj.beam.startFade(100,0,false);
+		%obj.beam.startFade(100,0,false);
 	}
 }
 
 function tp_fadeOut(%obj,%silent) {
 	if (!%silent)
 		%obj.play3D(TelePadBeamSound);
-//	%obj.beam.startFade(100,0,true);
+	%obj.beam.startFade(100,0,true);
 }
 
 // pad
@@ -410,7 +439,7 @@ function teleport(%pl,%destPad,%src) {
 	schedule(2650,0,"unTeleport",%pl);
 
 	if (!isObject(%destPad)) {// lost the destination
-		messageClient(%pl.client,'msgClient','\c2Target Error : The Destination has been lost');
+		messageClient(%pl.client,'msgClient','\c2Lost destination!');
 		tp_adjustPlayer(%src,%pl);
 	}
 	else {
@@ -429,10 +458,14 @@ function tp_adjustPlayer(%pad,%obj) {
 	%obj.setTransform(vectorAdd(%pad.getPosition(),%adjust) SPC %rot);
 }
 
-//function tp_adjustBeam(%pad) {
-//	%rot =  rotAdd(%pad.getRotation(),"1 0 0" SPC $Pi);
-//	%pad.beam.setTransform(%pad.getPosition() SPC %rot);
-//}
+function tp_adjustBeam(%pad) {
+	%rot =  rotAdd(%pad.getRotation(),"1 0 0" SPC $Pi);
+	%pad.beam.setTransform(%pad.getPosition() SPC %rot);
+}
+
+function TelePadPack::onPickup(%this,%obj,%shape,%amount) {
+	// created to prevent console errors
+}
 
 function TelePadDeployableImage::onDeploy(%item,%plyr,%slot) {
 	%className = "StaticShape";
@@ -477,6 +510,22 @@ function TelePadDeployableImage::onDeploy(%item,%plyr,%slot) {
 	%deplObj.frequency = %frequency;
 	setTargetName(%deplObj.target,addTaggedString("Frequency" SPC %frequency));
 
+	// attach beam
+	%deplObj.beam = new (StaticShape)() {
+		dataBlock = TelePadBeam;
+		scale = "1 1 0.4";
+	};
+
+	// set orientation
+	tp_adjustBeam(%deplObj);
+
+	%deplObj.beam.playThread(0,"ambient");
+	%deplObj.beam.setThreadDir(0,true);
+	// The flash animation plays forwards, then back automatically,so we have to alternate the thread direcction...
+	%deplObj.beam.flashThreadDir = true;
+
+	%deplObj.beam.base = %deplObj;
+
 	// place the deployable in the MissionCleanup/Deployables group (AI reasons)
 	addToDeployGroup(%deplObj);
 
@@ -491,10 +540,12 @@ function TelePadDeployableImage::onDeploy(%item,%plyr,%slot) {
 
 	addDSurface(%item.surface,%deplObj);
 
+	// take the deployable off the player's back and out of inventory
+	//%plyr.unmountImage(%slot);
+	//%plyr.decInventory(%item.item,1);
+
 	// Power object
 	checkPowerObject(%deplObj);
-
-	teleresethack(%deplObj);
 
 	return %deplObj;
 }

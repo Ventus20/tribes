@@ -7,9 +7,9 @@ if ($Hazard::HazardTimer < 500)
 if ($Hazard::StormTimer < 100)
 	$Hazard::StormTimer = 500; // Hazard "storm" loop timer
 if ($Hazard::HazardStormDurationMin $= "")
-	$Hazard::HazardStormDurationMin = 45000; // Storm duration min
+	$Hazard::HazardStormDurationMin = 20000; // Storm duration min
 if ($Hazard::HazardStormDurationMax $= "")
-	$Hazard::HazardStormDurationMax = 120000; // Storm duration max
+	$Hazard::HazardStormDurationMax = 60000; // Storm duration max
 if ($Hazard::StormRandom $= "")
 	$Hazard::StormRandom = 120; // Storm random chance
 if ($Hazard::MeteorMax < 1)
@@ -17,7 +17,7 @@ if ($Hazard::MeteorMax < 1)
 if ($Hazard::MeteorMin $= "" || $Hazard::MeteorMin > $Hazard::MeteorMax)
 	$Hazard::MeteorMin = 0; // Min meteors per run
 if ($Hazard::MeteorRad $= "")
-	$Hazard::MeteorRad = 1650; // Meteor drop radius
+	$Hazard::MeteorRad = 100; // Meteor drop radius
 
 if ($Hazard::MaxSlant < 0 || $Hazard::MaxSlant $= "")
 	$Hazard::MaxSlant = 0.4;
@@ -72,7 +72,6 @@ function hazardThread(%thread) {
 			$Hazard::StormActive = false;
 			$Hazard::StormTime = "";
 			messageAll('msgClient','\c2Meteor storm passing.');
-    			DropMapPulveriser();
 		}
 	}
 

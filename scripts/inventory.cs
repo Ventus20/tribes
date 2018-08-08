@@ -84,15 +84,7 @@ function callEject(%player, %num) {
 }
 
 function serverCmdCycleWeapon( %client, %data ) {
-	%veh = 0;
-	if (%client.player.station) {
-		if (%client.player.station.getDataBlock().getName() $= "StationVehicle")
-			%veh = 1;
-	}
-	if (%veh)
-		cycleVehicleHud(%client.player,%client,%data);
-	else
-		%client.getControlObject().cycleWeapon( %data );
+   %client.getControlObject().cycleWeapon( %data );
 }
 
 function serverCmdStartThrowCount(%client, %data)
@@ -126,7 +118,9 @@ function ShapeBase::throwWeapon(%this)
    if(Game.shapeThrowWeapon(%this)) {
       %image = %this.getMountedImage($WeaponSlot);
       %this.throw(%image.item);
-      %this.client.setWeaponsHudItem(%image.item, 0, 0);
+      if(!%this.isZombie) {
+         %this.client.setWeaponsHudItem(%image.item, 0, 0);
+      }
    }
 }
 
@@ -178,22 +172,28 @@ function ShapeBase::use(%this, %data) {
                 }
 
                 //[most]
+        if (%this.getMountedImage(0) !$= "") {
+		   if (%this.getMountedImage(0).getname() $= "MergeToolImage") {
+		      %this.client.MTSubMode++;
+			  if (%this.client.MTMode == 0 && %this.client.MTSubMode == 2)
+                 %this.client.MTSubMode = 0;
+			  if (%this.client.MTMode == 1 && %this.client.MTSubMode == 2)
+				 %this.client.MTSubMode = 0;
+			  if (%this.client.MTMode == 2 && %this.client.MTSubMode == 8)
+				 %this.client.MTSubMode = 0;
+			  if (%this.client.MTMode == 3 && %this.client.MTSubMode == 6)
+				 %this.client.MTSubMode = 0;
+			  if (%this.client.MTMode == 4 && %this.client.MTSubMode == 6)
+				 %this.client.MTSubMode = 0;
+			  if (%this.client.MTMode == 5 && %this.client.MTSubMode == 6)
+				 %this.client.MTSubMode = 0;
 
-        //start of modifier code
-		if (%this.getMountedImage(0).getname() $= "MergeToolImage")
-		{
-			%this.client.MTSubMode++;
-			if (%this.client.MTMode == 0 && %this.client.MTSubMode == 2)
-				%this.client.MTSubMode = 0;
-			if (%this.client.MTMode == 1 && %this.client.MTSubMode == 2)
-				%this.client.MTSubMode = 0;
-			if (%this.client.MTMode == 2 && %this.client.MTSubMode == 8)
-				%this.client.MTSubMode = 0;
-
-			MTShowStatus(%this.client);
-			return;
-		}
+			  MTShowStatus(%this.client);
+			  return;
+		  }
+       }
        //end of modifier modes
+       
 		if (%this.usingConstructionTool == 1 && getSimTime() > (%this.grenadeModeTime + 100) && %this.performing == 0) {
 			%this.grenadeModeTime = getSimTime();
 			if (%this.constructionToolMode == 0) {
@@ -209,9 +209,9 @@ function ShapeBase::use(%this, %data) {
 				}
 			}
 			else if (%this.constructionToolMode == 1) {
-               if(%this.client.RotateAngle $= "") {
-                  %this.client.RotateAngle = $Pi/8;
-               }
+                if(%this.client.RotateAngle $= "") {
+                   %this.client.RotateAngle = 22.5;
+                }
 				if (%this.constructionToolMode2 == 1) {
 					%this.constructionToolMode2 = 0;
 					bottomPrint(%this.client,"Rotate push ("@mfloor(%this.client.RotateAngle)@" Degrees)",2,1);
@@ -280,6 +280,9 @@ function ShapeBase::use(%this, %data) {
 		}
         if(%this.UsingEditTool == 1) {
            ChangeEditGunMode(%this, %data, 2); //Secondary Modes
+        }
+        if(%this.SandboxTool["Use"] == 1) {
+           ChangeSandboxGunMode(%this, %data, 2); //Secondary Modes
         }
 		if (%this.UsingEditorGun == 1) {
            if(%this.client.ManipulatingPiece) {
@@ -434,14 +437,6 @@ function ShapeBase::use(%this, %data) {
 				bottomPrint(%this.client,"Telepad set to " @ %line,2,1);
 				return;
 			}
-			else if (%this.hasdoor) {
-                ChangedoorMode(%this, 1);
-				return;
-			}
-			else if (%this.hasCard) {
-                ChangeCardMode(%this, 1);
-				return;
-			}
   	        else if (%this.hasZspawn) {
 				%this.expertSet++;
 				if (%this.expertSet > $expertSettings["Zspawn"])
@@ -450,7 +445,15 @@ function ShapeBase::use(%this, %data) {
 				bottomPrint(%this.client,"ZSpawn type set to:" SPC %line,2,1);
 				return;
 			}
-			if (%this.getDamageLevel() != 0 && $Host::Purebuild == 1) {
+			else if (%this.hasdoor) {
+                ChangedoorMode(%this, 1);
+				return;
+			}
+			else if (%this.hasCard) {
+                ChangeCardMode(%this, 1);
+				return;
+			}
+   			if (%this.getDamageLevel() != 0 && $Host::Purebuild == 1) {
 				%this.applyRepair(0.2);
 				messageClient(%this.client, 'MsgRepairKitUsed', '\c2Repair Kit Used.');
 				return;
@@ -471,31 +474,18 @@ function ShapeBase::use(%this, %data) {
 
                 //[most]
         //modifier tool
-    	if (%this.getMountedImage(0).getname() $= "MergeToolImage")
-		{
-			%this.client.MTMode++;
-			%this.client.MTSubMode = 0;
-            if (%this.client.MTMode >= 3)
-				%this.client.MTMode = 0;
+        if (%this.getMountedImage(0) !$= "") {
+		   if (%this.getMountedImage(0).getname() $= "MergeToolImage") {
+			   %this.client.MTMode++;
+			   %this.client.MTSubMode = 0;
+			   if (%this.client.MTMode >= 6)
+				   %this.client.MTMode = 0;
 
-			MTShowStatus(%this.client);
-			return;
-		}
+			   MTShowStatus(%this.client);
+			   return;
+		   }
+        }
         //end modifier tool
-        	//Hooker tool
-		if (%this.usingHooker == 1 && getSimTime() > (%this.grenadeModeTime + 100) && %this.performing == 0) {
-		   %this.grenadeModeTime = getSimTime();
-               if (%this.HookerMode == 2 || %this.HookerMode $= ""){
-                  %this.HookerMode = 1;
-			bottomPrint(%this.client,"Roping Tool set to Grapple",2,1);
-		   }
-		   else if (%this.HookerMode == 1){
-			%this.HookerMode = 2;
-			bottomPrint(%this.client,"Roping Tool set to Rope Objects",2,1);
-		   }
-		   return;
-          	}
-        	//end Hooker tool
 		if (%this.usingConstructionTool == 1 && getSimTime() > (%this.mineModeTime + 100) && %this.performing == 0) {
 			%this.mineModeTime = getSimTime();
 			if (%this.constructionToolMode == 3) {
@@ -503,11 +493,11 @@ function ShapeBase::use(%this, %data) {
 				bottomPrint(%this.client,"Construction Tool mode set to deconstruct",2,1);
 			}
 			else if (%this.constructionToolMode == 0) {
-               if(%this.client.RotateAngle $= "" || %this.client.RotateAngle == 0) {
-                  %this.client.RotateAngle = 44.5;
-               }
 				%this.constructionToolMode = 1;
-				bottomPrint(%this.client,"Construction Tool mode set to rotate ("@mfloor(%this.client.RotateAngle)@" Degrees, /setRot To Modify)",1,2);
+                if(%this.client.RotateAngle $= "") {
+                   %this.client.RotateAngle = 22.5;
+                }
+				bottomPrint(%this.client,"Construction Tool mode set to rotate ("@%this.client.RotateAngle@" Degrees)",2,1);
 			}
 			else if (%this.constructionToolMode == 1) {
 				%this.constructionToolMode = 2;
@@ -524,26 +514,14 @@ function ShapeBase::use(%this, %data) {
 			%this.constructionToolMode2 = 0;
 			return;
 		}
-		if (%this.usingSuperChaingun == 1) {
-			if (!(getSimTime() > (%this.mineModeTime + 100)))
-				return;
-			%this.mineModeTime = getSimTime();
-                        %this.superChaingunMode++;
-			if (%this.superChaingunMode > 6 - (5 * $host::nopulseSCG)) {
-				%this.superChaingunMode = 0;				
-			}
-                        displaySCGStatus(%this);			
-			%this.superChaingunMode2 = 0;
-			return;
-		}
-        if(%this.UsingBunkerBuster == 1) {
-        ChangeBBBombMode(%this, %data); //Primary Modes
-        }
-        if(%this.UsingMedGun == 1) {
-        ChangeMedGunMode(%this, %data); //Secondary Modes
-        }
         if(%this.UsingEditTool == 1) {
            ChangeEditGunMode(%this, %data, 1); //Primary Modes
+        }
+        if(%this.UsingMedGun) {
+           ChangeMedGunMode(%this, %data);
+        }
+        if(%this.SandboxTool["Use"] == 1) {
+           ChangeSandboxGunMode(%this, %data, 1);
         }
 		if (%this.UsingEditorGun == 1) {                        // Targeting Laser
 			if (!(getSimTime() > (%this.mineModeTime + 100)))
@@ -573,27 +551,18 @@ function ShapeBase::use(%this, %data) {
             }
 			return;
 		}
-		if (%this.usingBeaconer == 1) {
+		if (%this.usingSuperChaingun == 1) {
 			if (!(getSimTime() > (%this.mineModeTime + 100)))
 				return;
 			%this.mineModeTime = getSimTime();
-            %this.TMode++;
-			if (%this.TMode > 3) {
-				%this.TMode = 0;
+                        %this.superChaingunMode++;
+			if (%this.superChaingunMode > 6 - (5 * $host::nopulseSCG)) {
+				%this.superChaingunMode = 0;				
 			}
-            displaytargetingstatus(%this);
+                        displaySCGStatus(%this);			
+			%this.superChaingunMode2 = 0;
 			return;
 		}
-        else {
-           for(%x = 0; $InvMine[%x] !$= ""; %x++)
-           {
-              if(%this.inv[$NameToInv[$InvMine[%x]]] > 0)
-              {
-                 %data = $NameToInv[$InvMine[%x]];
-                 break;
-              }
-           }
-        }
 	}
 	// default case
 	if (isObject(%data)) {
@@ -623,16 +592,18 @@ function ShapeBase::hasInventory(%this, %data)
 function ShapeBase::maxInventory(%this,%data) {
 	if($TestCheats && %this.getDatablock().max[%data.getName()] !$= "")
 		return 99999;
-	else {
-       return %this.getDatablock().max[%data.getName()];
-    }
+	else
+		return %this.getDatablock().max[%data.getName()];
 }
 
 function ShapeBase::incInventory(%this,%data,%amount) {
 	%max = %this.maxInventory(%data);
 	%cv = %this.inv[%data.getName()];
-	if (%cv < %max) {
-		if (%cv + %amount > %max)
+    //
+    //echo(%max TAB %cv TAB %amount TAB %data.alwaysAllowPickup);
+    //
+	if (%cv < (%max + %data.alwaysAllowPickup)) {
+		if (%cv + %amount > (%max + %data.alwaysAllowPickup))
 			%amount = %max - %cv;
 		%this.setInventory(%data,%cv + %amount);
 		%data.incCatagory(%this); // Inc the players weapon count
@@ -641,8 +612,10 @@ function ShapeBase::incInventory(%this,%data,%amount) {
 	return 0;
 }
 
-function ShapeBase::decInventory(%this,%data,%amount)
-{
+function ShapeBase::decInventory(%this,%data,%amount) {
+   if(%data $= "") {
+      return 0;
+   }
    %name = %data.getName();
    %cv = %this.inv[%name];
    if (%cv > 0) {
@@ -679,8 +652,8 @@ function ShapeBase::setInventory(%this,%data,%value,%force)
       {
          // Impose inventory limits
          %max = %this.maxInventory(%data);
-         if (%value > %max)
-            %value = %max;
+         if (%value > (%max + %data.alwaysAllowPickup))
+            %value = (%max + %data.alwaysAllowPickup);
       }
    }
    if (%this.inv[%name] != %value)
@@ -830,133 +803,30 @@ function ShapeBase::throwObject(%this,%obj)
 function ShapeBase::clearInventory(%this)
 {
    %this.setInventory(RepairKit,0);
-
    %this.setInventory(Mine,0);
-   %this.setInventory(ZapMine,0);
-   %this.setInventory(CrispMine,0);
-   //%this.setInventory(MineAir,0);
-   //%this.setInventory(MineLand,0);
-   //%this.setInventory(MineSticky,0);
+   %this.setInventory(C4,0);
+
    %this.setInventory(ConstructionTool,0);
    %this.setInventory(Grenade,0);
-   %this.setInventory(IncindinaryGrenade,0);
-   %this.setInventory(SmokeGrenade,0);
-   %this.setInventory(BeaconSmokeGrenade,0);
    %this.setInventory(FlashGrenade,0);
    %this.setInventory(ConcussionGrenade,0);
    %this.setInventory(FlareGrenade,0);
    %this.setInventory(CameraGrenade, 0);
-
-   %this.setInventory(Blaster,0);
-   %this.setInventory(Plasma,0);
-   %this.setInventory(Disc,0);
-   %this.setInventory(Chaingun, 0);
-   %this.setInventory(Mortar, 0);
-   %this.setInventory(GrenadeLauncher, 0);
-   %this.setInventory(MissileLauncher, 0);
-   %this.setInventory(SniperRifle, 0);
-   %this.setInventory(TargetingLaser, 0);
-   %this.setInventory(ELFGun, 0);
-   %this.setInventory(ShockLance, 0);
-
-   %this.setInventory(PlasmaAmmo,0);
-   %this.setInventory(ChaingunAmmo, 0);
-   %this.setInventory(DiscAmmo, 0);
-   %this.setInventory(GrenadeLauncherAmmo, 0);
-   %this.setInventory(MissileLauncherAmmo, 0);
-   %this.setInventory(MortarAmmo, 0);
-   %this.setInventory(Beacon, 0);
-
-   %this.setInventory(NerfGun, 0);
-   %this.setInventory(NerfBallLauncher, 0);
-   %this.setInventory(NerfBallLauncherAmmo, 0);
-   %this.setInventory(SuperChaingun, 0);
-   %this.setInventory(SuperChaingunAmmo, 0);
-   %this.setInventory(RPChaingun, 0);
-   %this.setInventory(RPChaingunAmmo, 0);
-   %this.setInventory(snipergun, 0);
-   %this.setInventory(snipergunAmmo, 0);
-   %this.setInventory(bazooka, 0);
-   %this.setInventory(bazookaAmmo, 0);
-   %this.setInventory(MG42, 0);
-   %this.setInventory(MG42Ammo, 0);
-   %this.setInventory(nukeme, 0);
-   %this.setInventory(nukemeAmmo, 0);
-   %this.setInventory(SPistol, 0);
-   %this.setInventory(Pistol, 0);
-   %this.setInventory(PistolAmmo, 0);
-   %this.setInventory(flamer, 0);
-   %this.setInventory(flamerAmmo, 0);
-   %this.setInventory(AALauncher, 0);
-   %this.setInventory(AALAuncherAmmo, 0);
-   %this.setInventory(melee, 0);
-   %this.setInventory(BOV, 0);
-   %this.setInventory(SOmelee, 0);
-   %this.setInventory(kriegRifle, 0);
-   %this.setInventory(KriegAmmo, 0);
-   %this.setInventory(Shotgun, 0);
-   %this.setInventory(ShotgunAmmo, 0);
-   %this.setInventory(RShotgun, 0);
-   %this.setInventory(RShotgunAmmo, 0);
-   %this.setInventory(LMissileLauncher, 0);
-   %this.setInventory(LMissileLauncherAmmo, 0);
-   %this.setInventory(HRPChaingun, 0);
-   %this.setInventory(RPGAmmo, 0);
-   %this.setInventory(LSMG, 0);
-   %this.setInventory(LSMGAmmo, 0);
-   %this.setInventory(PBC, 0);
-   %this.setInventory(PBCAmmo, 0);
-   %this.setInventory(SRifleSG, 0);
-   %this.setInventory(SRifleGL, 0);
-   %this.setInventory(SRifleAmmo, 0);
-   %this.setInventory(SRifleSGAmmo, 0);
-   %this.setInventory(SRifleGLAmmo, 0);
-   %this.setInventory(PhotonLaser, 0);
-   %this.setInventory(Targeter, 0);
-   %this.setInventory(PulseChaingun, 0);
-   %this.setInventory(PulseChaingunAmmo, 0);
-   %this.setInventory(lasergun, 0);
-   %this.setInventory(lasergunAmmo, 0);
-   %this.setInventory(BazookaII, 0);
-   %this.setInventory(BazookaIIAmmo, 0);
-   %this.setInventory(BattleRifle, 0);
-   %this.setInventory(BattleRifleAmmo, 0);
-   %this.setInventory(spiker, 0);
-   %this.setInventory(portibleGauss, 0);
-   %this.setInventory(portibleGaussAmmo, 0);
-   %this.setInventory(EditTool, 0);
-   %this.setInventory(EditorGun, 0);
-   %this.setInventory(HHHeligun, 0);
-   %this.setInventory(HHHeligunAmmo, 0);
-   %this.setInventory(ALSWP, 0);
-   %this.setInventory(ALSWPAmmo, 0);
-   %this.setInventory(Scorcher, 0);
-   %this.setInventory(ScorcherAmmo, 0);
-
-   %this.setInventory(PlasmaLauncher, 0);
-   %this.setInventory(PlasmaLauncherAmmo, 0);
-
-   %this.setInventory(Napalm, 0);
-   %this.setInventory(NapalmAmmo, 0);
-   %this.setInventory(VoltageCannon, 0);
-   %this.setInventory(VoltageCannonAmmo, 0);
+   %this.setInventory(StaticGrenade,0);
    
-	%this.setInventory(DualLSMG, 0);
-	%this.setInventory(DualLSMGAmmo, 0);
-	%this.setInventory(DualLSMGClip, 0);
+   //MY way of doing this (alot better :) )
+   %count = DatablockGroup.getCount();
+   for(%i = 0; %i < %count; %i++) {
+      %db = DatablockGroup.GetObject(%i);
+      if(%db.getName().getClassname() $= "ItemData") {
+         if(%db.getName().classname $= "Weapon") {
+            %Item = %db.getName();
+            %this.setInventory(%Item, 0);
+            %this.setInventory(%Item @ "ammo", 0);
+         }
+      }
+   }
 
-   %this.setInventory(ShockLance, 0);
-   %this.setInventory(Deagle, 0);
-   %this.setInventory(PulsePhaser, 0);
-   %this.setInventory(DualPistol, 0);
-   
-   %this.setInventory(PlasmaLauncher, 0);
-   %this.setInventory(PlasmaLauncherAmmo, 0);
-   
-   %this.setInventory(MergeTool, 0);
-   %this.setInventory(HookerTool, 0);
-   %this.setInventory(TractorGun, 0);
-   %this.setInventory(TransGun, 0);
 
    // take away any pack the player has
    %curPack = %this.getMountedImage($BackpackSlot);
@@ -1064,11 +934,8 @@ function serverCmdGiveAll(%client)
       //%player.setInventory(MineLand,999);
       //%player.setInventory(MineSticky,999);
       %player.setInventory(Grenade,999);
-      %player.setInventory(SmokeGrenade,999);
-      %player.setInventory(BeaconSmokeGrenade,999);
       %player.setInventory(FlashGrenade,999);
       %player.setInventory(FlareGrenade,999);
-      %player.setInventory(IncindinaryGrenade,999);
       %player.setInventory(ConcussionGrenade,999);
       %player.setInventory(CameraGrenade, 999);
       %player.setInventory(Blaster,1);
@@ -1093,47 +960,8 @@ function serverCmdGiveAll(%client)
       %player.setInventory(NerfGun,1);
       %player.setInventory(NerfBallLauncher,1);
       %player.setInventory(NerfBallLauncherAmmo,999);
-      %player.setInventory(RPChaingun, 1);
-      %player.setInventory(RPChaingunAmmo, 999);
-      %player.setInventory(snipergun, 1);
-      %player.setInventory(snipergunAmmo, 999);
-      %player.setInventory(Bazooka, 1);
-      %player.setInventory(BazookaAmmo, 999);
-      %player.setInventory(MG42, 1);
-      %player.setInventory(MG42Ammo, 999);
-	%player.setInventory(nukeme,1);
-	%player.setInventory(nukemeAmmo,999);
-	%player.setInventory(SPistol,1);
-	%player.setInventory(Pistol,1);
-	%player.setInventory(PistolAmmo,999);
-	%player.setInventory(flamer,1);
-	%player.setInventory(flamerAmmo,999);
-	%player.setInventory(AALauncher,1);
-	%player.setInventory(AALauncherAmmo,999);
-	%player.setInventory(melee,1);
-	%player.setInventory(SOmelee,1);
-	%player.setInventory(KriegRifle,1);
-	%player.setInventory(KriegAmmo,999);
-	%player.setInventory(Shotgun,1);
-	%player.setInventory(ShotgunAmmo,999);
-	%player.setInventory(RShotgun,1);
-	%player.setInventory(RShotgunAmmo,999);
-	%player.setInventory(LMissileLauncher,1);
-	%player.setInventory(LMissileLauncher,999);
-      %player.setInventory(HRPChaingun, 1);
-      %player.setInventory(RPGAmmo, 999);
-      %player.setInventory(LSMG, 1);
-      %player.setInventory(LSMGAmmo, 999);
-      %player.setInventory(PBC, 1);
-      %player.setInventory(PBCAmmo, 999);
-   	%player.setInventory(SRifleSG, 1);
-   	%player.setInventory(SRifleGL, 1);
-      %player.setInventory(SRifleAmmo, 999);
-      %player.setInventory(SRifleSGAmmo, 999);
-      %player.setInventory(SRifleGLAmmo, 999);
+      %player.setInventory(MergeTool,1);
 
-      %player.setInventory(MergeTool, 1);
-      %player.setInventory(HookerTool, 1);
       %player.setInventory(TractorGun, 1);
       %player.setInventory(TransGun, 1);
    }

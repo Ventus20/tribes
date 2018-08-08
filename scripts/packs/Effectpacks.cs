@@ -46,7 +46,7 @@ $expertSetting[EmitterDepImage,2] = "Select Power logic";
 $expertSetting[EmitterDepImage,3] = "Select Cloak logic";
 
 //These are my personal browse of the first few datablocks.
-$packSettings[EmitterDepImage] = "13 1 Emitter Pack:[Emitter]";
+$packSettings[EmitterDepImage] = "12 1 Emitter Pack:[Emitter]";
 $packSetting[EmitterDepImage,0] = "Small Steam ReverseEmitter";
 $packSetting[EmitterDepImage,1] = "Small Bubbles GrenadeBubbleEmitter";
 $packSetting[EmitterDepImage,2] = "Large Foam VehicleFoamEmitter";
@@ -59,8 +59,7 @@ $packSetting[EmitterDepImage,8] = "Small Spark ELFSparksEmitter";
 $packSetting[EmitterDepImage,9] = "Green Smoke MortarSmokeEmitter";
 $packSetting[EmitterDepImage,10] = "Fire Stream MissileFireEmitter";
 $packSetting[EmitterDepImage,11] = "Water Stream WaterStreamEmitter";
-$packSetting[EmitterDepImage,12] = "min hole LoadingE2";
-$packSetting[EmitterDepImage,13] = "wisps flair LoadingE";
+$packSetting[EmitterDepImage,12] = "Burning Object burnEmitter";
 
 //Note how the extra %id defines the nesting of the modes.
 //While previous settings could also include %id=0 I chose not to use that
@@ -262,11 +261,10 @@ function EmitterDepImage::onDeploy(%item, %plyr, %slot) {
 	addDSurface(%item.surface,%deplObj);
 	%deplObj.powerFreq = %plyr.powerFreq;
         checkPowerObject(%deplObj);
-        if (!%plyr.client.isAdmin)
-           {
+        if (!%plyr.client.isAdmin) {
            %plyr.unmountImage(%slot);
-   	   %plyr.decInventory(%item.item, 1);
-           }
+   	       %plyr.decInventory(%item.item, 1);
+       }
 
 
 	return %deplObj;
@@ -811,7 +809,7 @@ return %audio;
 //%name  gives the name of the pack as in %name "set to" %modename
 
 $expertSettings[DispenserDepImage] = "8 -1 Dispenser Pack:[Options]";
-$expertSetting[DispenserDepImage,0] = "[T2 Packs]";
+$expertSetting[DispenserDepImage,0] = "[Player Packs]";
 $expertSetting[DispenserDepImage,1] = "[Basic Building Parts]";
 $expertSetting[DispenserDepImage,2] = "[Base Assets]";
 $expertSetting[DispenserDepImage,3] = "[T2 Deployables]";
@@ -826,18 +824,12 @@ $expertSetting[DispenserDepImage,8] = "[Ammo]";
 $packSettings[DispenserDepImage] = "8 1 Dispenser Pack:[T2 Packs]";
 
 //Snagged from player.cs
-$packSettings[DispenserDepImage,0] = "10 1 Dispenser Pack:[T2 Packs]";
+$packSettings[DispenserDepImage,0] = "4 1 Dispenser Pack:[T2 Packs]";
 $packSetting[DispenserDepImage,0,0] = "[Cycle packs] cycle";
 $packSetting[DispenserDepImage,1,0] = "[Random pack] random";
-$packSetting[DispenserDepImage,2,0] = "Energy Pack EnergyPack";
-$packSetting[DispenserDepImage,3,0] = "Repair Pack RepairPack";
-$packSetting[DispenserDepImage,4,0] = "Shield Pack ShieldPack";
-$packSetting[DispenserDepImage,5,0] = "Cloak Pack CloakingPack";
-$packSetting[DispenserDepImage,6,0] = "Jammer Pack SensorJammerPack";
-$packSetting[DispenserDepImage,7,0] = "Ammunition Pack AmmoPack";
-$packSetting[DispenserDepImage,8,0] = "Satchel Charge SatchelCharge";
-$packSetting[DispenserDepImage,9,0] = "flameammo pack flamerammopack";
-$packSetting[DispenserDepImage,10,0] = "Parachute pack Parachutepack";
+$packSetting[DispenserDepImage,2,0] = "Repair Pack RepairPack";
+$packSetting[DispenserDepImage,3,0] = "Ammunition Pack AmmoPack";
+$packSetting[DispenserDepImage,4,0] = "Satchel Charge SatchelCharge";
 
 $packSettings[DispenserDepImage,1] = "8 1 Dispenser Pack:[Basic Building Parts]";
 $packSetting[DispenserDepImage,0,1] = "[Cycle packs] cycle";
@@ -849,7 +841,6 @@ $packSetting[DispenserDepImage,5,1] = "Medium beam mspineDeployable";
 $packSetting[DispenserDepImage,6,1] = "Medium Floor floorDeployable";
 $packSetting[DispenserDepImage,7,1] = "Force Field ForceFieldDeployable";
 $packSetting[DispenserDepImage,8,1] = "Gravity Field GravityFieldDeployable";
-
 
 $packSettings[DispenserDepImage,2] = "9 1 Dispenser Pack:[Base Assets]";
 $packSetting[DispenserDepImage,0,2] = "[Cycle packs] cycle";
@@ -882,7 +873,7 @@ $packSetting[DispenserDepImage,5,4] = "Emitter Pack EmitterDepPack";
 $packSetting[DispenserDepImage,6,4] = "Audio Pack AudioDepPack";
 $packSetting[DispenserDepImage,7,4] = "Tree Pack TreeDeployable";
 
-$packSettings[DispenserDepImage,5] = "10 1 Dispenser Pack:[Misc Deployables]";
+$packSettings[DispenserDepImage,5] = "7 1 Dispenser Pack:[Misc Deployables]";
 $packSetting[DispenserDepImage,0,5] = "[Cycle packs] cycle";
 $packSetting[DispenserDepImage,1,5] = "[Random pack] random";
 $packSetting[DispenserDepImage,2,5] = "Jump Pad JumpadDeployable";
@@ -890,72 +881,37 @@ $packSetting[DispenserDepImage,3,5] = "Teleport Pad TelePadPack";
 $packSetting[DispenserDepImage,4,5] = "Tripwire Pack TripwireDeployable";
 $packSetting[DispenserDepImage,5,5] = "Escape Pod EscapePodDeployable";
 $packSetting[DispenserDepImage,6,5] = "Pack Dispenser DispenserDepPack";
-$packSetting[DispenserDepImage,7,5] = "Detonation pack DetonationDeppack";
-$packSetting[DispenserDepImage,8,5] = "Energize pack EnergizerDeployable";
-$packSetting[DispenserDepImage,9,5] = "Laser turret TurretLaserDeployable";
-$packSetting[DispenserDepImage,10,5] = "Rack Turret TurretMissileRackDeployable";
+$packSetting[DispenserDepImage,7,5] = "Energize pack EnergizerDeployable";
 
 $packSettings[DispenserDepImage,6] = "7 1 Dispenser Pack:[Decoration packs]";
 $packSetting[DispenserDepImage,0,6] = "[Cycle packs] cycle";
 $packSetting[DispenserDepImage,1,6] = "[Random pack] random";
-$packSetting[DispenserDepImage,2,6] = "Flamethrower Barrel ELFBarrelPack";
-$packSetting[DispenserDepImage,3,6] = "Mortar Barrel MortarBarrelPack";
-$packSetting[DispenserDepImage,4,6] = "Gauss Barrel PlasmaBarrelPack";
-$packSetting[DispenserDepImage,5,6] = "AA Barrel AABarrelPack";
-$packSetting[DispenserDepImage,6,6] = "Missile Barrel MissileBarrelPack";
-$packSetting[DispenserDepImage,7,6] = "Artillery Barrel ArtilleryBarrelPack";
+$packSetting[DispenserDepImage,2,6] = "Mortar Barrel MortarBarrelPack";
+$packSetting[DispenserDepImage,3,6] = "Plasma Barrel PlasmaBarrelPack";
+$packSetting[DispenserDepImage,4,6] = "AA Barrel AABarrelPack";
+$packSetting[DispenserDepImage,5,6] = "Missile Barrel MissileBarrelPack";
 
-$packSettings[DispenserDepImage,7] = "23 1 Dispenser Pack:[Weapons]";
+$packSettings[DispenserDepImage,7] = "8 1 Dispenser Pack:[Weapons]";
 $packSetting[DispenserDepImage,0,7] = "[Cycle packs] cycle";
 $packSetting[DispenserDepImage,1,7] = "[Random pack] random";
-$packSetting[DispenserDepImage,2,7] = "Machine Gun RPChaingun";
-$packSetting[DispenserDepImage,3,7] = "Sniper Gun SniperGun";
-$packSetting[DispenserDepImage,4,7] = "Bazooka launcher Bazooka";
-$packSetting[DispenserDepImage,5,7] = "Portible Chaingun-Turret MG42";
-$packSetting[DispenserDepImage,6,7] = "Flame thrower flamer";
-$packSetting[DispenserDepImage,7,7] = "Krieg Rifle KriegRifle";
-$packSetting[DispenserDepImage,8,7] = "AntiVehicle RocketLauncher AALauncher";
-$packSetting[DispenserDepImage,9,7] = "Shot gun shotgun";
-$packSetting[DispenserDepImage,10,7] = "Rotary Shotgun Rshotgun";
-$packSetting[DispenserDepImage,11,7] = "MP5 MG LSMG";
-$packSetting[DispenserDepImage,12,7] = "RTM-85C PhotonLaser PhotonLaser";
-$packSetting[DispenserDepImage,13,7] = "Targeting Beacon Targeter";
-$packSetting[DispenserDepImage,14,7] = "EX-73 Pulse-Chaingun PulseChaingun";
-$packSetting[DispenserDepImage,15,7] = "RSA Laser-Rifle lasergun";
-$packSetting[DispenserDepImage,16,7] = "Enemia Rocket-Launcher BazookaII";
-$packSetting[DispenserDepImage,17,7] = "Battle Rifle BattleRifle";
-$packSetting[DispenserDepImage,18,7] = "Phantom Spiker spiker";
-$packSetting[DispenserDepImage,19,7] = "Gauss Cannon portibleGauss";
-$packSetting[DispenserDepImage,20,7] = "USP-45 Pistol pistol";
-$packSetting[DispenserDepImage,21,7] = "Silenced USP-45 Pistol Spistol";
-$packSetting[DispenserDepImage,22,7] = "Desert Eagle-Pistol Deagle";
-$packSetting[DispenserDepImage,23,7] = "ES-73 Pulse-Phaser PulsePhaser";
+$packSetting[DispenserDepImage,2,7] = "S3 Rifle S3Rifle";
+$packSetting[DispenserDepImage,3,7] = "Colt Pistol pistol";
+$packSetting[DispenserDepImage,4,7] = "G41 Rifle G41Rifle";
+$packSetting[DispenserDepImage,5,7] = "M1700 Shotgun M1700";
+$packSetting[DispenserDepImage,6,7] = "Stinger Launcher Stinger";
+$packSetting[DispenserDepImage,7,7] = "Javelin Launcher Javelin";
+$packSetting[DispenserDepImage,8,7] = "Wp400 Shotgun Wp400";
 
-$packSettings[DispenserDepImage,8] = "22 1 Dispenser Pack:[Ammo]";
+$packSettings[DispenserDepImage,8] = "8 1 Dispenser Pack:[Ammo]";
 $packSetting[DispenserDepImage,0,8] = "[Cycle packs] cycle";
 $packSetting[DispenserDepImage,1,8] = "[Random pack] random";
-$packSetting[DispenserDepImage,2,8] = "MachineGun Ammo MGClip";
-$packSetting[DispenserDepImage,3,8] = "MP5 Ammo LSMGClip";
-$packSetting[DispenserDepImage,4,8] = "sniperrifle Ammo SnipergunAmmo";
-$packSetting[DispenserDepImage,5,8] = "Bazooka Ammo BazookaAmmo";
-$packSetting[DispenserDepImage,6,8] = "MG42 Ammo MG42Ammo";
-$packSetting[DispenserDepImage,7,8] = "Krieg Ammo RifleClip";
-$packSetting[DispenserDepImage,8,8] = "Rocketlauncher Ammo AALauncherAmmo";
-$packSetting[DispenserDepImage,9,8] = "Shotgun Ammo shotgunClip";
-$packSetting[DispenserDepImage,10,8] = "RotaryShotgun Ammo RShotgunClip";
-$packSetting[DispenserDepImage,11,8] = "Pistol Ammo PistolClip";
-$packSetting[DispenserDepImage,12,8] = "Fragmentation Grenades Grenade";
-$packSetting[DispenserDepImage,13,8] = "Smoke Grenades SmokeGrenade";
-$packSetting[DispenserDepImage,14,8] = "Beaconing Grenades BeaconSmokeGrenade";
-$packSetting[DispenserDepImage,15,8] = "Flare Grenades FlareGrenade";
-$packSetting[DispenserDepImage,16,8] = "MissileLauncher Ammo MissileLauncherAmmo";
-$packSetting[DispenserDepImage,17,8] = "PulseChaingun Ammo PulseChaingunAmmo";
-$packSetting[DispenserDepImage,18,8] = "RSA-Laser-Rifle Ammo lasergunAmmo";
-$packSetting[DispenserDepImage,19,8] = "Enemia Ammo BazookaIIAmmo";
-$packSetting[DispenserDepImage,20,8] = "BattleRifle Ammo BattleRifleAmmo";
-$packSetting[DispenserDepImage,21,8] = "PGC Ammo portibleGaussAmmo";
-$packSetting[DispenserDepImage,22,8] = "Incindinary Grenades IncindinaryGrenade";
-
+$packSetting[DispenserDepImage,2,8] = "S3 Ammo S3RifleAmmo";
+$packSetting[DispenserDepImage,3,8] = "G41 Ammo G41RifleAmmo";
+$packSetting[DispenserDepImage,4,8] = "M1700 Ammo M1700Ammo";
+$packSetting[DispenserDepImage,5,8] = "C4 Explosive C4";
+$packSetting[DispenserDepImage,6,8] = "Stinger Ammo StingerAmmo";
+$packSetting[DispenserDepImage,7,8] = "Javelin Ammo JavelinAmmo";
+$packSetting[DispenserDepImage,8,8] = "Wp400 Ammo Wp400Ammo";
 ///(Arg my poor fingers.. :()
 
 
@@ -1205,10 +1161,8 @@ if ((!IsObject(%disp.pack)) && isObject(%disp))
 
 //Not much has changed.. :D
 
-function DispenserDepImage::ChangeMode(%data,%plyr,%val,%level)
-{
-if (%level == 0)
-   {
+function DispenserDepImage::ChangeMode(%data,%plyr,%val,%level) {
+if (%level == 0) {
    if (%plyr.expertset $= "")
        %plyr.expertset = 0; 
    //Selecting Dispenser   
@@ -1231,600 +1185,8 @@ if (%level == 0)
       bottomPrint(%plyr.client,%packname SPC "set to"SPC %line,2,1);        
       
    }
-else
-   {
+   else {
    Parent::ChangeMode(%data,%plyr,%val,%level);
    }
-}
-
-/////////Detonation PACK//////////
-
-
-$expertSettings[DetonationDepImage] = "2 -1 Detonation Pack:[Options]";
-
-$expertSetting[DetonationDepImage,0] = "Select Payload";
-$expertSetting[DetonationDepImage,1] = "Select Detonation logic";
-$expertSetting[DetonationDepImage,2] = "Select Detonation Time";
-
-$packSettings[DetonationDepImage] = "12 1 Detonation Pack:[Payload]";
-$packSetting[DetonationDepImage,0] = "Dud Explosion 5";
-$packSetting[DetonationDepImage,1] = "Repair Pulse 20";
-$packSetting[DetonationDepImage,2] = "Cloack Pulse 20";
-$packSetting[DetonationDepImage,3] = "Decon Pulse 20";
-$packSetting[DetonationDepImage,4] = "ESP Pulse 60";
-$packSetting[DetonationDepImage,5] = "Morph Pulse 60";
-$packSetting[DetonationDepImage,6] = "Ion Zap 30";
-$packSetting[DetonationDepImage,7] = "Mortar Fountain 30";
-$packSetting[DetonationDepImage,8] = "Bomber Crash 30";
-$packSetting[DetonationDepImage,9] = "Satchel Charge 30";
-$packSetting[DetonationDepImage,10] = "Atommic NukeCannon 120";
-$packSetting[DetonationDepImage,11] = "Tactical Nuke 120";
-$packSetting[DetonationDepImage,12] = "Dark Hole 360";
-
-$packSettings[DetonationDepImage,1] = "4 -1 Detonation Pack: [Detonation Logic]";
-$packSetting[DetonationDepImage,0,1] = "Detonate when armed";
-$packSetting[DetonationDepImage,1,1] = "Detonate when powered";
-$packSetting[DetonationDepImage,2,1] = "Detonate when not powered";
-$packSetting[DetonationDepImage,3,1] = "Detonate when deconstructed";
-$packSetting[DetonationDepImage,4,1] = "Detonate when destroyed";
-
-$packSettings[DetonationDepImage,2] = "7 -1 Detonation Pack: [Detonation Time]";
-$packSetting[DetonationDepImage,0,2] = "3 Seconds";
-$packSetting[DetonationDepImage,1,2] = "5 Seconds";
-$packSetting[DetonationDepImage,2,2] = "10 Secconds";
-$packSetting[DetonationDepImage,3,2] = "20 Seconds";
-$packSetting[DetonationDepImage,4,2] = "30 Seconds";
-$packSetting[DetonationDepImage,5,2] = "60 Seconds";
-$packSetting[DetonationDepImage,6,2] = "120 Seconds";
-$packSetting[DetonationDepImage,7,2] = "600 Seconds";
-
-
-datablock StaticShapeData(DetonationDep) : DeployedCrate 
-{
-	shapeFile = "stackable2l.dts";
-        needsPower = true;   
-        targetNameTag = 'Detonation';
-	targetTypeTag = '';     
-};
-
-datablock StaticShapeData(DetonationDepArm) : DeployedCrate 
-{
-	shapeFile = "stackable4m.dts";
-        needsPower = true;        
-};
-
-
-
-datablock ShapeBaseImageData(DetonationDepImage) {
-	mass = 20;
-	emap = true;
-	shapeFile = "stackable2l.dts";
-	item = DetonationDepPack;
-	mountPoint = 1;
-	offset = "0 -1 -1";
-	deployed = DetonationDepImage;
-	heatSignature = 0;
-
-	stateName[0] = "Idle";
-	stateTransitionOnTriggerDown[0] = "Activate";
-
-	stateName[1] = "Activate";
-	stateScript[1] = "onActivate";
-	stateTransitionOnTriggerUp[1] = "Idle";
-
-	isLarge = true;
-	maxDepSlope = 360;
-	deploySound = ItemPickupSound;
-
-	minDeployDis = 0.5;
-	maxDeployDis = 50.0;
-};
-
-datablock ItemData(DetonationDepPack) {
-        explosion = SatchelMainExplosion;
-        underwaterExplosion = UnderwaterSatchelMainExplosion;
-	className = Pack;
-	catagory = "Deployables";
-	shapeFile = "stackable2l.dts";
-	mass = 5.0;
-	elasticity = 0.2;
-	friction = 0.6;
-	pickupRadius = 1;
-	rotate = true;
-	image = "DetonationDepImage";
-	pickUpName = "an Detonation pack";
-	heatSignature = 0;
-	emap = true;
-armDelay = 3000;
-   maxDamage = 0.6;
-
-   kickBackStrength    = 4000;
-
- };
-
-function DetonationDepPack::onPickup(%this, %obj, %shape, %amount) {
-	// created to prevent console errors
-}
-
-function DetonationDep::gainPower(%data, %obj) 
-{
-if (%obj.dlogic==1 && %obj.armed)
-            {
-            %obj.detsched = schedule(%obj.dettime*1000,%obj,"DetonationDepDetonate",%obj);
-            PlaydetTimer(%obj,%obj.dettime);
-            }
-else if (%obj.dlogic == 1)
-        {
-        %obj.wantdet = 1;
-        }    
-else if (%obj.dlogic == 2)
-        {
-        if (%obj.armed)
-	        serverplay3d(MTCThinkSound,%obj.getTransform());
-        StopDetTimer(%obj);
-        //Cancel(%Obj.armsch);	
-        %obj.wantdet = 0;
-        Cancel(%obj.detsched);
-        }  
-}
-
-function DetonationDep::losePower(%data, %obj) 
-{
-if (%obj.dlogic==2 && %obj.armed)
-            {
-            %obj.detsched = schedule(%obj.dettime*1000,%obj,"DetonationDepDetonate",%obj);
-            PlaydetTimer(%obj,%obj.dettime);
-            }
-else if (%obj.dlogic == 2)
-        {
-        %obj.wantdet = 1;
-        }
-else if (%obj.dlogic == 1)
-        {
-        if (%obj.armed)
-	        serverplay3d(MTCThinkSound,%obj.getTransform());
-        StopDetTimer(%obj);
-        //Cancel(%Obj.armsch);
-        %obj.wantdet = 0;
-        Cancel(%obj.detsched);
-        }  
-}
-
-
-
-
-function DetonationDepImage::onDeploy(%item, %plyr, %slot) {	
-
-        if (!$Host::SatchelChargeEnabled)
-              {
-              messageAll("", "\c2"@ %plyr.client.namebase @" tried to deploy a Detonation pack.");
-              %plyr.unmountImage(%slot);
-      	      %plyr.decInventory(%item.item, 1);
-              return;
-              }
-
-	%playerVector = vectorNormalize(-1 * getWord(%plyr.getEyeVector(),1) SPC getWord(%plyr.getEyeVector(),0) SPC "0");
-	%item.surfaceNrm2 = %playerVector;
-	%rot = fullRot(%item.surfaceNrm,%item.surfaceNrm2);
-        
-	%deplObj = new StaticShape() 
-        {
-	dataBlock = "DetonationDep";
-        scale =  "0.4 0.4 1.2";      
-	};
-	%Arm1 = new StaticShape() 
-        {
-	dataBlock = "DetonationDeparm";
-        scale = "2 2.2 2";      
-	};
-	%arm2= new StaticShape() 
-        {
-	dataBlock = "DetonationDeparm";
-        scale = "2 2.2 2";      
-	};
-        %arm3= new StaticShape() 
-        {
-	dataBlock = "DetonationDeparm";
-        scale = "0.8 0.8 0.4";      
-	};
-        %arm4= new StaticShape() 
-        {
-	dataBlock = "DetonationDeparm";
-        scale = "0.8 0.8 0.4";      
-	};
-        %deplObj.ownername = %plyr.client.namebase;
-        setTargetName(%deplObj.target,addTaggedString(%plyr.client.namebase SPC "\'s detonation pack [arming]"));
-        if (%deplObj.getTarget() != -1)
-		setTargetSensorGroup(%deplObj.getTarget(), %plyr.client.team);
-
-        %rot1=rotadd(%rot,"0 1 0 -1.57");
-        %rot2=rotadd(%rot,"0 1 0" SPC $Pi / 2);
-        %rot3=rotadd(%rot,"0 1 0" SPC -1*$Pi / 2);
-	// set orientation
-	%deplObj.setTransform(%item.surfacePt SPC %rot1);
-        %deplObj.setEdge(%item.surfacePt,"1 0 0");
-
-        %arm1.setTransform(%item.surfacePt SPC %rot);
-        %arm1.setEdge(%deplObj.getEdge("1 0 1"),"0 0 -1");
-        %arm2.setTransform(%item.surfacePt SPC %rot);
-        %arm2.setEdge(%deplObj.getEdge("1 0 -1"),"0 0 -1");
-        %arm3.setTransform(%item.surfacePt SPC %rot2);
-        %arm3.setEdge(%arm1.getEdge("-0.9 0 1"),"1 0 -1");
-        %arm4.setTransform(%item.surfacePt SPC %rot3);
-        %arm4.setEdge(%arm2.getEdge("0.9 0 1"),"-1 0 -1");
-        
-        //%deplobj.emitter = CreateEmitter(%deplObj.getEdge("0 0 0"),LoadingE);
-        //%deplobj.emitter.setRotation(%rot);
-        %emitter1 = CreateEmitter(%arm1.getEdge("0 0 1.2"),LoadingE2);
-        %emitter2 = CreateEmitter(%arm2.getEdge("0 0 1.2"),LoadingE2);
-        %deplobj.children=6;
-        %deplobj.child[0] = %arm1;
-        %deplobj.child[1] = %arm2;
-        %deplobj.child[2] = %arm3;
-        %deplobj.child[3] = %arm4;
-        %deplobj.child[4] = %emitter1;
-        %deplobj.child[5] = %emitter2;
-
-        %arm1.parent = %deplobj;
-        %arm2.parent = %deplobj;
-        %arm3.parent = %deplobj;
-        %arm4.parent = %deplobj;
-        %deplobj.payload = %plyr.packset;
-        %deplobj.armtime = getWord($packSetting[DetonationDepImage,%plyr.packset],2);
-        %deplobj.dettime = getWord($packSetting[DetonationDepImage,%plyr.packset[2],2],0);
-
-	// set the recharge rate right away
-	if (%deplObj.getDatablock().rechargeRate)
-		%deplObj.setRechargeRate(%deplObj.getDatablock().rechargeRate);
-
-	// set team, owner, and handle
-	%deplObj.team = %plyr.client.Team;
-	%deplObj.setOwner(%plyr);
-	%arm1.team = %plyr.client.Team;
-	%arm1.setOwner(%plyr);
-	%arm2.team = %plyr.client.Team;
-	%arm2.setOwner(%plyr);
-	%arm3.team = %plyr.client.Team;
-	%arm3.setOwner(%plyr);
-	%arm4.team = %plyr.client.Team;
-	%arm4.setOwner(%plyr);
-       
-        %deplObj.dLogic = %plyr.packset[1];
-       
-
-	// place the deployable in the MissionCleanup/Deployables group (AI reasons)
-	addToDeployGroup(%deplObj);
-
-	//let the AI know as well...
-	AIDeployObject(%plyr.client, %deplObj);
-
-	// play the deploy sound
-	serverPlay3D(%item.deploySound, %deplObj.getTransform());
-
-	// increment the team count for this deployed object
-	$TeamDeployedCount[%plyr.team, %item.item]++;
-
-	addDSurface(%item.surface,%deplObj);
-	%deplObj.powerFreq = %plyr.powerFreq;
-        checkPowerObject(%deplObj);
-
-        //Warnings
-        %warns = mfloor(%deplobj.armtime/30);
-        for (%i =0; %i<%warns;%i++)
-        {
-        schedule(%i*30000,%deplObj,"bottomPrint",%plyr.client,"Detonation pack arming in" SPC (%warns-%i)*30 SPC"seconds",2,1);  
-        }
-        %name = %plyr.client.namebase;      
-        messageAll("", "\c2"@ %name @" deployed a Detonation pack.");//~wfx/misc/red_alert.wav");
-
-        %detpoint = new WayPoint()
-           {
-           position = %item.surfacept;
-        rotation = "1 0 0 0";
-        scale = "1 1 1";
-        name = "Arming Detonation pack";
-        dataBlock = "WayPointMarker";
-        lockCount = "0";
-        homingCount = "0";
-        };
-        MissionCleanup.add(%detpoint);
-        %detpoint.schedule(5 * 1000, "delete");
-        
-        %plyr.unmountImage(%slot);
-   	%plyr.decInventory(%item.item, 1);
-        
-        %deplObj.armsch = schedule(%deplobj.armtime*1000,%deplObj,"ArmDetonationDep",%deplObj);
-
-	return %deplObj;
-}
-
-
-function DetonationDep::onDestroyed(%this,%obj,%prevState) {
-	if (%obj.isRemoved)
-		return;
-        if (%obj.dlogic==4 && %obj.armed)
-            {
-            %obj.armed = 0;
-            DetonationDepDetonate(%obj);        
-            }
-	%obj.isRemoved = true;        
-	Parent::onDestroyed(%this,%obj,%prevState);
-	$TeamDeployedCount[%obj.team, DetonationDepPack]--;
-	remDSurface(%obj);
-        for(%i=0;%i<%obj.children;%i++)
-        	{
-                if (isObject(%obj.child[%i]))
-                    %obj.child[%i].schedule(500, "delete");
-		}
-	%obj.schedule(500, "delete");
-}
-
-function DetonationDep::disassemble(%data,%plyr,%obj) {
-	if (!isObject(%obj) || %obj.isRemoved)
-		return;
-	if (%obj.dlogic==3 && %obj.armed)
-            {
-            DetonationDepDetonate(%obj);
-            //PlaydetTimer(%obj,%obj.dettime);
-           
-            }
-        for(%i=0;%i<%obj.children;%i++)
-        	{
-                if (isObject(%obj.child[%i]))
-                    %obj.child[%i].delete();
-		}
-        Parent::disassemble(%data,%plyr,%obj);
-}
-
-function DetonationDepArm::disassemble(%data,%plyr,%obj) {
-        Cancel(%Obj.armsch);
-	if (!isObject(%obj) || %obj.isRemoved)
-		return;                 
-         if (isObject(%obj.parent)) {
-                    %obj.parent.getDatablock().disassemble(%plyr,%obj.parent);
-		}
-        Parent::disassemble(%data,%plyr,%obj);
-}
-
-function StartArmDetonationDep(%obj)
-{
-Cancel(%obj.detsched);
-Cancel(%Obj.armsch);
-StopDetTimer(%obj);
-%obj.armed = 0;
-setTargetName(%Obj.target,addTaggedString(%obj.owner.namebase SPC "\'s detonation pack [arming]"));
-if (isObject(%obj.child[4]))
-    %obj.child[4].delete();
-if (isObject(%obj.child[5]))
-    %obj.child[5].delete();
-%obj.child[4] = CreateEmitter(%obj.child[0].getEdge("0 0 1.2"),LoadingE2);
-%obj.child[5] = CreateEmitter(%obj.child[1].getEdge("0 0 1.2"),LoadingE2);
-
-%Obj.armsch = schedule(%obj.armtime*1000,%Obj,"ArmDetonationDep",%obj);
-}
-
-function ArmDetonationDep(%obj)
-{
-Cancel(%obj.detsched);
-Cancel(%Obj.armsch);
-StopDetTimer(%obj);
-
-setTargetName(%Obj.target,addTaggedString(%obj.ownername SPC "\'s detonation pack [armed]"));
-serverplay3d(MTCThinkSound,%obj.getTransform());
-
-if (isObject(%obj.child[4]))
-    %obj.child[4].delete();
-if (isObject(%obj.child[5]))
-    %obj.child[5].delete();
-%obj.child[4] = CreateEmitter(%obj.getEdge("0 0 0"),LoadingE);
-%obj.child[4].setRotation(%obj.child[0].getrotation());
-%obj.armed = 1;
-
-if (%obj.dlogic == 0 || %obj.wantdet)
-   {
-   %obj.detsched = schedule(%obj.dettime*1000,%obj,"DetonationDepDetonate",%obj);
-   PlaydetTimer(%obj,%obj.dettime);
-   }
-}
-
-function PlaydetTimer(%obj,%timeleft)
-{
-StopDetTimer(%obj);
-%times = "1 2 3 5 10 30 60";
-%obj.counting = 1;
-for (%i=0;%i<7;%i++)
-    {
-    %tt = GetWord(%times,%i);
-    if (%tt<=%timeleft)
-       {       
-       %point = %timeleft-%tt;
-       %obj.countsound[%i] = schedule(%point*1000,%obj,"PlaydetSound",%obj,GetWord(%times,%i));
-       }
-    }
-if (%obj.dlogic != 0)
-   {
-   //%time = (%obj.dettime < 30) ? 30 : %obj.dettime;
-   //%obj.countsound[8] = schedule(%timeleft*1000,%obj,"PlaydetTimer",%obj,%time);
-   }
-}
-
-function StopDetTimer(%obj)
-{
-%obj.counting = 0;
-for (%i=0;%i<8;%i++)
-    {
-	Cancel(%obj.countsound[%i]);
-    }
-}
-
-function PlaydetSound(%obj,%time)
-{
-if (isObject(%obj) && %obj.counting)
-   {
-   setTargetName(%obj.target,addTaggedString(%obj.ownername SPC "\'s detonation pack ["@ %time @" seconds mark]"));
-   ServerPlay3D(MessageRecieveSound,%obj.getTransform());
-   }
-}
-
-function DetonationDepImage::onMount(%data, %obj, %node) {
-        displayPowerFreq(%obj);
-	%obj.hasEmpack = true; // not needed anymore
-	%obj.packSet = 0;
-	%obj.expertSet = 0;
-	%obj.packSet[0] = 0;
-	%obj.packSet[1] = 0;
-	%obj.packSet[2] = 0;	
-}
-
-function DetonationDepImage::onUnmount(%data, %obj, %node) {
-	%obj.hasEmpack = ""; // not needed anymore
-	%obj.packSet = 0;
-	%obj.expertSet = 0;
-	%obj.packSet[0] = 0;
-	%obj.packSet[1] = 0;
-	%obj.packSet[2] = 0;	
-}
-
-
-
-function DetonationDepImage::ChangeMode(%data,%plyr,%val,%level)
-{
-if (%level == 0)
-   {
-   //Selecting Detonation
-   if (!%plyr.expertSet)
-      {
-      Parent::ChangeMode(%data,%plyr,%val,%level);
-      //%plyr.packset[0] = GetWord($packSetting[DetonationDepImage,%plyr.packset],2);     
-      }
-    //Selecting selection mode/PowerLogic/CloakLogic    
-    else if (%plyr.expertSet > 0)
-      {  
-      %set = %plyr.expertSet;
-      %image = %data.getName();
-      %settings = $packSettings[%image,%set];
-
-      %plyr.packSet[%set] = %plyr.packSet[%set] + %val;
-      if (%plyr.packSet[%set] > getWord(%settings,0))
-	  %plyr.packSet[%set] = 0;
-      if (%plyr.packSet[%set] < 0)
- 	  %plyr.packSet[%set] = getWord(%settings,0);
-
-      %packname = GetWords(%settings,2,getWordCount(%settings));
-      %curset = $PackSetting[%image,%plyr.packSet[%set],%set];    
-      if (getWord(%settings,1) == -1)
-	   %line = GetWords(%curset,0,getWordCount(%curset));
-      else
-	   %line = GetWords(%curset,0,getWord(%settings,1));
-      bottomPrint(%plyr.client,%packname SPC "set to"SPC %line,2,1);        
-      }
-   }
-else
-   {
-   Parent::ChangeMode(%data,%plyr,%val,%level);
-   }
-}
-
-function DetonationDepDetonate(%obj)
-{
-if (!%obj.payload)
-   {
-   //do nothing
-   }
-else if (%obj.payload == 1)
-   {
-   Aidpulse(%obj.getTransform(),%obj.owner,0);
-   }
-else if (%obj.payload == 2)
-   {
-   Aidpulse(%obj.getTransform(),%obj.owner,1);
-   }
-else if (%obj.payload == 3)
-   {
-   Aidpulse(%obj.getTransform(),%obj.owner,2);
-   }
-else if (%obj.payload == 4)
-   {
-   Aidpulse(%obj.getTransform(),%obj.owner,3);
-   }
-else if (%obj.payload == 5)
-   {
-   Aidpulse(%obj.getTransform(),%obj.owner,4);
-   }
-else if (%obj.payload == 6)
-   {
-   %obj.Zap(5000);
-   }
-else if (%obj.payload == 7)
-   {  
-   for (%i=0;%i<5;%i++)
-       {
-        %ranupvec = GetRandom()*2-1 SPC GetRandom()*2-1 SPC GetRandom()*1;
-        MortarShot.Create(%obj.getEdge("-2 0 0"),VectorScale(realvec(%obj,%ranupvec),0.5));
-       }
-   }
-else if (%obj.payload == 8)
-   {  
-   for (%i=0;%i<5;%i++)
-       {
-        %ranupvec = GetRandom()*2-1 SPC GetRandom()*2-1 SPC GetRandom()*1;
-        BomberBomb.Create(%obj.getEdge("-2 0 0"),realvec(%obj,%ranupvec),VectorScale(realvec(%obj,%ranupvec),20));
-       }
-   }
-else if (%obj.payload == 9)
-   {
-   scatchelkaboom(%obj.getEdge("-2 0 0"),%obj.owner);
-   }
-else if (%obj.payload == 10)
-  {
-  BigFatNukeDrop(%obj.getTransform());
-  }
-else if (%obj.payload == 11)
-  {
-   %vector = "0 1 0";
-
-   %p = new GrenadeProjectile()
-   {
-      dataBlock        = nukemeball;
-      initialDirection = "0 1 0";
-      initialPosition  = getBoxCenter(%obj.getWorldBox());
-      sourceObject     = %obj;
-	damageFactor	 = 1;
-      sourceSlot       = 0;
-   };
-  }
-else if (%obj.payload == 12)
-  {
-  %pos = %obj.getTransform();
-  %mask = $TypeMasks::StaticShapeObjectType | $TypeMasks::ForceFieldObjectType | $TypeMasks::InteriorObjectType;
-  %res = containerRayCast(%pos,"0 0 500",%mask, %obj);
-  if (%res)
-      %inside = 1;
-   dome(VectorAdd(%pos,"0 0" SPC (1-%inside)*200),60000,%inside);
-  }
-   if (!%obj.isRemoved)
-    {
-    if (%obj.payload == 0 || %obj.payload > 9)
-        %obj.setDamageState(Destroyed);
-    else
-       {
-       StartArmDetonationDep(%obj);
-       }
-    }
-}
-
-function scatchelkaboom(%pos,%owner)
-{
-%pack = new Item() 
-         {
-         dataBlock = SatchelChargeThrown;
-         static = false;
-         rotate = true;                  
-	 };
-//%pack.sourceObject = %owner.player;
-//%pack.blowingUp=1;
-%pack.setTransform(%pos);
-%pack.armed = True;
-%pack.Schedule(50,"setDamageState",Destroyed);
 }
 

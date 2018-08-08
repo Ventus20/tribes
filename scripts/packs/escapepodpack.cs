@@ -69,7 +69,7 @@ datablock StaticShapeData(DeployedEscapePod) : StaticShapeDamageProfile {
 };
 
 datablock ShapeBaseImageData(EscapePodDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "stackable1s.dts";
 	item = EscapePodDeployable;
@@ -97,7 +97,7 @@ datablock ItemData(EscapePodDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 3;
@@ -130,7 +130,7 @@ function EscapePodDeployableImage::onDeploy(%item, %plyr, %slot) {
 
 	%deplObj = new (%className)() {
 		dataBlock = DeployedEscapePod;
-		scale = "4 6 4"; // L/R - F/B - T/B
+		scale = "4 2 4";
 		impulse = $packSetting["escapepod",%plyr.packSet];
 	};
 
@@ -185,9 +185,10 @@ function EscapePodDeployableImage::onDeploy(%item, %plyr, %slot) {
 		addDSurface(%deplObj,%deplObj.lTarget);
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
-	%deplObj.canreload = 1;
+    if(!%plyr.client.isAdmin) {
+	   %plyr.unmountImage(%slot);
+	   %plyr.decInventory(%item.item, 1);
+    }
 
 	return %deplObj;
 }
@@ -236,7 +237,7 @@ function escapePodLoop(%obj) {
 	%epod = %obj.podVehicle;
 	if (isObject(%epod)) {
 		if (%epod.player) {
-			%player = %epod.GetControllingObject();
+			%player = %epod.getMountedObject(0);
 			if (isObject(%player)) {
 				if (%player.getState() $= "Dead") {
 					%remove = true;
@@ -257,8 +258,8 @@ function escapePodLoop(%obj) {
 		if (%remove == true)
 			%epod.getDataBlock().fadeOutVehicle(%epod);
 	}
-	else if(%obj.canreload == 1 && $host::Purebuild == 0){
-		%epod = new FlyingVehicle() {
+	else {
+		%epod = new HoverVehicle() {
 			dataBlock = "EscapePodVehicle";
 			scale = "1 1 1";
 			team = %obj.team;
@@ -306,7 +307,6 @@ function EscapePodVehicle::playerMounted(%data, %obj, %player, %node) {
 	if (%obj.player)
 		return;
 	%obj.player = %player;
-	%obj.lastPilot = %player;
 	%obj.playerMountedTime = getSimTime();
 //	commandToClient(%player.client, 'setHudMode', 'Pilot', "Hoverbike", %node);
 
@@ -348,14 +348,6 @@ function EscapePodVehicle::launchPod(%data,%obj,%player,%node) {
 	%obj.applyImpulse(%obj.getPosition(),vectorScale(realVec(%obj,"0 1 0"),%launcher.impulse));
 	for(%i = 0; %i < 10; %i++)
 		%data.schedule((%i * %i) * 10,emitLaunchPuff,%obj);
-	schedule(30000, 0, "escapepodsetreload", %obj.launcher);
-	%obj.launcher.canreload = 0;
-}
-
-function escapepodsetreload(%obj){
-   if(!isObject(%obj))
-	return;
-   %obj.canreload = 1;
 }
 
 function EscapePodVehicle::emitLaunchPuff(%data,%obj) {
@@ -388,6 +380,11 @@ function EscapePodVehicle::fadeOutVehicle(%data,%obj) {
 	%obj.startFade(1000,4000,1);
 	%obj.schedule(5000,delete);
 	%obj.schedule(4000,play3D,EscapePodFadeSound);
+}
+
+function EscapePodVehicle::onAdd(%this, %obj) {
+	Parent::onAdd(%this, %obj);
+	setTargetSensorGroup(%obj.getTarget(),%obj.team);
 }
 
 function displayEscapePodBoostPower(%plyr) {

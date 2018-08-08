@@ -159,6 +159,10 @@ function doorDeployableImage::onDeploy(%item, %plyr, %slot) {
 	};
     %deplObj.closedscale = %scale3;
     %deplObj.openedscale = getwords(%scale3,0,1) SPC 0.1;
+    //
+    %deplObj.savedclosedscale = %scale3;
+    %deplObj.savedopenedscale = getwords(%scale3,0,1) SPC 0.1;
+    //
 //////////////////////////Apply settings//////////////////////////////
 
 	// exact:
@@ -200,9 +204,6 @@ function doorDeployableImage::onDeploy(%item, %plyr, %slot) {
 	%deplObj.deploy();
     %owner  = %deplObj.getOwner();    //this is for leveled cards
 
-// Power object
-checkPowerObject(%deplObj);
-
 if(%plyr.packSet[1] == 0) {
 %deplobj.timeout = "0";
 }
@@ -243,61 +244,68 @@ if (%plyr.packSet[0]==2) {
 }                        //for power togle code
 
 if (%plyr.packSet[0]==3) {
-%deplobj.toggletype=1;
+%deplobj.toggletype=2;
+%deplobj.powercontrol=1;
+}
+if (%plyr.packSet[0]==4) {
+%deplobj.toggletype=3;
 %deplobj.powercontrol=1;
 }
 //collision door
-if (%plyr.packSet[0]==4){
+if (%plyr.packSet[0]==5){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =0;
 }
 //Level 1 Door
-if (%plyr.packSet[0]==5){
+if (%plyr.packSet[0]==6){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =1;
 %plyr.client.haslev1[%plyr.client.GUID] = 1;
 }
 //Level 2 Door
-if (%plyr.packSet[0]==6){
+if (%plyr.packSet[0]==7){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =2;
 %plyr.client.haslev2[%plyr.client.GUID] = 1;
 }
 //Level 3 Door
-if (%plyr.packSet[0]==7){
+if (%plyr.packSet[0]==8){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =3;
 %plyr.client.haslev3[%plyr.client.GUID] = 1;
 }
 //owner door
-if (%plyr.packSet[0]==8){
+if (%plyr.packSet[0]==9){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =4;
 }
 //admin door
-if (%plyr.packSet[0]==9){
+if (%plyr.packSet[0]==10){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =5;
 }
 //super admin door
-if (%plyr.packSet[0]==10){
+if (%plyr.packSet[0]==11){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =6;
 }
 //developer door
-if (%plyr.packSet[0]==11){
+if (%plyr.packSet[0]==12){
 %deplobj.toggletype=0;
 %deplobj.Collision = true;
 %deplobj.lv =7;
 }
 %deplobj.canmove = true;
+
+// Power object
+checkPowerObject(%deplObj);
 	return %deplObj;
 }
 
@@ -416,7 +424,7 @@ return;
 else {            //Secondary
 %this.packSet[%this.ExpertSet]++;
 //Check Primaries
-if(%this.ExpertSet == 0 && %this.packSet[%this.ExpertSet] > 11) {
+if(%this.ExpertSet == 0 && %this.packSet[%this.ExpertSet] > 12) {
 %this.packSet[%this.ExpertSet] = 0;
 }
 else if(%this.ExpertSet == 1 && %this.packSet[%this.ExpertSet] > 5) {
@@ -452,22 +460,24 @@ function DisplayDoorInfo(%plyr, %Var) {
                case 2:
                bottomPrint(%plyr.client,"Advanced Door [S]: PWR Change Normal Door",2,1);
                case 3:
-               bottomPrint(%plyr.client,"Advanced Door [S]: PWR Change Toggle Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Close When Powered Door",2,1);
                case 4:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Contact Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Open When Powered Door",2,1);
                case 5:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Green Level Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Contact Access Door",2,1);
                case 6:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Yellow Level Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Green Level Access Door",2,1);
                case 7:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Red Level Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Yellow Level Access Door",2,1);
                case 8:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Owner Contact Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Red Level Access Door",2,1);
                case 9:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Admin Contact Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Owner Contact Access Door",2,1);
                case 10:
-               bottomPrint(%plyr.client,"Advanced Door [S]: Super-Admin Contact Access Door",2,1);
+               bottomPrint(%plyr.client,"Advanced Door [S]: Admin Contact Access Door",2,1);
                case 11:
+               bottomPrint(%plyr.client,"Advanced Door [S]: Super-Admin Contact Access Door",2,1);
+               case 12:
                bottomPrint(%plyr.client,"Advanced Door [S]: Developer Contact Access Door",2,1);
             }
          case 1:

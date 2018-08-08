@@ -4,26 +4,11 @@
 //**************************************************************
 // SOUNDS
 //**************************************************************
-datablock EffectProfile(MPBEngineEffect)
-{
-   effectname = "vehicles/mpb_thrust";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
-datablock EffectProfile(MPBThrustEffect)
-{
-   effectname = "vehicles/mpb_boost";
-   minDistance = 5.0;
-   maxDistance = 10.0;
-};
-
 datablock AudioProfile(MPBEngineSound)
 {
    filename    = "fx/vehicles/mpb_thrust.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = MPBEngineEffect;
 };
 
 datablock AudioProfile(MPBThrustSound)
@@ -31,7 +16,6 @@ datablock AudioProfile(MPBThrustSound)
    filename    = "fx/vehicles/mpb_boost.wav";
    description = AudioDefaultLooping3d;
    preload = true;
-   effect = MPBThrustEffect;
 };
 
 datablock AudioProfile(MobileBaseDeploySound)
@@ -58,6 +42,13 @@ datablock AudioProfile(MobileBaseTurretDeploySound)
 datablock AudioProfile(MobileBaseTurretUndeploySound)
 {
    filename    = "fx/vehicles/MPB_undeploy_turret.wav";
+   description = AudioClose3d;
+   preload = true;
+};
+
+datablock AudioProfile(MobileBaseStationDeploySound)
+{
+   filename    = "fx/vehicles/MPB_deploy_station.wav";
    description = AudioClose3d;
    preload = true;
 };
@@ -111,8 +102,8 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    multipassenger = false;
    computeCRC = true;
 
-   debrisShapeName = "vehicle_land_mpbase.dts";
-   debris = GShapeDebris;
+   debrisShapeName = "vehicle_land_mpbase_debris.dts";
+   debris = ShapeDebris;
 
    drag = 0.0;
    density = 20.0;
@@ -127,9 +118,9 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    cameraMaxDist = 20;
    cameraOffset = 6;
    cameraLag = 1.5;
-   explosion = HGVehicleExplosion;
-   explosionDamage = 1.25;
-   explosionRadius = 20.0;
+   explosion = LargeGroundVehicleExplosion;
+   explosionDamage = 0.5;
+   explosionRadius = 5.0;
 
    maxSteeringAngle = 0.3;  // 20 deg.
 
@@ -154,12 +145,12 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    hardImpactSpeed = 25;      // Play HardImpact Sound
 
    // Ground Impact Damage (uses DamageType::Ground)
-   minImpactSpeed = 24;
-   speedDamageScale = 0.025;
+   minImpactSpeed = 12;
+   speedDamageScale = 0.060;
 
    // Object Impact Damage (uses DamageType::Impact)
-   collDamageThresholdVel = 15;
-   collDamageMultiplier   = 0.03;
+   collDamageThresholdVel = 18;
+   collDamageMultiplier   = 0.070;
 
    // Engine
    engineTorque = 7.0 * 745;
@@ -185,13 +176,10 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    tireEmitter = TireEmitter;
 
    //
-   maxDamage = 6.5;
-   destroyedLevel = 6.5;
+   maxDamage = 3.85;
+   destroyedLevel = 3.85;
 
-   HDAddMassLevel = 5.0;
-   HDMassImage = APCHDMassImage;
-
-   isShielded = false;
+   isShielded = true;
    energyPerDamagePoint = 125;
    maxEnergy = 600;
    jetForce = 2800;
@@ -221,7 +209,7 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    minMountDist = 3;
 
    damageEmitter[0] = LightDamageSmoke;
-   damageEmitter[1] = MeHGHeavyDamageSmoke;
+   damageEmitter[1] = HeavyDamageSmoke;
    damageEmitter[2] = DamageBubbles;
    damageEmitterOffset[0] = "3.0 0.5 0.0 ";
    damageEmitterOffset[1] = "-3.0 0.5 0.0 ";
@@ -249,13 +237,22 @@ datablock WheeledVehicleData(MobileBaseVehicle) : MPBDamageProfile
    runningLight[1] = MPBLight2;
 
    shieldEffectScale = "0.85 1.2 0.7";
-
-   replaceTime = 120;
 };
 
 //**************************************************************
 // WEAPONS
 //**************************************************************
+
+datablock SensorData(MPBTurretMissileSensor)
+{
+   detects = true;
+   detectsUsingLOS = true;
+   detectsPassiveJammed = false;
+   detectsActiveJammed = false;
+   detectsCloaked = false;
+   detectionPings = true;
+   detectRadius = 200;
+};
 
 datablock TurretData(MobileTurretBase)
 {
@@ -276,9 +273,9 @@ datablock TurretData(MobileTurretBase)
    inheritEnergyFromMount = true;
    firstPersonOnly = true;
 
-   sensorData = AWACSensor;
-   sensorRadius = AWACSensor.detectRadius;
-   sensorColor = "255 194 9";
+   sensorColor = "0 212 45";
+   sensorData = MPBTurretMissileSensor;
+   sensorRadius = MPBTurretMissileSensor.detectRadius;
    cmdCategory = "Tactical";
    cmdMiniIconName = "commander/MiniIcons/com_turret_grey";
    targetNameTag = 'Jericho';
@@ -286,3 +283,6 @@ datablock TurretData(MobileTurretBase)
 
    canControl = true;
 };
+
+
+

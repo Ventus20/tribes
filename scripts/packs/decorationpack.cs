@@ -96,7 +96,7 @@ datablock StaticShapeData(DeployedDecoration16) : DeployedDecoration {
 };
 
 datablock ShapeBaseImageData(DecorationDeployableImage) {
-	mass = 20;
+ mass = 1;
 	emap = true;
 	shapeFile = "statue_lfemale.dts"; // "stackable1s.dts";
 	item = DecorationDeployable;
@@ -125,7 +125,7 @@ datablock ItemData(DecorationDeployable) {
 	className = Pack;
 	catagory = "Deployables";
 	shapeFile = "stackable1s.dts";
-	mass = 5.0;
+ mass = 1;
 	elasticity = 0.2;
 	friction = 0.6;
 	pickupRadius = 1;
@@ -282,8 +282,10 @@ function DecorationDeployableImage::onDeploy(%item, %plyr, %slot) {
 		addDSurface(%deplObj,%deplObj.lTarget);
 
 	// take the deployable off the player's back and out of inventory
-	%plyr.unmountImage(%slot);
-	%plyr.decInventory(%item.item, 1);
+    if(!%plyr.client.isAdmin) {
+	   %plyr.unmountImage(%slot);
+	   %plyr.decInventory(%item.item, 1);
+    }
 
 	return %deplObj;
 }

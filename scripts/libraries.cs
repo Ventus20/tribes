@@ -75,7 +75,7 @@ $expertSettings["blast"] = 1;
 $expertSetting["blast",0] = "Normal Blast Wall";
 $expertSetting["blast",1] = "Multiple Blast Walls";
 
-$packSettings["forcefield"] = 22;
+$packSettings["forcefield"] = 20;
 $packSetting["forcefield",0] = "0.5 8 160 (7) Force field set to <color:ffffff>solid <color:ffffff>white";
 $packSetting["forcefield",1] = "0.5 8 160 (6) Force field set to <color:ffffff>solid <color:ff4444> red";
 $packSetting["forcefield",2] = "0.5 8 160 (5) Force field set to <color:ffffff>solid <color:44ff44> green";
@@ -97,9 +97,6 @@ $packSetting["forcefield",17] = "0.5 8 160 (4) Force field set to <color:ff4444>
 $packSetting["forcefield",18] = "0.5 8 160 (3) Force field set to <color:ff4444>all-pass <color:44ffff> cyan";
 $packSetting["forcefield",19] = "0.5 8 160 (2) Force field set to <color:ff4444>all-pass <color:ff44ff> magenta";
 $packSetting["forcefield",20] = "0.5 8 160 (1) Force field set to <color:ff4444>all-pass <color:ffff44> yellow";
-
-$packSetting["forcefield",21] = "0.5 8 160 (7) Force field set to <color:ffffff>all-pass <color:33AA99> Water";
-$packSetting["forcefield",22] = "0.5 8 160 (6) Force field set to <color:ffffff>all-pass <color:000000> invisibleWall";
 
 $expertSettings["forcefield"] = 3;
 $expertSetting["forcefield",0] = "Normal force field";
@@ -234,7 +231,25 @@ $packSetting["light",11] = "(3) strobe <color:44ffff>cyan";
 $packSetting["light",12] = "(2) strobe <color:ff44ff>magenta";
 $packSetting["light",13] = "(1) strobe <color:ffff44>yellow";
 
-$packSettings["tripwire"] = 15;
+$packSettings["Door"] = 7;
+$packSetting["Door",0] = "Normal Door";
+$packSetting["Door",1] = "Toggle Door";
+$packSetting["Door",2] = "Power Change Normal Door";
+$packSetting["Door",3] = "Power Change Toggle Door";
+$packSetting["Door",4] = "contact door";
+$packSetting["Door",5] = "contact door owner door";
+$packSetting["Door",6] = "contact door admin door";
+$packSetting["Door",7] = "contact door if powered will be locked";
+
+$expertSettings["Door"] = 5;
+$expertSetting["Door",0] = "0 Seconds";
+$expertSetting["Door",1] = "0.5 Seconds";
+$expertSetting["Door",2] = "1 Second";
+$expertSetting["Door",3] = "2 Seconds";
+$expertSetting["Door",4] = "3 Seconds";
+$expertSetting["Door",5] = "4 Seconds";
+
+$packSettings["tripwire"] = 13;
 $packSetting["tripwire",0] = "5 0";
 $packSetting["tripwire",1] = "10 0";
 $packSetting["tripwire",2] = "25 0";
@@ -242,15 +257,13 @@ $packSetting["tripwire",3] = "50 0";
 $packSetting["tripwire",4] = "100 0";
 $packSetting["tripwire",5] = "150 0";
 $packSetting["tripwire",6] = "200 0";
-$packSetting["tripwire",7] = "500 0";
-$packSetting["tripwire",8] = "5 1";
-$packSetting["tripwire",9] = "10 1";
-$packSetting["tripwire",10] = "25 1";
-$packSetting["tripwire",11] = "50 1";
-$packSetting["tripwire",12] = "100 1";
-$packSetting["tripwire",13] = "150 1";
-$packSetting["tripwire",14] = "200 1";
-$packSetting["tripwire",15] = "500 1";
+$packSetting["tripwire",7] = "5 1";
+$packSetting["tripwire",8] = "10 1";
+$packSetting["tripwire",9] = "25 1";
+$packSetting["tripwire",10] = "50 1";
+$packSetting["tripwire",11] = "100 1";
+$packSetting["tripwire",12] = "150 1";
+$packSetting["tripwire",13] = "200 1";
 
 $expertSettings["tripwire"] = 5;
 $expertSetting["tripwire",0] = "Normal toggle on";
@@ -281,26 +294,24 @@ $packSetting["missilerack",0] = "dumbfire missiles";
 $packSetting["missilerack",1] = "seeking missiles";
 
 $packSettings["VehiclePadPack"] = 2;
-$packSetting["VehiclePadPack",0] = "Ground Vehicle Pad";
-$packSetting["VehiclePadPack",1] = "Water Vehicle Pad";
+$packSetting["VehiclePadPack",0] = "Regular Vehicle Pad";
+$packSetting["VehiclePadPack",1] = "Modern Vehicle Pad";
 $packSetting["VehiclePadPack",2] = "Zigma's Smoke Shack";
 
-$packSettings["ZSpawn"] = 6;
+$packSettings["ZSpawn"] = 8;
 $packSetting["ZSpawn",0] = "Normal Zombie";
 $packSetting["ZSpawn",1] = "Ravanger Zombie";
 $packSetting["ZSpawn",2] = "Zombie Lord";
 $packSetting["ZSpawn",3] = "Demon Zombie";
 $packSetting["ZSpawn",4] = "Air-Rapier Zombie";
-$packSetting["ZSpawn",5] = "Sniper Zombie";
-$packSetting["ZSpawn",6] = "General RAAM";
+$packSetting["ZSpawn",5] = "Demon Lord Zombie";
+$packSetting["ZSpawn",6] = "Shifter Zombie";
+$packSetting["ZSpawn",7] = "Sniper Zombie";
+$packSetting["ZSpawn",8] = "Ultra Demon Zombie";
 
 $expertsettings["Zspawn"] = 1;
 $expertsetting["Zspawn",0] = "continual spawn";
 $expertsetting["Zspawn",1] = "spawn once";
-
-$packSettings["ArtPack"] = 1;
-$packSetting["ArtPack",0] = "Normal Shells 12 Ammo";
-$packSetting["ArtPack",1] = "Cluster Shells 6 Ammo";
 
 $packSettings["spawn"] = 1;
 $packSetting["spawn",0] = "Personal";

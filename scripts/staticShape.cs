@@ -13,92 +13,92 @@ function shouldChangePowerState(%obj,%state) {
 function StaticShapeData::onCollision(%data,%obj,%col) {
 //general collision funciton made so i dont have to make
 //1 function for evry object i want to turn into doors
-if (%obj.isdoor !=true && %obj.getdatablock().getname() !$="Deployeddoor")
-   return;
-if (%obj.Collision !=true) {
-   messageclient(%col.client, 'MsgClient',"Not a Collision Door");
-   return;
+   if (%obj.isdoor != true)
+      return;
+   if (%obj.Collision !=true) {
+      messageclient(%col.client, 'MsgClient',"Not a Collision Door");
+      return;
    }
-if (%obj.canmove == false) //if it cant move
-   return;                  //stop here
-if (%col.getClassName() !$= "Player" && %col.getDataBlock().getName() !$= "EscapePodVehicle")
-   return;
-if (%obj.team != %col.team && %obj.isteamOnlyDoor) {
-   messageclient(%col.client, 'MsgClient',"Access Denied, You are on the wrong team");
-   return;
+   if (%obj.canmove == false) //if it cant move
+      return;                  //stop here
+   if (%col.getClassName() !$= "Player" && %col.getDataBlock().getName() !$= "EscapePodVehicle")
+      return;
+   if (%obj.team != %col.team && %obj.isteamOnlyDoor) {
+      messageclient(%col.client, 'MsgClient',"Access Denied, You are on the wrong team");
+      return;
    }
-%obj.issliding = 0;
-%client = %col.client;
-%level  = %obj.level;
-%owner  = %obj.getOwner();
-%ownerguid  = %obj.Ownerguid;
-//for saved...
-if(%client.haslev1[%client.GUID] == 0) {
-   %client.haslev1[%client.GUID] = 1;
-}
-if(%client.haslev2[%client.GUID] == 0) {
-   %client.haslev2[%client.GUID] = 1;
-}
-if(%client.haslev3[%client.GUID] == 0) {
-   %client.haslev3[%client.GUID] = 1;
-}
-////////////////////
-//door level chek //
-////////////////////
+   %obj.issliding = 0;
+   %client = %col.client;
+   %level  = %obj.level;
+   %owner  = %obj.getOwner();
+   %ownerguid  = %obj.Ownerguid;
+   //for saved...
+   if(%client.haslev1[%client.GUID] == 0) {
+      %client.haslev1[%client.GUID] = 1;
+   }
+   if(%client.haslev2[%client.GUID] == 0) {
+      %client.haslev2[%client.GUID] = 1;
+   }
+   if(%client.haslev3[%client.GUID] == 0) {
+      %client.haslev3[%client.GUID] = 1;
+   }
+   ////////////////////
+   //door level chek //
+   ////////////////////
 
-//C&C Renegade W00t
-if (%obj.lv == 1 && !%client.haslev1[%owner.GUID]){
-        messageclient(%client, 'MsgClient',"Access Denied, Green Card From "@getTaggedString(%owner.name)@" Required");
-        return;
-     }
-else if (%obj.lv == 2 && !%client.haslev2[%owner.GUID]){
-        messageclient(%client, 'MsgClient',"Access Denied, Yellow Card From "@getTaggedString(%owner.name)@" Required");
-        return;
-     }
-else if (%obj.lv == 3 && !%client.haslev3[%owner.GUID]){
-        messageclient(%client, 'MsgClient',"Access Denied, Red Card From "@getTaggedString(%owner.name)@" Required");
-        return;
-     }
-//End Of Renegade Doors
-else if (%obj.lv == 4 && %ownerguid != %client.guid && !%client.isadmin){
-        messageclient(%client, 'MsgClient',"Access Denied, this is "@getTaggedString(%owner.name)@"'s Door");
-        return;
-     }
-else if (%obj.lv == 5 && !%client.isadmin){
-        messageclient(%client, 'MsgClient',"Access Denied, Level 1 Admin Required");
-        return;
-     }
-else if (%obj.lv == 6 && !%client.issuperadmin){
-        messageclient(%client, 'MsgClient',"Access Denied, Level 2 Admin Required");
-        return;
-     }
-else if (%obj.lv == 7 && !%client.isdev){
-        messageclient(%client, 'MsgClient',"Access Denied, Level 3 Admin Required");
-        return;
-     }
+   //C&C Renegade W00t
+   if (%obj.lv == 1 && !%client.haslev1[%owner.GUID]){
+      messageclient(%client, 'MsgClient',"Access Denied, Green Card From "@getTaggedString(%owner.name)@" Required");
+      return;
+   }
+   else if (%obj.lv == 2 && !%client.haslev2[%owner.GUID]){
+      messageclient(%client, 'MsgClient',"Access Denied, Yellow Card From "@getTaggedString(%owner.name)@" Required");
+      return;
+   }
+   else if (%obj.lv == 3 && !%client.haslev3[%owner.GUID]){
+      messageclient(%client, 'MsgClient',"Access Denied, Red Card From "@getTaggedString(%owner.name)@" Required");
+      return;
+   }
+   //End Of Renegade Doors
+   else if (%obj.lv == 4 && %ownerguid != %client.guid && !%client.isadmin){
+      messageclient(%client, 'MsgClient',"Access Denied, this is "@getTaggedString(%owner.name)@"'s Door");
+      return;
+   }
+   else if (%obj.lv == 5 && !%client.isadmin){
+      messageclient(%client, 'MsgClient',"Access Denied, Level 1 Admin Required");
+      return;
+   }
+   else if (%obj.lv == 6 && !%client.issuperadmin){
+      messageclient(%client, 'MsgClient',"Access Denied, Level 2 Admin Required");
+      return;
+   }
+   else if (%obj.lv == 7 && !%client.isdev){
+      messageclient(%client, 'MsgClient',"Access Denied, Level 3 Admin Required");
+      return;
+   }
 ////////////////
 //name of door//
 ////////////////
-else if (%obj.lv == 1)
-   %lv = "Green-card";
-else if (%obj.lv == 2)
-   %lv = "Yellow-card";
-else if (%obj.lv == 3)
-   %lv = "Red-card";
-else if (%obj.lv == 4)
-   %lv = "owner";
-else if (%obj.lv == 5)
-   %lv = "admin";
-else if (%obj.lv == 6)
-   %lv = "superadmin";
-else if (%obj.lv == 7)
-   %lv = "dev";
-else
-   %lv = "Collision";
+   else if (%obj.lv == 1)
+      %lv = "Green-card";
+   else if (%obj.lv == 2)
+      %lv = "Yellow-card";
+   else if (%obj.lv == 3)
+      %lv = "Red-card";
+   else if (%obj.lv == 4)
+      %lv = "owner";
+   else if (%obj.lv == 5)
+      %lv = "admin";
+   else if (%obj.lv == 6)
+      %lv = "superadmin";
+   else if (%obj.lv == 7)
+      %lv = "dev";
+   else
+      %lv = "Collision";
     messageclient(%client, 'MsgClient',"Access Granted");
     if (%obj.timeout $="")
        %obj.timeout=1;
-%obj.closedscale=%obj.scale;
+    %obj.closedscale=%obj.scale;
    schedule(10,0,"open",%obj);
 }
 
@@ -133,19 +133,14 @@ function StaticShapeData::onGainPowerEnabled(%data,%obj) {
    %obj.setPoweredState(true);
    if (%data.className $= "Generator")
       checkPowerGenerator(%obj,1);
-   if (%obj.isdoor == 1 || %obj.getdatablock().getname() $="Deployeddoor") {
+   if (%obj.isdoor == 1) {
       if (%obj.canmove == false) //if it cant move
          return;                  //stop here
       if (%obj.powercontrol == 1) {
-         if (%obj.toggletype ==1) {
-            if (%obj.moving $="close" || %obj.moving $="" || %going $="opening"){
-               schedule(10,0,"open",%obj);
-            }
-            else if (%obj.moving $="open" || %going $="closeing"){
-               schedule(10,0,"close",%obj);
-            }
+         if (%obj.toggletype == 2) {
+            schedule(10,0,"close",%obj);
          }
-         else {
+         else if(%obj.toggletype == 3) {
             schedule(10,0,"open",%obj);
          }
       }
@@ -173,20 +168,16 @@ function StaticShapeData::onLosePowerDisabled(%data,%obj) {
    %obj.setPoweredState(false);
    if (%data.className $= "Generator")
       checkPowerGenerator(%obj,-1);
-   if (%obj.isdoor == 1 || %obj.getdatablock().getname() $="Deployeddoor") {
+   if (%obj.isdoor == 1) {
       if (%obj.canmove == false) //if it cant move
          return;                 //stop here
       if (%obj.powercontrol == 1) {
-         if (%obj.toggletype ==1){
-            if (%obj.moving $="close" || %obj.moving $="" || %going $="opening"){
-               schedule(10,0,"open",%obj);
-            }
-            else if (%obj.moving $="open" || %going $="closeing"){
-               schedule(10,0,"close",%obj);
-            }
-         }
-         else
+         if (%obj.toggletype == 2) {
             schedule(10,0,"open",%obj);
+         }
+         else if(%obj.toggletype == 3) {
+            schedule(10,0,"close",%obj);
+         }
       }
    }
 }
@@ -243,19 +234,11 @@ function ShapeBaseData::onEndSequence()
 //* Example explosion
 //******************************************************************************
 
-datablock EffectProfile(ShapeExplosionEffect)
-{
-   effectname = "explosions/explosion.xpl03";
-   minDistance = 10;
-   maxDistance = 50;
-};
-
 datablock AudioProfile(ShapeExplosionSound)
 {
    filename = "fx/explosions/explosion.xpl03.wav";
    description = AudioExplosion3d;
    preload = true;
-   effect = ShapeExplosionEffect;
 };
 
 datablock ExplosionData(ShapeExplosion)
@@ -1185,20 +1168,16 @@ function ShapeBaseData::checkShields(%data, %targetObject, %position, %amount, %
 }
 
 function StaticShapeData::damageObject(%data, %targetObject, %sourceObject, %position, %amount, %damageType) {
-    %db = %targetObject.getDatablock().getName();
-//    echo(%db);
+    if(%targetObject.Invincible) {
+       return;
+    }
 	if (%targetObject.getType() & $TypeMasks::ForceFieldObjectType)
 		%isFF = true;
 	if (%targetObject.getType() & $TypeMasks::TurretObjectType)
 		%isTurret = true;
-	if (%targetObject.getType() & $TypeMasks::GeneratorObjectType)
-		%isGen = true;
-	if (%targetObject.getType() & $TypeMasks::StaticShapeObjectType &&
-       %db $= "SensorLargePulse" || %db $= "SensorMediumPulse"
-          || %db $= "StationInevntory")
-		%isDmgable = true;
-	if ($Host::InvincibleDeployables == 1 && !%isturret && !%isDmgable && !%isFF && !%isGen) {
-			return;
+	if ($Host::InvincibleDeployables == 1 && !%isFF && !%isTurret
+       && %data.getName() !$= "SolarPanel" && %data.getName() !$= "GeneratorLarge") {
+	   return;
 	}
 	if (isObject(%sourceObject))
 		if (%sourceObject.getType() & $TypeMasks::VehicleObjectType)

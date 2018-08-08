@@ -194,6 +194,20 @@ function buildPowerList() {
 	$PowerList = trim($PowerList);
 }
 
+function TWM2PowerCheck() {
+	buildPowerList();
+	%group = nameToID("TWM2MissionAspectsGroup");
+	%count = %group.getCount();
+	for(%i=0;%i<%count;%i++) {
+		%obj = %group.getObject(%i);
+		%obj.powerCount = "";
+		if (%obj.getDataBlock().needsPower)
+			%obj.getDataBlock().losePower(%obj);
+		checkPowerObject(%obj);
+	}
+    //
+}
+
 function globalPowerCheck() {
 	buildPowerList();
 	%group = nameToID("MissionCleanup/Deployables");
@@ -335,16 +349,25 @@ function toggleGenerator(%obj,%state) {
 		%obj.isSwitchedOff = "";
 		%obj.getDataBlock().gainPower(%obj);
 		%obj.play3D(%powerOnSound);
-		setTargetName(%obj.target,addTaggedString(%obj.name SPC "Frequency" SPC %obj.powerFreq));
-		%obj.switchTime = getSimTime();
+        if(%obj.nametoset $= "") {
+		   setTargetName(%obj.target,addTaggedString("\c9[ON] \c6Frequency" SPC %obj.powerFreq));
+        }
+        else {
+		   setTargetName(%obj.target,addTaggedString("\c9[ON] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
+        }
+        %obj.switchTime = getSimTime();
 		return 2 SPC %taggedDisplayName;
 	}
 	else if (!%obj.isSwitchedOff && (%state != true || %state $= "")) {
 		%obj.getDataBlock().losePower(%obj);
 		%obj.isSwitchedOff = 1;
 		%obj.play3D(%powerOffSound);
-		setTargetName(%obj.target,addTaggedString(%obj.name SPC "Disabled Frequency" SPC %obj.powerFreq));
-		%obj.switchTime = getSimTime();
+        if(%obj.nametoset $= "") {
+		   setTargetName(%obj.target,addTaggedString("\c9[OFF] \c6Frequency" SPC %obj.powerFreq));
+        }
+        else {
+		   setTargetName(%obj.target,addTaggedString("\c9[OFF] \c6"@CollapseEscape(%obj.nametoset)@" Frequency" SPC %obj.powerFreq));
+        }		%obj.switchTime = getSimTime();
 		return 1 SPC %taggedDisplayName;
 	}
 	return 0;
@@ -352,7 +375,7 @@ function toggleGenerator(%obj,%state) {
 
 function upperPowerFreq(%plyr) {
 	if (%plyr.client.isAdmin || %plyr.client.isSuperAdmin)
-		return 150.000000000;
+		return 200;
 	else
-		return 100.000000000;
+		return 100;
 }

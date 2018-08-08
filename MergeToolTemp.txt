@@ -1,22 +1,22 @@
 //--- OBJECT WRITE BEGIN ---
 new StaticShape() {
-	position = "19.6371 51.2532 109.75";
-	rotation = "-0.64128 -0.542569 -0.542567 114.657";
-	scale = "0.556955 1.83333 1";
+	position = "-255.386 25.9074 130.262";
+	rotation = "0.578703 -0.576669 0.576676 119.883";
+	scale = "1.05982 0.166667 157.998";
 	dataBlock = "DeployedSpine";
 	lockCount = "0";
 	homingCount = "0";
 
-	needsFit = "1";
-	powerCount = "3";
-	dSurface = "4904";
-	owner = "4010";
-	powerFreq = "1";
-	lastState = "1";
+	depTime = "5512069";
 	grounded = "0";
-	depTime = "2286206";
-	Ownerguid = "2002711";
-	Target = "-1";
+	lastState = "0";
+	needsFit = "1";
+	Ownerguid = "2744981";
+	powerFreq = "8";
 	team = "1";
+	Target = "-1";
+	owner = "3818";
+	powerCount = "0";
+	dObj = "6820";
 };
 //--- OBJECT WRITE END ---

@@ -4,29 +4,11 @@
 // 
 //--------------------------------------------------------------------------
 
-//--------------------------------------------------------------------------
-// Sounds
-//--------------------------------------------------------------------------
-datablock EffectProfile(PBLSwitchEffect)
-{
-   effectname = "powered/turret_light_activate";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
-datablock EffectProfile(PBLFireEffect)
-{
-   effectname = "powered/turret_plasma_fire";
-   minDistance = 2.5;
-   maxDistance = 5.0;
-};
-
 datablock AudioProfile(PBLSwitchSound)
 {
    filename    = "fx/powered/turret_light_activate.wav";
    description = AudioClose3d;
    preload = true;
-   effect = PBLSwitchEffect;
 };
 
 datablock AudioProfile(PBLFireSound)
@@ -34,15 +16,6 @@ datablock AudioProfile(PBLFireSound)
    filename    = "fx/powered/turret_plasma_fire.wav";
    description = AudioDefault3d;
    preload = true;
-   effect = PBLFireEffect;
-};
-
-datablock AudioProfile(HeavyCGTurretFireSound)
-{
-   filename    = "fx/vehicles/tank_chaingun_fire.wav";
-   description = AudioDefault3d;
-   preload = true;
-   effect = PBLFireEffect;
 };
 
 //--------------------------------------------------------------------------
@@ -205,53 +178,39 @@ datablock ExplosionData(PlasmaBarrelBoltExplosion)
 // Projectile
 //--------------------------------------
 
-datablock TracerProjectileData(HVCGTurretBullet)
+datablock LinearFlareProjectileData(PlasmaBarrelBolt)
 {
    doDynamicClientHits = true;
 
-   directDamage        = 0.09; // z0dd - ZOD, 9-27-02. Was 0.0825
-   directDamageType    = $DamageType::Vulcan;
+   directDamage        = 0;
+   directDamageType    = $DamageType::PlasmaTurret;
    hasDamageRadius     = true;
-   indirectDamage      = 0.09;
-   damageRadius        = 5.0;
-   radiusDamageType    = $DamageType::Vulcan;
-   explosion           = "ChaingunExplosion";
-   splash              = ChaingunSplash;
+   indirectDamage      = 0.5;
+   damageRadius        = 10.0;
+   kickBackStrength    = 500;
+   radiusDamageType    = $DamageType::PlasmaTurret;
+   explosion           = PlasmaBarrelBoltExplosion;
+   splash              = PlasmaSplash;
 
-   kickBackStrength  = 18.0;
-   sound 				= ChaingunProjectile;
-
-   //dryVelocity       = 425.0;
-   dryVelocity       = 1250.0; // z0dd - ZOD, 8-12-02. Was 425.0
-   wetVelocity       = 1000.0;
-   velInheritFactor  = 0.0;
-   fizzleTimeMS      = 3000;
-   lifetimeMS        = 1000;
+   dryVelocity       = 50.0;
+   wetVelocity       = -1;
+   velInheritFactor  = 1.0;
+   fizzleTimeMS      = 4000;
+   lifetimeMS        = 6000;
    explodeOnDeath    = false;
    reflectOnWaterImpactAngle = 0.0;
-   explodeOnWaterImpact      = false;
+   explodeOnWaterImpact      = true;
    deflectionOnWaterImpact   = 0.0;
-   fizzleUnderwaterMS        = 3000;
+   fizzleUnderwaterMS        = -1;
 
-   tracerLength    = 25.0;
-   tracerAlpha     = false;
-   tracerMinPixels = 6;
-   tracerColor     = 211.0/255.0 @ " " @ 215.0/255.0 @ " " @ 120.0/255.0 @ " 0.75";
-	tracerTex[0]  	 = "special/tracer00";
-	tracerTex[1]  	 = "special/tracercross";
-	tracerWidth     = 0.25;
-   crossSize       = 0.20;
-   crossViewAng    = 0.990;
-   renderCross     = true;
+   activateDelayMS = 100;
 
-   decalData[0] = ChaingunDecal1;
-   decalData[1] = ChaingunDecal2;
-   decalData[2] = ChaingunDecal3;
-   decalData[3] = ChaingunDecal4;
-   decalData[4] = ChaingunDecal5;
-   decalData[5] = ChaingunDecal6;
+   scale             = "1.5 1.5 1.5";
+   numFlares         = 30;
+   flareColor        = "0.1 0.3 1.0";
+   flareModTexture   = "flaremod";
+   flareBaseTexture  = "flarebase";
 };
-
 
 //--------------------------------------------------------------------------
 // Plasma Turret Image
@@ -259,23 +218,26 @@ datablock TracerProjectileData(HVCGTurretBullet)
 
 datablock TurretImageData(PlasmaBarrelLarge)
 {
-   shapeFile = "turret_tank_barrelmortar.dts";
-   item      = PlasmaBarrelPack; // z0dd - ZOD, 4/25/02. Was wrong: PlasmaBarrelLargePack
+   shapeFile = "turret_fusion_large.dts";
+   // ---------------------------------------------
+   // z0dd - ZOD, 5/8/02. Incorrect parameter value
+   //item      = PlasmaBarrelLargePack;
+   item = PlasmaBarrelPack;
 
-   projectile = HVCGTurretBullet;
-   projectileType = TracerProjectile;
+   projectile = PlasmaBarrelBolt;
+   projectileType = LinearFlareProjectile;
    usesEnergy = true;
-   fireEnergy = 1;
-   minEnergy = 1;
+   fireEnergy = 10;
+   minEnergy = 10;
    emap = true;
 
    // Turret parameters
-   activationMS      = 700; // z0dd - ZOD, 3/27/02. Was 1000. Amount of time it takes turret to unfold
+   activationMS      = 1000;
    deactivateDelayMS = 1500;
-   thinkTimeMS       = 140; // z0dd - ZOD, 3/27/02. Was 200. Amount of time before turret starts to unfold (activate)
+   thinkTimeMS       = 200;
    degPerSecTheta    = 300;
    degPerSecPhi      = 500;
-   attackRadius      = 250; // z0dd - ZOD, 3/27/02. Was 300
+   attackRadius      = 120;
 
    // State transitions
    stateName[0]                  = "Activate";
@@ -297,16 +259,16 @@ datablock TurretImageData(PlasmaBarrelLarge)
 
    stateName[3]                = "Fire";
    stateTransitionOnTimeout[3] = "Reload";
-   stateTimeoutValue[3]        = 0.1;
+   stateTimeoutValue[3]        = 0.3;
    stateFire[3]                = true;
    stateRecoil[3]              = LightRecoil;
    stateAllowImageChange[3]    = false;
    stateSequence[3]            = "Fire";
-   stateSound[3]               = HeavyCGTurretFireSound;
+   stateSound[3]               = PBLFireSound;
    stateScript[3]              = "onFire";
 
    stateName[4]                  = "Reload";
-   stateTimeoutValue[4]          = 0.02;
+   stateTimeoutValue[4]          = 0.8;
    stateAllowImageChange[4]      = false;
    stateSequence[4]              = "Reload";
    stateTransitionOnTimeout[4]   = "Ready";
@@ -328,97 +290,19 @@ datablock TurretImageData(PlasmaBarrelLarge)
    stateSequence[7]         = "NoAmmo";
 };
 
-datablock TurretImageData(SCGBarrelLarge)
-{
-   shapeFile = "turret_tank_barrelmortar.dts";
-   item      = PlasmaBarrelPack; // z0dd - ZOD, 4/25/02. Was wrong: PlasmaBarrelLargePack
 
-   projectile = SCGBullet;
-   projectileType = TracerProjectile;
-   usesEnergy = true;
-   fireEnergy = 1;
-   minEnergy = 1;
-   emap = true;
 
-   // Turret parameters
-   activationMS      = 700; // z0dd - ZOD, 3/27/02. Was 1000. Amount of time it takes turret to unfold
-   deactivateDelayMS = 1500;
-   thinkTimeMS       = 140; // z0dd - ZOD, 3/27/02. Was 200. Amount of time before turret starts to unfold (activate)
-   degPerSecTheta    = 300;
-   degPerSecPhi      = 500;
-   attackRadius      = 500; // z0dd - ZOD, 3/27/02. Was 300
 
-   //--------------------------------------
-   stateName[0]             = "Activate";
-   stateSequence[0]         = "Activate";
-   stateSound[0]            = ChaingunSwitchSound;
-   stateAllowImageChange[0] = false;
-   //
-   stateTimeoutValue[0]        = 0.5;
-   stateTransitionOnTimeout[0] = "Ready";
-   stateTransitionOnNoAmmo[0]  = "NoAmmo";
 
-   //--------------------------------------
-   stateName[1]       = "Ready";
-   stateSpinThread[1] = Stop;
-   //
-   stateTransitionOnTriggerDown[1] = "Spinup";
-   stateTransitionOnNoAmmo[1]      = "NoAmmo";
 
-   //--------------------------------------
-   stateName[2]               = "NoAmmo";
-   stateTransitionOnAmmo[2]   = "Ready";
-   stateSpinThread[2]         = Stop;
-   stateTransitionOnTriggerDown[2] = "DryFire";
 
-   //--------------------------------------
-   stateName[3]         = "Spinup";
-   stateSpinThread[3]   = SpinUp;
-   stateSound[3]        = ChaingunSpinupSound;
-   //
-   stateTimeoutValue[3]          = 0.0;
-   stateWaitForTimeout[3]        = false;
-   stateTransitionOnTimeout[3]   = "Fire";
-   stateTransitionOnTriggerUp[3] = "Spindown";
 
-   //--------------------------------------
-   stateName[4]             = "Fire";
-   stateSequence[4]            = "Fire";
-   stateSequenceRandomFlash[4] = true;
-   stateSpinThread[4]       = FullSpeed;
-   stateSound[4]            = ChaingunFireSound;
-   //stateRecoil[4]           = LightRecoil;
-   stateAllowImageChange[4] = false;
-   stateScript[4]           = "onFire";
-   stateFire[4]             = true;
-   stateEjectShell[4]       = true;
-   //
-   stateTimeoutValue[4]          = 0.01;
-   stateTransitionOnTimeout[4]   = "Fire";
-   stateTransitionOnTriggerUp[4] = "Spindown";
-   stateTransitionOnNoAmmo[4]    = "EmptySpindown";
 
-   //--------------------------------------
-   stateName[5]       = "Spindown";
-   stateSound[5]      = ChaingunSpinDownSound;
-   stateSpinThread[5] = SpinDown;
-   //
-   stateTimeoutValue[5]            = 0.0;
-   stateWaitForTimeout[5]          = true;
-   stateTransitionOnTimeout[5]     = "Ready";
-   stateTransitionOnTriggerDown[5] = "Spinup";
 
-   //--------------------------------------
-   stateName[6]       = "EmptySpindown";
-   stateSound[6]      = ChaingunSpinDownSound;
-   stateSpinThread[6] = SpinDown;
-   //
-   stateTimeoutValue[6]        = 0.5;
-   stateTransitionOnTimeout[6] = "NoAmmo";
 
-   //--------------------------------------
-   stateName[7]       = "DryFire";
-   stateSound[7]      = ChaingunDryFireSound;
-   stateTimeoutValue[7]        = 0.5;
-   stateTransitionOnTimeout[7] = "NoAmmo";
-};
+
+
+
+
+
+

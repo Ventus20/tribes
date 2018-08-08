@@ -6,35 +6,21 @@
 
 // put vars here for ammo max counts with ammo pack
 
-$AmmoItem[0] = ChaingunAmmo;
-$AmmoItem[1] = MortarAmmo;
-$AmmoItem[2] = MissileLauncherAmmo;
-$AmmoItem[3] = MGclip;
-$AmmoItem[4] = SniperGunAmmo;
-$AmmoItem[5] = BazookaAmmo;
-$AmmoItem[6] = MG42Clip;
-$AmmoItem[7] = RepairKit;
-$AmmoItem[8] = FlamerAmmo;
-$AmmoItem[9] = AALauncherAmmo;
-$AmmoItem[10] = RifleClip;
-$AmmoItem[11] = ShotgunClip;
-$AmmoItem[12] = RShotgunClip;
-$AmmoItem[13] = LMissileLauncherAmmo;
-$AmmoItem[14] = RPGAmmo;
-$AmmoItem[15] = PBCAmmo;
-$AmmoItem[16] = BazookaIIAmmo;
+$AmmoItem[0] = PlasmaAmmo;
+$AmmoItem[1] = DiscAmmo;
+$AmmoItem[2] = GrenadeLauncherAmmo;
+$AmmoItem[3] = MortarAmmo;
+$AmmoItem[4] = MissileLauncherAmmo;
+$AmmoItem[5] = RepairKit;
 
-
-$numAmmoItems = 17;
+$numAmmoItems = 6;
 
 $grenAmmoType[0] = Grenade;
 $grenAmmoType[1] = ConcussionGrenade;
 $grenAmmoType[2] = FlashGrenade;
 $grenAmmoType[3] = FlareGrenade;
-$grenAmmoType[4] = SmokeGrenade;
-$grenAmmoType[5] = BeaconSmokeGrenade;
 
-$numGrenTypes = 6;
+$numGrenTypes = 4;
 
 datablock ShapeBaseImageData(AmmoPackImage)
 {
@@ -42,7 +28,6 @@ datablock ShapeBaseImageData(AmmoPackImage)
    item = AmmoPack;
    mountPoint = 1;
    offset = "0 0 0";
-   mass = 20;
 };
 
 datablock ItemData(AmmoPack)
@@ -50,7 +35,7 @@ datablock ItemData(AmmoPack)
    className = Pack;
    catagory = "Packs";
    shapeFile = "pack_upgrade_ammo.dts";
-   mass = 1.0;
+   mass = 1;
    elasticity = 0.2;
    friction = 0.6;
    pickupRadius = 2;
@@ -66,25 +51,19 @@ datablock ItemData(AmmoPack)
 //   lightTime = "1200";
 //   lightRadius = "1.0";
 
-	max[ChaingunAmmo] = 1500;
-	max[MortarAmmo] = 4;
-	max[MissileLauncherAmmo] = 4;
-	max[Mgclip] = 3;
-	max[SniperGunAmmo] = 10;
-	max[BazookaAmmo] = 2;
-	max[BazookaIIAmmo] = 2;
-	max[MG42Clip] = 2;
-	max[FlamerAmmo] = 0;
+	max[PlasmaAmmo] = 30;
+	max[ChaingunAmmo] = 150;
+	max[DiscAmmo] = 15;
+	max[GrenadeLauncherAmmo] = 15;
+	max[MortarAmmo] = 10;
+	max[MissileLauncherAmmo] = 1;
 	max[Grenade] = 2;
-	max[Mine] = 1;
-	max[AALauncherAmmo] = 2;
+	max[ConcussionGrenade] = 2;
+	max[FlashGrenade] = 2;
+	max[FlareGrenade] = 2;
+	max[CameraGrenade] = 0;
+    max[Mine] = 5;
 	max[RepairKit] = 1;
-	max[RifleClip] = 2;
-	max[ShotgunClip] = 2;
-	max[RShotgunClip] = 1;
-	max[LMissileLauncherAmmo] = 1;
-	max[RPGAmmo] = 2;
-	max[PBCAmmo] = 2;
 };
 
 function AmmoPack::onPickup(%this,%pack,%player,%amount)
@@ -175,47 +154,27 @@ function AmmoPack::onPickup(%this,%pack,%player,%amount)
 		}
 	}
 	// now see if player had mines selected and if they're allowed in this mission type
-   for (%i=0; $InvMine[%i] !$= ""; %i++)
-   {
-      %mine = $NameToInv[$InvMine[%i]];
-      if(%player.inv[%mine] > 0)
-      {
-         %Found = true;
-         if(%pack.inv[%mine] > 0)
-         {
-            %player.incInventory(%mine, %pack.getInventory(%mine));
-            %pack.setInventory(%mine, 0);
-         }
-      }
-   }
-   if(!%Found)
-   {
-      %given = false;
-      for (%i=0; $InvMine[%i] !$= ""; %i++)
-      {
-         %mine = $NameToInv[$InvMine[%i]];
-         for (%i1=0; %i1 < getFieldCount(%client.mineIndex); %i1++)
-         {
-            if ($InvMine[%i] $= %client.favorites[getField( %client.mineIndex, %i1 )])
-            {
-               if(%pack.inv[%mine] > 0)
-               {
-                  %player.incInventory(%mine, %pack.getInventory(%mine));
-                  %pack.setInventory(%mine, 0);
-                  %given = true;
-                  break;
-               }
-               else if(%pack.inv[%mine] != -1)
-               {
-                  %player.incInventory(%mine, %this.max[%mine]);
-                  %given = true;
-               }
-               if(%given)
-                  break;
-            }
-         }
-      }
-   }
+	%mineFav = %player.client.favorites[getField(%player.client.mineIndex, 0)];
+	if ( ( $InvBanList[$CurrentMissionType, "Mine"] !$= "1" ) 
+	  && !( ( %mineFav $= "EMPTY" ) || ( %mineFav $= "INVALID" ) ) )
+	{
+		// player has selected mines, and they are legal in this mission type
+		if(%pack.inv[Mine] > 0)
+		{
+			// and the pack has some mines in it! bonus!
+			%player.incInventory(Mine, %pack.getInventory(Mine));
+			%pack.setInventory(Mine, 0);
+		}
+		else if(%pack.inv[Mine] == -1)
+		{
+			// no mines left in the pack. do nothing.
+		}
+		else
+		{
+			// assume it's full of mines if no inventory has been assigned
+			%player.incInventory(Mine,%this.max[Mine]);
+		}
+	}
 }
 
 function AmmoPack::onThrow(%this,%pack,%player)
@@ -329,23 +288,24 @@ function dropAmmoPack(%packObj, %player)
 		// player doesn't have any grenades at all. nothing needs to be done here.
 	}
 	// crap. forgot the mines.
-   for (%i=0; $InvMine[%i] !$= ""; %i++)
-   {
-      %mine = $NameToInv[$InvMine[%i]];
-      if(%player.inv[%mine] > 0)
-      {
-         %pAmmo = %player.getInventory(%mine);
-         %pMax = %player.getDatablock().max[%mine];
-         if(%pAmmo > %pMax)
-         {
-            if(%packObj > 0)
-               %packObj.setInventory(%mine, %pAmmo - %pMax);
-            %player.setInventory(%mine, %pMax);
-         }
-         else if(%packObj > 0)
-            %packObj.inv[%mine] = -1;
-      }
-      else if(%packObj > 0)
-         %packObj.inv[%mine] = -1;
-   }
+	if(%player.getInventory(Mine) > %player.getDatablock().max[Mine])
+	{
+		// if player has more mines than datablock's max...
+		if(%packObj > 0)
+		{
+			// put mines that player can't carry anymore in pack
+			%packObj.setInventory(Mine, %player.getInventory(Mine) - %player.getDatablock().max[Mine]);
+		}
+		// set player to max mines
+		%player.setInventory(Mine, %player.getDatablock().max[Mine]);
+	}
+	else
+	{
+		if(%packObj > 0)
+		{
+			// the pack gets -1 for mines -- else it'll assume it's full
+			// can't use setInventory() because it won't allow values less than 1
+			%packObj.inv[Mine] = -1;
+		}
+	}
 }

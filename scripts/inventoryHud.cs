@@ -17,161 +17,109 @@ function setUpFavPrefs()
 $FavCurrent = 0;
 setUpFavPrefs();
 
-//$InvArmor[0] = "Tech";
-//$InvArmor[1] = "Scout";
-//Added by Rank now
-//$InvArmor[1] = "Commando";
-//$InvArmor[2] = "Support";
-//$InvArmor[3] = "Nalcidic";
-//$InvArmor[4] = "SpecOps";
-//$InvArmor[5] = "RSA Scout";
-//$InvArmor[6] = "RAAM";
-//$InvArmor[7] = "Darkrai";
+$InvArmor[0] = "Scout";
 
-$NameToInv["Tech"]  = "Tech";
 $NameToInv["Scout"]  = "Light";
 $NameToInv["Commando"] = "Medium";
 $NameToInv["Support"]  = "Heavy";
-$NameToInv["Nalcidic"] = "Flame";
-$NameToInv["Special Ops"] = "SpecOps";
-$NameToInv["RSA Scout"] = "RSAScout";
 $NameToInv["Purebuild"]  = "Pure";
-$NameToInv["RAAM"] = "PlayerRAAM";
-$NameToInv["Darkrai"]  = "PlayerDarkrai";
-$NameToInv["Phantom"]  = "Phantom";
-//INFECTON
-//$NameToInv["Normal Zombie"] = "Zombie";
-//$NameToInv["Demon Zombie"]  = "DemonZombie";
-//$NameToInv["Zombie Lord"]  = "LordZombie";
-//
+$NameToInv["Microburst"] = "Microburst";
+$NameToInv["Nalcidic"] = "Flame";
+$NameToInv["Siege"] = "Siege";
+$NameToInv["Shadow"] = "Shadow";
+$NameToInv["Shadow Commando"] = "ShadowCommando";
 
+//RE-ORDERED (TWM2 2.6)
 
-$InvWeapon[0] = "Plasma Rifle";
-$InvWeapon[1] = "Chaingun";
-$InvWeapon[2] = "Spinfusor";
-$InvWeapon[3] = "Grenade Launcher";
-$InvWeapon[4] = "Fusion Mortar";
-$InvWeapon[5] = "Missile Launcher";
-// AO
-$InvWeapon[6] = "TR2 Spinfusor";
-$InvWeapon[7] = "TR2 Grenade Launcher";
-$InvWeapon[8] = "TR2 Chaingun";
-$InvWeapon[9] = "TR2 Shocklance";
-$InvWeapon[10] = "TR2 Mortar";
-// END AO
+//$InvWeapon[0] = "Shocklance";
 
-$InvWeapon[11] = "Construction Tool";
-$InvWeapon[12] = "Super Chaingun";
-$InvWeapon[13] = "Sniper Rifle";
-$InvWeapon[14] = "Bazooka";
-$InvWeapon[15] = "M32";
-$InvWeapon[16] = "Portible Chaingun Turret";
-$InvWeapon[17] = "Flame Thrower";
-$InvWeapon[18] = "Vehicle Destroyer";
-$InvWeapon[19] = "Krieg Rifle";
-$InvWeapon[20] = "Shot Gun";
-$InvWeapon[21] = "Rotary ShotGun";
-$InvWeapon[22] = "AT6 Rocket Launcher";
-$InvWeapon[23] = "M32 w RPG";
-$InvWeapon[24] = "MP12 SMG";
-$InvWeapon[25] = "M/I/S Tool";
-$InvWeapon[26] = "PBC Cannon";
-$InvWeapon[27] = "RX-12 w ShotGun";
-$InvWeapon[28] = "RX-12 w Grenade Launcher";
-$InvWeapon[29] = "RTM-85C Photon Laser";
-$InvWeapon[30] = "Targeting Beacon";
-$InvWeapon[31] = "EX-73 Pulse Chaingun";
-$InvWeapon[32] = "RSA Laser Rifle";
-$InvWeapon[33] = "Enemia Rocket Launcher";
-$InvWeapon[34] = "Blitz Rifle";
-$InvWeapon[35] = "Phantom Spiker";
-$InvWeapon[36] = "PGC Cannon";
-$InvWeapon[37] = "Texture Tool";
-$InvWeapon[38] = "ZH7C8 Napalm Cannon";
-$InvWeapon[39] = "Tesla Volatge Cannon";
-$InvWeapon[40] = "ALSWP";
-$InvWeapon[41] = "Scorcher Cannon";
-$InvWeapon[42] = "Editor Device";
-$InvWeapon[43] = "Dual MP12 Uzis";
-$InvWeapon[44] = "ETM-XCC98 Plasma Launcher";
-//$InvWeapon[30] = "Roping and Grppling Tool";
+//RIFLES
+$InvWeapon[0] = "S3 Combat Rifle";
+$InvWeapon[1] = "G41 S.A. Rifle";
+$InvWeapon[2] = "M4A1";
+$InvWeapon[3] = "RSA Laser Rifle";
+$InvWeapon[4] = "Sh4d3 Rifle";
+$InvWeapon[5] = "LUST Ion Rifle";
+$InvWeapon[6] = "Pulse Rifle";
+//Sniper Rifles
+$InvWeapon[7] = "G17 Sniper";
+$InvWeapon[8] = "M1 Sniper";
+$InvWeapon[9] = "R700 Sniper";
+$InvWeapon[10] = "ALSWP Sniper";
+//SMGs
+$InvWeapon[11] = "Mp26 SMG";
+$InvWeapon[12] = "Pg700 SMG";
+$InvWeapon[13] = "Mini-Chaingun";
+$InvWeapon[14] = "P90 SMG";
+$InvWeapon[15] = "Pulse SMG";
+//MGs
+$InvWeapon[16] = "RP-432 MG";
+$InvWeapon[17] = "MRXX ZC4";
+$InvWeapon[18] = "MG42 Machine Gun";
+//Shotguns
+$InvWeapon[19] = "M1700 Shotgun";
+$InvWeapon[20] = "Wp400 Shotgun";
+$InvWeapon[21] = "SA2400 Shotgun";
+$InvWeapon[22] = "SCD343 Shotgun";
+$InvWeapon[23] = "Model 1887 Shotgun";
+//Other
+/// Missiles
+$InvWeapon[24] = "LX53 AV Launcher";
+$InvWeapon[25] = "Stinger";
+$InvWeapon[26] = "Javelin";
+$InvWeapon[27] = "RPG-7";
+$InvWeapon[28] = "LUX-4 Ion Launcher";
+$InvWeapon[29] = "Plasma Torpedo";
+/// The Rest :P
+$InvWeapon[30] = "A|V|X Flamethrower";
+$InvWeapon[31] = "Concussion Gun";
+$InvWeapon[32] = "PRTCL-995 MCC";
+$InvWeapon[33] = "XXZ-5 Phantom Spiker";
+//Tools
+$InvWeapon[34] = "Construction Tool";
+$InvWeapon[35] = "M/I/S Tool";
+$InvWeapon[36] = "Manipulator Tool";
+$InvWeapon[37] = "Editor Gun";
 
-$NameToInv["Plasma Rifle"] = "Plasma";
-$NameToInv["Chaingun"] = "Chaingun";
-$NameToInv["Spinfusor"] = "Disc";
-$NameToInv["Grenade Launcher"] = "GrenadeLauncher";
-$NameToInv["Fusion Mortar"] = "Mortar";
-$NameToInv["Missile Launcher"] = "MissileLauncher";
+//END
 $NameToInv["Construction Tool"] = "ConstructionTool";
-$NameToInv["Super Chaingun"] = "SuperChaingun";
-/////////////CCM / TWM WEAPONS
-$NameToInv["M32"] = "RPChaingun";
-$NameToInv["Dual MP12 Uzis"] = "DualLSMG";
-$NameToInv["Sniper Rifle"] = "snipergun";
-$NameToInv["Bazooka"] = "Bazooka";
-$NameToInv["Portible Chaingun Turret"] = "MG42";
-//raam
-$NameToInv["Modified PCT"] = "MG42";
-//
-$NameToInv["Flame Thrower"] = "flamer";
-$NameToInv["Vehicle Destroyer"] = "AALauncher";
-$NameToInv["Krieg Rifle"] = "KriegRifle";
-$NameToInv["Shot Gun"] = "Shotgun";
-$NameToInv["Rotary ShotGun"] = "RShotgun";
-$NameToInv["AT6 Rocket Launcher"] = "LMissileLauncher";
-$NameToInv["M32 w RPG"] = "HRPChaingun";
-$NameToInv["MP12 SMG"] = "LSMG";
 $NameToInv["M/I/S Tool"] = "MergeTool";
-$NameToInv["PBC Cannon"] = "PBC";
-$NameToInv["RX-12 w ShotGun"] = "SRifleSG";
-$NameToInv["RX-12 w Grenade Launcher"] = "SRifleGL";
-$NameToInv["RTM-85C Photon Laser"] = "PhotonLaser";
-$NameToInv["Targeting Beacon"] = "Targeter";
-$NameToInv["EX-73 Pulse Chaingun"] = "PulseChaingun";
+$NameToInv["S3 Combat Rifle"] = "S3Rifle";
+$NameToInv["M1700 Shotgun"] = "M1700";
+$NameToInv["G41 S.A. Rifle"] = "G41Rifle";
+$NameToInv["R700 Sniper"] = "R700SniperRifle";
+$NameToInv["Mp26 SMG"] = "MP26";
+$NameToInv["Pg700 SMG"] = "Pg700";
+$NameToInv["M1 Sniper"] = "M1SniperRifle";
+$NameToInv["LX53 AV Launcher"] = "MissileLauncher";
+$NameToInv["RP-432 MG"] = "RP432";
+$NameToInv["Mini-Chaingun"] = "MiniChaingun";
+$NameToInv["Wp400 Shotgun"] = "Wp400";
 $NameToInv["RSA Laser Rifle"] = "lasergun";
-$NameToInv["Enemia Rocket Launcher"] = "BazookaII";
-$NameToInv["Blitz Rifle"] = "BattleRifle";
-$NameToInv["Phantom Spiker"] = "spiker";
-$NameToInv["PGC Cannon"] = "portibleGauss";
-$NameToInv["Texture Tool"] = "EditTool";
-$NameToInv["ZH7C8 Napalm Cannon"] = "Napalm";
-$NameToInv["Tesla Volatge Cannon"] = "VoltageCannon";
-$NameToInv["ALSWP"] = "ALSWP";
-$NameToInv["Scorcher Cannon"] = "Scorcher";
-$NameToInv["Editor Device"] = "EditorGun";
-$NameToInv["ETM-XCC98 Plasma Launcher"] = "PlasmaLauncher";
-//$NameToInv["Roping and Grappling Tool"] = "HookerTool";
-// AO
-$NameToInv["TR2 Spinfusor"] = "TR2Disc";
-$NameToInv["TR2 Grenade Launcher"] = "TR2GrenadeLauncher";
-$NameToInv["TR2 Chaingun"] = "TR2Chaingun";
-$NameToInv["TR2 Energy Pack"] = "TR2EnergyPack";
-$NameToInv["TR2 Shocklance"] = "TR2Shocklance";
-$NameToInv["TR2 Mortar"] = "TR2Mortar";
-// END AO
-//$InvPistol = 5;   //needed?
-$InvPistol[0] = "USP-45";
-$InvPistol[1] = "X-36 Shocklance";
-$InvPistol[2] = "";
-$InvPistol[3] = "";
-$InvPistol[4] = "";
-//$InvPistol[1] = "Silenced USP-45";
-//$InvPistol[2] = "Desert Eagle";
-//$InvPistol[3] = "ES-73 Pulse Phaser";
-
-$NameToInv["USP-45"] = "pistol";
-$NameToInv["Silenced USP-45"] = "SPistol";
-$NameToInv["Centaur Dual Pistols"] = "DualPistol";
-$NameToInv["Desert Eagle"] = "Deagle";
-$NameToInv["ES-73 Pulse Phaser"] = "PulsePhaser";
-$NameToInv["X-36 Shocklance"] = "ShockLance";
-
-
-$InvMelee[0] = "Gun Butt";
-$InvMelee[1] = "Combat Knife";
-$NameToInv["Gun Butt"] = "melee";
-$NameToInv["Combat Knife"] = "SOmelee";
-$NameToInv["Blade Of Vengance"] = "BOV";
+$NameToInv["RPG-7"] = "RPG";
+$NameToInv["Manipulator Tool"] = "EditTool";
+$NameToInv["Editor Gun"] = "EditorGun";
+$NameToInv["LUX-4 Ion Launcher"] = "IonLauncher";
+$NameToInv["LUST Ion Rifle"] = "IonRifle";
+$NameToInv["MG42 Machine Gun"] = "MG42";
+$NameToInv["A|V|X Flamethrower"] = "flamer";
+$NameToInv["G17 Sniper"] = "G17SniperRifle";
+$NameToInv["Concussion Gun"] = "ConcussionGun";
+$NameToInv["Sh4d3 Rifle"] = "ShadowRifle";
+$NameToInv["PRTCL-995 MCC"] = "MiniColliderCannon";
+$NameToInv["SA2400 Shotgun"] = "SA2400";
+$NameToInv["Javelin"] = "Javelin";
+$NameToInv["SCD343 Shotgun"] = "SCD343";
+$NameToInv["Model 1887 Shotgun"] = "Model1887";
+$NameToInv["M4A1"] = "M4A1";
+$NameToInv["Pulse Rifle"] = "PulseRifle";
+$NameToInv["Pulse SMG"] = "PulseSMG";
+$NameToInv["ALSWP Sniper"] = "ALSWPSniperRifle";
+$NameToInv["P90 SMG"] = "P90";
+$NameToInv["Plasma Torpedo"] = "PlasmaTorpedo";
+$NameToInv["Stinger"] = "Stinger";
+$NameToInv["MRXX ZC4"] = "MRXX";
+$NameToInv["XXZ-5 Phantom Spiker"] = "spiker";
 
 $InvPack[0] = "Repair Pack";
 $InvPack[1] = "Ammunition Pack";
@@ -179,35 +127,31 @@ $InvPack[2] = "Satchel Charge";
 $InvPack[3] = "Motion Sensor Pack";
 $InvPack[4] = "Pulse Sensor Pack";
 $InvPack[5] = "Inventory Station";
-$InvPack[6] = "Anti-Personal Mortar Turret";
-$InvPack[7] = "Implacement Turret";
-$InvPack[8] = "Medic Pack";
+$InvPack[6] = "Landspike Turret";
+$InvPack[7] = "Spider Clamp Turret";
+$InvPack[8] = "ELF Turret Barrel";
 $InvPack[9] = "Mortar Turret Barrel";
-$InvPack[10] = "Chaingun Turret Barrel";
+$InvPack[10] = "Plasma Turret Barrel";
 $InvPack[11] = "AA Turret Barrel";
 $InvPack[12] = "Missile Turret Barrel";
 // TR2
-//$InvPack[13] = "Laser Turret";
+$InvPack[13] = "TR2 Energy Pack";
+
+//$InvPack[18] = "Disc Turret";
+//$InvPack[19] = "Laser Turret";
+//$InvPack[20] = "Missile Rack Turret";
 
 //This can be made plugin compatible by using the mpm missile warhead plugin code.
 //It is even possible to do smart sorting. ie. when 1 list is full.. put them in the other list.
 //[most]
-$InvPack[13] = "Deployable Vehicle Pad";
-$InvPack[14] = "Deployable Emitter Pack";
-$InvPack[15] = "Deployable Audio Pack";
-$InvPack[16] = "Deployable Pack Dispenser";
+//$InvPack[18] = "Anti Missile Turret";
+$InvPack[14] = "Deployable Vehicle Pad";
+$InvPack[15] = "Deployable Emitter Pack";
+$InvPack[16] = "Deployable Audio Pack";
+$InvPack[17] = "Deployable Pack Dispenser";
+$InvPack[18] = "Med Pack";
+//$InvPack[26] = "Deployable Detonation Pack"; //Removed for bugger protection
 //[most]
-$InvPack[17] = "Artillery Barrel";
-$InvPack[18] = "flamer ammo pack";
-$InvPack[19] = "Parachute Pack";
-$InvPack[20] = "Artillery Reloader Pack";
-$InvPack[21] = "Flamethrower Turret Barrel";
-$InvPack[22] = "Deployable Fission Turret";
-$InvPack[23] = "Deployable 30-Caliber Turret";
-$InvPack[24] = "PBC Turret Barrel";
-//$InvPack[25] = "Flame Bolt Pod";
-$InvPack[25] = "Vehicle Repair Deployable";
-$InvPack[26] = "Drone Pad Deployable";
 
 //Building pieces
 $InvDep[0] = "Light Support Beam";
@@ -222,31 +166,34 @@ $InvDep[8] = "Large Inventory Station";
 $InvDep[9] = "Medium Sensor Pack";
 $InvDep[10] = "Large Sensor Pack";
 $InvDep[11] = "Deployable Turret Base";
-$InvDep[12] = "Tree Pack";
-$InvDep[13] = "Crate Pack";
-$InvDep[14] = "Decoration Pack";
-$InvDep[15] = "Logo Projector Pack";
-$InvDep[16] = "Light Pack";
-$InvDep[17] = "Tripwire Pack";
-$InvDep[18] = "Force Field";
-$InvDep[19] = "Gravity Field";
-$InvDep[20] = "Teleport Pad";
-$InvDep[21] = "Jump Pad";
-$InvDep[22] = "Escape Pod";
-$InvDep[23] = "Advanced Door Pack";
-$InvDep[24] = "Spawn Point Pack";
-$InvDep[25] = "Waypoint Deployable";
-$InvDep[26] = "Card Device";
-//$InvDep[27] = "Repair Turret";
+$InvDep[12] = "Energizer";
+$InvDep[13] = "Tree Pack";
+$InvDep[14] = "Crate Pack";
+$InvDep[15] = "Decoration Pack";
+$InvDep[16] = "Logo Projector Pack";
+$InvDep[17] = "Light Pack";
+$InvDep[18] = "Tripwire Pack";
+$InvDep[19] = "Force Field";
+$InvDep[20] = "Gravity Field";
+$InvDep[21] = "Teleport Pad";
+$InvDep[22] = "Jump Pad";
+$InvDep[23] = "Escape Pod";
+$InvDep[24] = "Door Pack";
+$InvDep[25] = "Door Card Pack";
+$InvDep[26] = "Spawn Point Pack";
 
 // non-team mission pack choices (DM, Hunters, Rabbit)
 
-$NTInvPack[0] = "Repair Pack";
-$NTInvPack[1] = "Ammunition Pack";
-$NTInvPack[2] = "Satchel Charge";
-$NTInvPack[3] = "Motion Sensor Pack";
-$NTInvPack[4] = "Pulse Sensor Pack";
-$NTInvPack[5] = "Inventory Station";
+$NTInvPack[0] = "Energy Pack";
+$NTInvPack[1] = "Repair Pack";
+$NTInvPack[2] = "Shield Pack";
+$NTInvPack[3] = "Cloak Pack";
+$NTInvPack[4] = "Sensor Jammer Pack";
+$NTInvPack[5] = "Ammunition Pack";
+$NTInvPack[6] = "Satchel Charge";
+$NTInvPack[7] = "Motion Sensor Pack";
+$NTInvPack[8] = "Pulse Sensor Pack";
+$NTInvPack[9] = "Inventory Station";
 
 // TR2
 // $NTInvPack[17] = "TR2 Energy Pack"; DOH!! -  JackTL
@@ -262,8 +209,8 @@ $NameToInv["Light Walkway"] = "wWallDeployable";
 $NameToInv["Light Blast Wall"] = "WallDeployable";
 $NameToInv["Motion Sensor Pack"] = "MotionSensorDeployable";
 $NameToInv["Pulse Sensor Pack"] = "PulseSensorDeployable";
-$NameToInv["Anti-Personal Mortar Turret"] = "TurretOutdoorDeployable";
-$NameToInv["Implacement Turret"] = "TurretIndoorDeployable";
+$NameToInv["Landspike Turret"] = "TurretOutdoorDeployable";
+$NameToInv["Spider Clamp Turret"] = "TurretIndoorDeployable";
 $NameToInv["Disc turret"] = "DiscTurretDeployable";
 $NameToInv["Inventory Station"] = "InventoryDeployable";
 $NameToInv["Energizer"] = "EnergizerDeployable";
@@ -281,30 +228,19 @@ $NameToInv["Solar Panel Pack"] = "SolarPanelDeployable";
 $NameToInv["Switch Pack"] = "SwitchDeployable";
 $NameToInv["Medium Sensor Pack"] = "MediumSensorDeployable";
 $NameToInv["Large Sensor Pack"] = "LargeSensorDeployable";
-$NameToInv["Flamethrower Turret Barrel"] = "ELFBarrelPack";
+$NameToInv["ELF Turret Barrel"] = "ELFBarrelPack";
 $NameToInv["Mortar Turret Barrel"] = "MortarBarrelPack";
-$NameToInv["Chaingun Turret Barrel"] = "PlasmaBarrelPack";
+$NameToInv["Plasma Turret Barrel"] = "PlasmaBarrelPack";
 $NameToInv["AA Turret Barrel"] = "AABarrelPack";
 $NameToInv["Missile Turret Barrel"] = "MissileBarrelPack";
 $NameToInv["Force Field"] = "ForceFieldDeployable";
 $NameToInv["Gravity Field"] = "GravityFieldDeployable";
-$NameToInv["artillery barrel"] = "artillerybarrelpack";
-$NameToInv["flamer ammo pack"] = "flamerammopack";
-$NameToInv["Parachute Pack"] = "Parachutepack";
-$NameToInv["Advanced Door Pack"] = "DoorDeployable";
-$NameToInv["Medic Pack"] = "MedPack";
-$NameToInv["Artillery Reloader Pack"] = "artilleryWeaponPack";
+$NameToInv["Laser turret"] = "TurretLaserDeployable";
+$NameToInv["Missile Rack Turret"] = "TurretMissileRackDeployable";
+$NameToInv["Door Pack"] = "DoorDeployable";
+$NameToInv["Door Card Pack"] = "CardPackDeployable";
 $NameToInv["Spawn Point Pack"] = "SpawnPointPack";
-$NameToInv["Deployable Fission Turret"] = "TurretPlasOutdoorDeployable";
-$NameToInv["Deployable 30-Caliber Turret"] = "TurretIndoor30calDeployable";
-$NameToInv["Flame Bolt Pod"] = "HellRaiserPack1";
-$NameToInv["PBC Turret Barrel"] = "PBCBarrelPack";
-$NameToInv["Waypoint Deployable"] = "waypointDeployable";
-$NameToInv["Vehicle Repair Deployable"] = "RepairPadDeployable";
-$NameToInv["Drone Pad Deployable"] = "DronePadDeployable";
-$NameToInv["Card Device"] = "CardPackDeployable";
-//$NameToInv["Repair Turret"] = "repairTurretDeployable";
-
+$NameToInv["Med Pack"] = "MedPack";
 //Note this can be in any file.
 //[most]
 $NameToInv["Anti Missile Turret"] = "TurretMpm_Anti_Deployable";
@@ -320,35 +256,25 @@ $NameToInv["Jump Pad"] = "JumpadDeployable";
 $NameToInv["Escape Pod"] = "EscapePodDeployable";
 
 $InvGrenade[0] = "Grenade";
-$InvGrenade[1] = "Whiteout Grenade";
+$InvGrenade[1] = "Flash Bang Grenade";
 $InvGrenade[2] = "Concussion Grenade";
 $InvGrenade[3] = "Flare Grenade";
-$InvGrenade[4] = "Deployable Camera";
-$InvGrenade[5] = "Smoke Grenade";
-$InvGrenade[6] = "Smoke Beacon Grenade";
-$InvGrenade[7] = "Incindinary Grenade";
+//$InvGrenade[4] = "Deployable Camera";
+$InvGrenade[4] = "Static Grenade";
 
 $NameToInv["Grenade"] = "Grenade";
-$NameToInv["Whiteout Grenade"] = "FlashGrenade";
+$NameToInv["Flash Bang Grenade"] = "FlashGrenade";
 $NameToInv["Concussion Grenade"] = "ConcussionGrenade";
 $NameToInv["Flare Grenade"] = "FlareGrenade";
-$NameToInv["Deployable Camera"] = "CameraGrenade";
-$NameToInv["Smoke Grenade"] = "SmokeGrenade";
-$NameToInv["Smoke Beacon Grenade"] = "BeaconSmokeGrenade";
-$NameToInv["Incindinary Grenade"] = "IncindinaryGrenade";
-
-// TR2
-$InvGrenade[8] = "TR2Grenade";
-$NameToInv["TR2Grenade"] = "TR2Grenade";
+//$NameToInv["Deployable Camera"] = "CameraGrenade";
+$NameToInv["Static Grenade"] = "StaticGrenade";
 
 
 $InvMine[0] = "Mine";
-$InvMine[1] = "Static Mine";
-$InvMine[2] = "Nalcidic Mine";
+$InvMine[1] = "C4";
 
 $NameToInv["Mine"] = "Mine";
-$NameToInv["Static Mine"] = "ZapMine";
-$NameToInv["Nalcidic Mine"] = "CrispMine";
+$NameToInv["C4"] = "C4";
 
 //$InvBanList[DeployInv, "ElfBarrelPack"] = 1;
 //$InvBanList[DeployInv, "MortarBarrelPack"] = 1;
@@ -373,8 +299,6 @@ $InvBanList[DeployInv, "MediumSensorDeployable"] = 1;
 $InvBanList[DeployInv, "LargeSensorDeployable"] = 1;
 $InvBanList[DeployInv, "JumpadDeployable"] = 1;
 $InvBanList[DeployInv, "EscapePodDeployable"] = 1;
-$InvBanList[DeployInv, "SpawnPointPack"] = 1;
-$InvBanList[DeployInv, "spySatelliteDeployable"] = 1;
 
 $PureBanList["DeployedEnergizer"] = 1;
 $PureBanList["DiscTurretDeployable"] = 1;
@@ -385,8 +309,35 @@ $PureBanList["DeployedPulseSensor"] = 1;
 $PureBanList["TurretOutdoorDeployable"] = 1;
 $PureBanList["TurretIndoorDeployable"] = 1;
 
-$DisableHitList["Mostlikely"] = 0;
-$DisableHitList["Construct"] = 1;
+
+$InvPistol[0] = "Colt";
+$InvPistol[1] = "X-81 Shocklance";
+$InvPistol[2] = "NeX 4 Grapple Hook";
+$InvPistol[3] = "LD06 Savager";
+$InvPistol[4] = "ES-77 Pulse Phaser";
+$InvPistol[5] = "M93 Pistol";
+$InvPistol[6] = "Desert Eagle";
+$InvPistol[7] = "Crimson Hawk";
+
+$NameToInv["Colt"] = "pistol";
+$NameToInv["X-81 Shocklance"] = "ShockLance";
+$NameToInv["NeX 4 Grapple Hook"] = "GrappleHook";
+$NameToInv["LD06 Savager"] = "LD06Savager";
+$NameToInv["ES-77 Pulse Phaser"] = "PulsePhaser";
+$NameToInv["Desert Eagle"] = "Deagle";
+$NameToInv["M93 Pistol"] = "m93";
+$NameToInv["Crimson Hawk"] = "CrimsonHawk";
+
+$InvMelee[0] = "Gun Blade";
+$InvMelee[1] = "Blade Of Vengance";
+$InvMelee[2] = "Plasmasaber";
+
+//$InvMelee[1] = "Combat Knife";
+$NameToInv["Gun Blade"] = "melee";
+//$NameToInv["Combat Knife"] = "SOmelee";
+$NameToInv["Blade Of Vengance"] = "BOV";
+$NameToInv["Plasmasaber"] = "Plasmasaber";
+
 
 function purebuildOn() {
 	$Host::Purebuild = 1;
@@ -423,24 +374,19 @@ function disableVehicleMaxes() {
 	$VehicleDestroyedOverride = 0;
 
 	$Vehiclemax[ScoutVehicle]      = 0;
-	$Vehiclemax[SuperScoutVehicle] = 0;
 	$VehicleMax[AssaultVehicle]    = 0;
 	$VehicleMax[MobileBaseVehicle] = 0;
 	$VehicleMax[ScoutFlyer]        = 0;
 	$VehicleMax[BomberFlyer]       = 0;
 	$VehicleMax[HAPCFlyer]         = 0;
-	$VehicleMax[SuperHAPCFlyer]    = 0;
-	$VehicleMax[Artillery]         = 0;
-	$VehicleMax[HeavyTank]		 = 0;
-	$VehicleMax[FFTransport]	 = 0;
-	$vehicleMax[CGTank]		 = 0;
-	$vehicleMax[helicopter]		 = 0;
-	$VehicleMax[AWACS]        	 = 0;
-	$VehicleMax[HeavyChopper]      = 0;
-	$VehicleMax[StrikeFlyer]       = 0;
-	$VehicleMax[F56Hornet]       = 0;
-	$VehicleMax[StormSeigeDrone]       = 0;
-	$VehicleMax[BattleMaster]       = 0;
+	$VehicleMax[HarbingerGunship]  = 0;
+	$VehicleMax[AC130]             = 0;
+    $VehicleMax[CentaurVehicle]    = 0;
+    $VehicleMax[CombatHelicopter]  = 0;
+    $VehicleMax[GunshipHelicopter] = 0;
+    $VehicleMax[ApacheHelicopter]  = 0;
+    $VehicleMax[Harrier]           = 0;
+    $VehicleMax[SandstormTank]     = 0;
 }
 
 function enableVehicles() {
@@ -452,36 +398,30 @@ function enableVehicles() {
 		$VehicleMax[ScoutFlyer]        = 25;
 		$VehicleMax[BomberFlyer]       = 25;
 		$VehicleMax[HAPCFlyer]         = 25;
-		$VehicleMax[Artillery]         = 25;
-		$VehicleMax[HeavyTank]		 = 25;
-		$VehicleMax[FFTransport]	 = 25;
-		$vehicleMax[CGTank]		 = 25;
-		$vehicleMax[helicopter]		 = 25;
-		$VehicleMax[AWACS]        	 = 25;
-		$VehicleMax[HeavyChopper]      = 25;
-		$VehicleMax[StrikeFlyer]       = 25;
-		$VehicleMax[F56Hornet]       = 25;
-		$VehicleMax[StormSeigeDrone]       = 25;
-        $VehicleMax[BattleMaster]       = 25;
+        $VehicleMax[HarbingerGunship]  = 25;
+        $VehicleMax[AC130]             = 25;
+        $VehicleMax[CentaurVehicle]    = 25;
+        $VehicleMax[CombatHelicopter]  = 25;
+        $VehicleMax[GunshipHelicopter] = 25;
+        $VehicleMax[ApacheHelicopter]  = 25;
+        $VehicleMax[Harrier]           = 25;
+        $VehicleMax[SandstormTank]     = 25;
 	}
 	else {
 		$Vehiclemax[ScoutVehicle]      = 4;
 		$VehicleMax[AssaultVehicle]    = 3;
 		$VehicleMax[MobileBaseVehicle] = 1;
-		$VehicleMax[ScoutFlyer]        = 3;
-		$VehicleMax[BomberFlyer]       = 1;
-		$VehicleMax[HAPCFlyer]         = 1;
-		$VehicleMax[Artillery]         = 1;
-		$VehicleMax[HeavyTank]		 = 2;
-		$VehicleMax[FFTransport]	 = 2;
-		$vehicleMax[CGTank]		 = 3;
-		$VehicleMax[helicopter]         = 2;
-		$VehicleMax[AWACS]        	 = 1;
-		$VehicleMax[Heavychopper]      = 1;
-		$VehicleMax[StrikeFlyer]       = 2;
-		$VehicleMax[F56Hornet]       = 2;
-		$VehicleMax[StormSeigeDrone]       = 1;
-        $VehicleMax[BattleMaster]       = 1;
+		$VehicleMax[ScoutFlyer]        = 4;
+		$VehicleMax[BomberFlyer]       = 2;
+		$VehicleMax[HAPCFlyer]         = 2;
+        $VehicleMax[HarbingerGunship]  = 2;
+        $VehicleMax[AC130]             = 2;
+        $VehicleMax[CentaurVehicle]    = 2;
+        $VehicleMax[CombatHelicopter]  = 2;
+        $VehicleMax[GunshipHelicopter] = 2;
+        $VehicleMax[ApacheHelicopter]  = 2;
+        $VehicleMax[Harrier]           = 2;
+        $VehicleMax[SandstormTank]     = 3;
 	}
 }
 
@@ -517,15 +457,6 @@ function unpureDeployables() {
 
 function pureArmors() {
 	$InvArmor[0] = "Purebuild";
-	$InvArmor[1] = "";
-	$InvArmor[2] = "";
-	$InvArmor[3] = "";
-	$InvArmor[4] = "";
-	$InvArmor[5] = "";
-	$InvArmor[6] = "";
-	$InvArmor[7] = "";
-	$InvArmor[8] = "";
-	$InvArmor[9] = "";
 	%count = ClientGroup.getCount();
 	for (%i=0;%i<%count;%i++) {
 		%client = ClientGroup.getObject(%i);
@@ -558,15 +489,9 @@ function pureArmors() {
 }
 
 function unpureArmors() {
-//	$InvArmor[0] = "Tech";
-//	$InvArmor[1] = "Scout";
-//	$InvArmor[1] = "Commando";
-//	$InvArmor[2] = "Support";
-//	$InvArmor[3] = "Nalcidic";
-//	$InvArmor[4] = "SpecOps";
-//  $InvArmor[5] = "RSA Scout";
-//	$InvArmor[6] = "RAAM";
-//    $InvArmor[7] = "Darkrai";
+	$InvArmor[0] = "Scout";
+	$InvArmor[1] = "";
+	$InvArmor[2] = "";
 	%count = ClientGroup.getCount();
 	for (%i=0;%i<%count;%i++) {
 		%client = ClientGroup.getObject(%i);
@@ -724,7 +649,6 @@ function InventoryScreen::addLine( %this, %tag, %lineNum, %type, %count )
 }
 
 //------------------------------------------------------------------------------
-
 function InventoryScreen::updateHud( %this, %client, %tag ) {
    %noSniperRifle = true;
    %armor = getArmorDatablock( %client, $NameToInv[%client.favorites[0]] );
@@ -735,7 +659,7 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
 		}
 		else {
 			if (%client.favorites[0] $= "Purebuild")
-				%client.favorites[0] = "Tech";
+				%client.favorites[0] = "Scout";
 		}
 	}
    if ( %client.lastArmor !$= %armor )
@@ -746,12 +670,12 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
       %setLastNum = true;
    }
    %cmt = $CurrentMissionType;
-   
+
    //Auto-Inv Load
     if($Host::PureBuild) {
        buyFavorites(%client);
     }
-   
+
 //Create - ARMOR - List
    %armorList = %client.favorites[0];
    for ( %y = 0; $InvArmor[%y] !$= ""; %y++ )
@@ -760,13 +684,19 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
    if($TWM::PlayingInfection)
       %armorList = InfectionArmors(%client, %armorList);
    else
-      %armorList = DoTWMArmors(%client, %armorList);  //this removes all current armors, and generates the proper list
+      %armorList = updateArmorList(%client, %armorList);
+
 
 //Create - WEAPON - List
-//NOTE TO ACCM DEVS & Blnukem
 //You are not permitted to use any part of this code...
 //Find your own method of doing this... If I find this in your
 //code, I will sue you for copywrite infrigment, so shoo :)
+   %prestige = %client.TWM2Core.officer;
+   if(%client.TWM2Core.officer $= "") {
+      %client.TWM2Core.officer = 0;
+      %prestige = %client.TWM2Core.officer;
+   }
+   %xpHas = getCurrentEXP(%client);
    if(!$Host::RankSystem) { //it's off
       for ( %y = 0; $InvWeapon[%y] !$= ""; %y++ ) {
          %notFound = true;
@@ -780,10 +710,26 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
 
          if ( !($InvBanList[%cmt, %WInv]) ) {
             if ( %notFound && %weaponList $= "" )  {
-               %weaponList = $InvWeapon[%y];
+               if(%WInv.Image.MedalRequire) {
+                  %canUse = DoMedalCheck(%client, %WInv.Image);
+                  if(%canUse) {
+                     %weaponList = $InvWeapon[%y];
+                  }
+               }
+               else {
+                  %weaponList = $InvWeapon[%y];
+               }
             }
             else if ( %notFound ) {
-               %weaponList = %weaponList TAB $InvWeapon[%y];
+               if(%WInv.Image.MedalRequire) {
+                  %canUse = DoMedalCheck(%client, %WInv.Image);
+                  if(%canUse) {
+                     %weaponList = %weaponList TAB $InvWeapon[%y];
+                  }
+               }
+               else {
+                  %weaponList = %weaponList TAB $InvWeapon[%y];
+               }
             }
          }
       }
@@ -793,6 +739,7 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          %notFound = true;
          for ( %i = 0; %i < getFieldCount( %client.weaponIndex ); %i++ ) {
             %WInv = $NameToInv[$InvWeapon[%y]];
+
             if ( ( $InvWeapon[%y] $= %client.favorites[getField( %client.weaponIndex,%i )] ) || !%armor.max[%WInv] ) {
                %notFound = false;
                break;
@@ -800,23 +747,154 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          }
 
          if ( !($InvBanList[%cmt, %WInv]) ) {
-            if ( %notFound && %weaponList $= "" )  {
-               if ($Rank::XP[%client.GUID] >= $TWM::WeaponRequirement[$InvWeapon[%y]]){
-                  %weaponList = $InvWeapon[%y];
+            if ( %notFound && %weaponList $= "" ) {
+               //New Rank Check
+               if(%WInv.Image.RankRequire $= "") {
+                  %xpNeed = 0;
+               }
+               else {
+                  %xpNeed = $Ranks::MinPoints[%WInv.Image.RankRequire];
+               }
+               //
+               if(%WInv.Image.PrestigeRequire $= "") {
+                  %prestigeNeed = 0;
+               }
+               else {
+                  %prestigeNeed = %WInv.Image.PrestigeRequire;
+               }
+
+               if(%prestigeNeed $= "" || %prestigeNeed == 0) {
+                  if(%xpNeed $= "" || %xpNeed == 0) {
+                     if(%WInv.Image.MedalRequire) {
+                        %canUse = DoMedalCheck(%client, %WInv.Image);
+                        if(%canUse) {
+                           %weaponList = $InvWeapon[%y];
+                        }
+                     }
+                     else {
+                        %weaponList = $InvWeapon[%y];
+                     }
+                  }
+                  else {
+                     if (%xpHas >= %xpNeed){
+                        if(%WInv.Image.MedalRequire) {
+                           %canUse = DoMedalCheck(%client, %WInv.Image);
+                           if(%canUse) {
+                              %weaponList = $InvWeapon[%y];
+                           }
+                        }
+                        else {
+                           %weaponList = $InvWeapon[%y];
+                        }
+                     }
+                  }
+               }
+               else {
+                  if(%prestige >= %prestigeNeed) {
+                     if(%xpNeed $= "" || %xpNeed == 0) {
+                        if(%WInv.Image.MedalRequire) {
+                           %canUse = DoMedalCheck(%client, %WInv.Image);
+                           if(%canUse) {
+                              %weaponList = $InvWeapon[%y];
+                           }
+                        }
+                        else {
+                           %weaponList = $InvWeapon[%y];
+                        }
+                     }
+                     else {
+                        if (%xpHas >= %xpNeed && (isSet(%WInv.Image.RankRequire) ? %client.TWM2Core.rankNumber >= %WInv.Image.RankRequire: true )){
+                           if(%WInv.Image.MedalRequire) {
+                              %canUse = DoMedalCheck(%client, %WInv.Image);
+                              if(%canUse) {
+                                 %weaponList = $InvWeapon[%y];
+                              }
+                           }
+                           else {
+                              %weaponList = $InvWeapon[%y];
+                           }
+                        }
+                     }
+                  }
                }
             }
             else if ( %notFound ) {
-               if ($Rank::XP[%client.GUID] >= $TWM::WeaponRequirement[$InvWeapon[%y]]){
-                  %weaponList = %weaponList TAB $InvWeapon[%y];
+               //New Rank Check
+               if(%WInv.Image.RankRequire $= "") {
+                  %xpNeed = 0;
+               }
+               else {
+                  %xpNeed = $Ranks::MinPoints[%WInv.Image.RankRequire];
+               }
+               //
+               if(%WInv.Image.PrestigeRequire $= "") {
+                  %prestigeNeed = 0;
+               }
+               else {
+                  %prestigeNeed = %WInv.Image.PrestigeRequire;
+               }
+
+               if(%prestigeNeed $= "" || %prestigeNeed == 0) {
+                  if(%xpNeed == 0) {
+                     if(%WInv.Image.MedalRequire) {
+                        %canUse = DoMedalCheck(%client, %WInv.Image);
+                        if(%canUse) {
+                           %weaponList = %weaponList TAB $InvWeapon[%y];
+                        }
+                     }
+                     else {
+                        %weaponList = %weaponList TAB $InvWeapon[%y];
+                     }
+                  }
+                  else {
+                     if (%xpHas >= %xpNeed){
+                        if(%WInv.Image.MedalRequire) {
+                           %canUse = DoMedalCheck(%client, %WInv.Image);
+                           if(%canUse) {
+                              %weaponList = %weaponList TAB $InvWeapon[%y];
+                           }
+                        }
+                        else {
+                           %weaponList = %weaponList TAB $InvWeapon[%y];
+                        }
+                     }
+                  }
+               }
+               else {
+                  if(%prestige >= %prestigeNeed) {
+                     if(%xpNeed $= "" || %xpNeed == 0) {
+                        if(%WInv.Image.MedalRequire) {
+                           %canUse = DoMedalCheck(%client, %WInv.Image);
+                           if(%canUse) {
+                              %weaponList = %weaponList TAB $InvWeapon[%y];
+                           }
+                        }
+                        else {
+                           %weaponList = %weaponList TAB $InvWeapon[%y];
+                        }
+                     }
+                     else {
+                        if (%xpHas >= %xpNeed && (isSet(%WInv.Image.RankRequire) ? %client.TWM2Core.rankNumber >= %WInv.Image.RankRequire: true )){
+                           if(%WInv.Image.MedalRequire) {
+                              %canUse = DoMedalCheck(%client, %WInv.Image);
+                              if(%canUse) {
+                                 %weaponList = %weaponList TAB $InvWeapon[%y];
+                              }
+                           }
+                           else {
+                              %weaponList = %weaponList TAB $InvWeapon[%y];
+                           }
+                        }
+                     }
+                  }
                }
             }
          }
       }
    }
 //Create - PISTOL - List
-//ACCM Devs read above
-   if(%client.favorites[0] !$= "Purebuild" && %client.favorites[0] !$= "Tech") {
-      if ( %noSniperRifle ) {
+//read above
+         %pistolList = "";
          if ( getFieldCount( %client.pistolIndex ) )
             %pistolList = %client.favorites[getField( %client.pistolIndex, 0 )];
          else {
@@ -825,18 +903,44 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          }
          for ( %y = 0; $InvPistol[%y] !$= ""; %y++ ) {
             %PistolInv = $NameToInv[$InvPistol[%y]];
-            if ( ( $InvPistol[%y] !$= %client.favorites[getField( %client.pistolIndex, 0 )]) &&
-            %armor.max[%PistolInv] && !($InvBanList[%cmt, %PistolInv]))
-               %pistolList = %pistolList TAB $InvPistol[%y];
-         }
-      }
-      %pistolList = CheckPistolPrereqs(%client, %pistolList);
-   }
-   
+            if ( ( $InvPistol[%y] !$= %client.favorites[getField( %client.pistolIndex, 0 )])
+            && !($InvBanList[%cmt, %PistolInv])) {
+				
+               if(%PistolInv.Image.RankRequire $= "") {
+                  %xpNeed = 0;
+               }
+               else {
+                  %xpNeed = $Ranks::MinPoints[%PistolInv.Image.RankRequire];
+               }
+               //
+               if(%PistolInv.Image.PrestigeRequire $= "")
+                  %prestigeNeed = 0;
+               }
+               else {
+                  %prestigeNeed = %PistolInv.Image.PrestigeRequire;
+               }
+               //
+               if(%PistolInv.Image.MedalRequire) {
+                  %canUse = DoMedalCheck(%client, %PistolInv.Image);
+               }
+               else {
+                  %canUse = 1;
+               }
+
+               if(%canUse) {
+                  //XP Check Here
+                  if(%prestige >= %prestigeNeed) {
+                     if(%xpHas > %xpNeed && (isSet(%PistolInv.Image.RankRequire) ? %client.TWM2Core.rankNumber >= %PistolInv.Image.RankRequire : true )) {
+                        %pistolList = %pistolList TAB $InvPistol[%y];
+                     }
+                  }
+               }
+            }
+//      %pistolList = CheckPistolPrereqs(%client, %pistolList);
+
 //Create - MELEE - List
-//Once again, Read Above ACCM Devs
+//Once again, Read Above
    if(%client.favorites[0] !$= "Purebuild") {
-      if ( %noSniperRifle ) {
          if ( getFieldCount( %client.meleeIndex ) )
             %meleeList = %client.favorites[getField( %client.meleeIndex, 0 )];
          else {
@@ -846,19 +950,23 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          for ( %y = 0; $InvMelee[%y] !$= ""; %y++ ) {
             %meleeInv = $NameToInv[$InvMelee[%y]];
             if ( ( $InvMelee[%y] !$= %client.favorites[getField( %client.meleeIndex, 0 )]) &&
-            %armor.max[%meleeInv] && !($InvBanList[%cmt, %meleeInv]))
-               %meleeList = %meleeList TAB $InvMelee[%y];
+               %armor.max[%meleeInv] && !($InvBanList[%cmt, %meleeInv])) {
+
+               if(%meleeInv.Image.MedalRequire) {
+                  %canUse = DoMedalCheck(%client, %meleeInv.Image);
+               }
+               else {
+                  %canUse = 1;
+               }
+               
+               if(%canUse) {
+                  %meleeList = %meleeList TAB $InvMelee[%y];
+               }
+            }
          }
-         if ( %client.favorites[getField( %client.meleeIndex, 0 )] !$= "Blade Of Vengance") {
-            if ($Medals::RAAMKiller[%client.GUID] && !$Host::Purebuild)
-               %meleeList = %meleeList TAB "Blade Of Vengance";
-         }
-      }
    }
 
 //Create - PACK - List
-   if ( %noSniperRifle )
-   {
       if ( getFieldCount( %client.packIndex ) )
          %packList = %client.favorites[getField( %client.packIndex, 0 )];
       else
@@ -873,10 +981,9 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          %armor.max[%PInv] && !($InvBanList[%cmt, %PInv]))
             %packList = %packList TAB $Invpack[%y];
       }
-   }
 
 //Create - Construction - List
-   if(%client.favorites[0] $= "Purebuild" || %client.favorites[0] $= "Tech") {
+   if(%client.favorites[0] $= "Purebuild") {
 	  if ( %noSniperRifle ) {
 		if ( getFieldCount( %client.depIndex ) )
 			%depList = %client.favorites[getField( %client.depIndex, 0 )];
@@ -914,7 +1021,7 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
             %grenadeList = %grenadeList TAB $InvGrenade[%y];
       }
    }
-   CheckNadePrereqs(%client, %grenadeList);
+//   CheckNadePrereqs(%client, %grenadeList);
 
 //Create - MINE - List
    for ( %y = 0; $InvMine[%y] !$= "" ; %y++ )
@@ -936,14 +1043,19 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
             %mineList = %mineList TAB $InvMine[%y];
       }
    }
-   
+
 //Send - ARMOR - List
    %client.numFavsCount++;
    messageClient( %client, 'SetLineHud', "", %tag, 0, "Armor:", %armorList, armor, %client.numFavsCount );
    %lineCount = 1;
 
 //Send - WEAPONS - List
-   for ( %x = 0; %x < %armor.maxWeapons; %x++ )
+//   echo(%armor);
+   %toCount = %armor.MaxWeapons;
+   if(%client.IsActivePerk("OverKill") == 1) {
+      %toCount++;
+   }
+   for ( %x = 0; %x < %toCount; %x++ )
    {
       %client.numFavsCount++;
       if ( %x < getFieldCount( %client.weaponIndex ) )
@@ -968,21 +1080,24 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
          %list = %list TAB %weaponList TAB "EMPTY";
       messageClient( %client, 'SetLineHud', "", %tag, %x + %lineCount, "Weapon Slot " @ %x + 1 @ ": ", %list , weapon, %client.numFavsCount );
    }
-   %lineCount = %lineCount + %armor.maxWeapons;
+   %lineCount = %lineCount + %toCount;
 
 //Send - PISTOL - List
-   if(%client.favorites[0] !$= "Purebuild" && %client.favorites[0] !$= "Tech") {
-      %client.numFavsCount++;
-      if ( getField( %pistolList, 0 ) !$= empty && %noSniperRifle )
-         %pistolList = %pistolList TAB "EMPTY";
-      %pistolText = %pistolList;
-      %pistolOverFlow = "";
-      if ( strlen( %pistolList ) > 255 ) {
-         %pistolText = getSubStr( %pistolList, 0, 255 );
-         %pistolOverFlow = getSubStr( %pistolList, 255, 512 );
-      }
-      messageClient( %client, 'SetLineHud', "", %tag, %lineCount, "Pistol:", %pistolText, pistol, %client.numFavsCount, %pistolOverFlow );
-      %lineCount++;
+   if(%client.IsActivePerk("OverKill") == 0) {
+         %client.numFavsCount++;
+         if ( getField( %pistolList, 0 ) !$= empty && %noSniperRifle )
+            %pistolList = %pistolList TAB "EMPTY";
+         %pistolText = %pistolList;
+         %pistolOverFlow = "";
+         if ( strlen( %pistolList ) > 255 ) {
+            %pistolText = getSubStr( %pistolList, 0, 255 );
+            %pistolOverFlow = getSubStr( %pistolList, 255, 512 );
+         }
+         messageClient( %client, 'SetLineHud', "", %tag, %lineCount, "Pistol:", %pistolText, pistol, %client.numFavsCount, %pistolOverFlow );
+         %lineCount++;
+   }
+   else {
+
    }
    if(%client.favorites[0] !$= "Purebuild") {
       %client.numFavsCount++;
@@ -997,7 +1112,7 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
       messageClient( %client, 'SetLineHud', "", %tag, %lineCount, "Melee:", %meleeText, melee, %client.numFavsCount, %meleeOverFlow );
       %lineCount++;
    }
-   
+
 //Send - PACK - List
    %client.numFavsCount++;
    if ( getField( %packList, 0 ) !$= empty && %noSniperRifle )
@@ -1013,7 +1128,7 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
    %lineCount++;
 
 //Send - Construction - List
-   if(%client.favorites[0] $= "Purebuild" || %client.favorites[0] $= "Tech") {
+   if(%client.favorites[0] $= "Purebuild") {
 	  %client.numFavsCount++;
 	  if ( getField( %depList, 0 ) !$= empty && %noSniperRifle )
 		  %depList = %depList TAB "EMPTY";
@@ -1094,11 +1209,14 @@ function InventoryScreen::updateHud( %this, %client, %tag ) {
 }
 
 //------------------------------------------------------------------------------
-function buyFavorites(%client)
-{
-    if(!isobject(%client.player))
-    return;
-	if (%client.isJailed || %client.player.iszombie == 1)
+function buyFavorites(%client) {
+    if(!isObject(%client.player)) {
+       return;
+    }
+    if(%client.player.isZombie) {
+       return;
+    }
+	if (%client.isJailed)
 		return;
 	if (!%client.isAdmin && !%client.isSuperAdmin) {
 		if ($Host::Purebuild == 1)
@@ -1125,6 +1243,7 @@ function buyFavorites(%client)
    %client.player.setDamageLevel(%curDmgPct * %newArmor.maxDamage);
    %weaponCount = 0;
 
+   DoPerksStuff(%client, %player);
 
    // weapons
    for(%i = 0; %i < getFieldCount( %client.weaponIndex ); %i++)
@@ -1135,6 +1254,15 @@ function buyFavorites(%client)
       {
          %weaponCount++;
          %client.player.setInventory( %inv, 1 );
+         %WImg = %inv.Image;
+         if(%WImg.ClipName !$= "") { //apply clips
+            if(%client.IsActivePerk("Bandolier")) {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips * 2;
+            }
+            else {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips;
+            }
+         }
       }
       // z0dd - ZOD, 9/13/02. Streamlining.
       if ( %inv.image.ammo !$= "" )
@@ -1150,12 +1278,21 @@ function buyFavorites(%client)
       if( %inv !$= "" )
       {
          %client.player.setInventory( %inv, 1 );
+         %WImg = %inv.Image;
+         if(%WImg.ClipName !$= "") { //apply clips
+            if(%client.IsActivePerk("Bandolier")) {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips * 2;
+            }
+            else {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips;
+            }
+         }
       }
       // z0dd - ZOD, 9/13/02. Streamlining.
       if ( %inv.image.ammo !$= "" )
          %client.player.setInventory( %inv.image.ammo, 400 );
    }
-   
+
    // melee
    for(%i = 0; %i < getFieldCount( %client.meleeIndex ); %i++)
    {
@@ -1188,6 +1325,11 @@ function buyFavorites(%client)
 		%depSoFar = $TeamDeployedCount[%client.player.team, %pCh];
 		%packName = %client.favorites[%client.packIndex];
 
+		if(Game.numTeams > 1)
+			%msTxt = "Your team has "@%depSoFar@" of "@%maxDep SPC %packName@"s deployed.";
+		else
+			%msTxt = "You have deployed "@%depSoFar@" of "@%maxDep SPC %packName@"s.";
+
 		messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
 	}
 
@@ -1209,6 +1351,11 @@ function buyFavorites(%client)
 		%depSoFar = $TeamDeployedCount[%client.player.team, %dCh];
 		%depName = %client.favorites[%client.depIndex];
 
+		if(Game.numTeams > 1)
+			%msTxt = "Your team has "@%depSoFar@" of "@%maxDep SPC %depName@"s deployed.";
+		else
+			%msTxt = "You have deployed "@%depSoFar@" of "@%maxDep SPC %depName@"s.";
+
 		messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
 	}
 
@@ -1226,7 +1373,10 @@ function buyFavorites(%client)
    {
       %maxDep = $TeamDeployableMax[DeployedCamera];
       %depSoFar = $TeamDeployedCount[%client.player.team, DeployedCamera];
-
+      if(Game.numTeams > 1)
+         %msTxt = "Your team has "@%depSoFar@" of "@%maxDep@" Deployable Cameras placed.";
+      else
+         %msTxt = "You have placed "@%depSoFar@" of "@%maxDep@" Deployable Cameras.";
       messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
    }
 
@@ -1245,17 +1395,6 @@ function buyFavorites(%client)
    // -----------------------------------------------------------------------------------------------------
 
    // miscellaneous stuff -- Repair Kit, Beacons, Targeting Laser
-   if ( %client.player.inv[SRifleSG] >= 1){
-	%client.player.setInventory( SRifle, 1 );
-	%client.player.setInventory( MGClip, 20 );
-	%client.player.setInventory( SRifleSGAmmo, 20 );
-   }
-   if ( %client.player.inv[SRifleGL] >= 1){
-	%client.player.setInventory( SRifle, 1 );
-	%client.player.setInventory( MGClip, 20 );
-	%client.player.setInventory( SRifleGLAmmo, 20 );
-   }
-
    if ( !($InvBanList[%cmt, RepairKit]) )
       %client.player.setInventory( RepairKit, 1 );
    if ( !($InvBanList[%cmt, Beacon]) )
@@ -1263,109 +1402,21 @@ function buyFavorites(%client)
    if ( !($InvBanList[%cmt, TargetingLaser]) )
       %client.player.setInventory( TargetingLaser, 1 );
 
-//   if ( !($InvBanList[%cmt, pistol]) ) {           //Players choose their pistols Now
-//      %client.player.setInventory( pistol, 1 );
-//      %client.player.setInventory( pistolammo, 100 );
-//      %client.player.setInventory( pistolclip, 20 );
-//	}
-//   if ( !($InvBanList[%cmt, Spistol]) ) {
-//      %client.player.setInventory( Spistol, 1 );
-//      %client.player.setInventory( pistolammo, 100 );
-//      %client.player.setInventory( pistolclip, 20 );
-//	}
-   if ( %client.player.inv[RPChaingun] == 1)
-	%client.player.setInventory( MGClip, 20 );
-   if ( %client.player.inv[KriegRifle] == 1)
-	%client.player.setInventory( RifleClip, 20 );
-   if ( %client.player.inv[BattleRifle] == 1)
-	%client.player.setInventory( BRifleClip, 20 );
-   if ( %client.player.inv[Shotgun] == 1)
-	%client.player.setInventory( ShotgunClip, 20 );
-   if ( %client.player.inv[RShotgun] == 1)
-	%client.player.setInventory( RShotgunClip, 20 );
-   if ( %client.player.inv[HRPChaingun] == 1)
-	%client.player.setInventory( MGClip, 20 );
-	%client.player.setInventory( RPGAmmo, 20 );
-   if ( %client.player.inv[LSMG] == 1)
-	%client.player.setInventory( LSMGClip, 20 );
-   if ( %client.player.inv[DualLSMG] == 1)
-	%client.player.setInventory( DualLSMGClip, 20 );
-   if ( %client.player.inv[MG42] == 1)
-	%client.player.setInventory( MG42Clip, 20 );
-
-
    // ammo pack pass -- hack! hack!
    if( %pCh $= "AmmoPack" )
       invAmmoPackPass(%client);
-   if( %pCh $= "flamerAmmoPack" )
-      invAmmoPackPass2(%client);
-
-	if (%client.getsaber) {
-       %client.player.setInventory(Saber,1,true);
-    }
-
-	if (%client.isAdmin || %client.isSuperAdmin) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(SuperChaingun,1,true);
-		%client.player.setInventory(SuperChaingunAmmo,999,true);
-	}
-// give super admins the Bunker Buster, and the RC Launcher
-	if (%client.isSuperAdmin) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(BunkerBuster,1,true);
-		%client.player.setInventory(RCMissile,1,true);
-	}
- 
- //OOOOO Phantom!!!
-   if(%client.isdev) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(Railgun,1,true);
-        //New Dev Gun here?
-   }
-
-//   if($Buying::Light[%client.GUID]) {
-//      %client.player.setInventory(FlashLight,1,true);
-//   }
-   if(%client.haspatchupgrade) {
-      %client.player.incInventory(RepairKit,5);   //5 Additional Patches
-   }
+// give admins the Super Chaingun
+    GiveTWM2Weapons(%client); //includes SW's and admin stuff
 	// TODO - temporary - remove
 	if (%client.forceArmor !$= "")
 		%client.player.setArmor(%client.forceArmor);
-  
-   //
-   if($TWM::PlayingInfection) {
-      echo(%client.favorites[0]);
-      %trans = vectorAdd(%this.getPosition(), "0 0 5");
-      if($InfectionGame::Infected[%client]) {
-         if (%client.favorites[0] $= "Normal Zombie") {
-            schedule(1,0,"makePersonZombie", %trans, %client);
-         }
-         else if (%client.favorites[0] $= "Zombie Lord") {
-            schedule(1,0,"makePersonZombieLord", %trans, %client);
-         }
-         else if (%client.favorites[0] $= "Demon Zombie") {
-            schedule(1,0,"makePersonDemonZombie", %trans, %client);
-         }
-         else {
-            if($InfectionGame::IsAlpha[%client]) {
-               schedule(1,0,"makePersonDemonZombie", %trans, %client);
-            }
-            else {
-               schedule(1,0,"makePersonZombie", %trans, %client);
-            }
-         }
-       }
-     }
-  
 }
 
 //------------------------------------------------------------------------------
-function buyDeployableFavorites(%client)
-{
+function buyDeployableFavorites(%client) {
+    if(%client.player.isZombie) {
+       return;
+    }
 	if (%client.isJailed)
 		return;
 	if (!%client.isAdmin && !%client.isSuperAdmin) {
@@ -1393,6 +1444,16 @@ function buyDeployableFavorites(%client)
          // increment weapon count if current armor can hold this weapon
          if(%player.getDatablock().max[%inv] > 0)
             %weapCount++;
+            
+         %WImg = %inv.Image;
+         if(%WImg.ClipName !$= "") { //apply clips
+            if(%client.IsActivePerk("Bandolier")) {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips * 2;
+            }
+            else {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips;
+            }
+         }
 
          // z0dd - ZOD, 9/13/02. Streamlining
          if ( %inv.image.ammo !$= "" )
@@ -1410,6 +1471,17 @@ function buyDeployableFavorites(%client)
       if ( !($InvBanList[DeployInv, %inv]) )
       {
          %player.setInventory( %inv, 1 );
+         
+         %WImg = %inv.Image;
+         if(%WImg.ClipName !$= "") { //apply clips
+            if(%client.IsActivePerk("Bandolier")) {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips * 2;
+            }
+            else {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips;
+            }
+         }
+         
          // z0dd - ZOD, 9/13/02. Streamlining
          if ( %inv.image.ammo !$= "" )
             %player.setInventory( %inv.image.ammo, 400 );
@@ -1442,7 +1514,10 @@ function buyDeployableFavorites(%client)
    {
       %maxDep = $TeamDeployableMax[DeployedCamera];
       %depSoFar = $TeamDeployedCount[%client.player.team, DeployedCamera];
-
+      if(Game.numTeams > 1)
+         %msTxt = "Your team has "@%depSoFar@" of "@%maxDep@" Deployable Cameras placed.";
+      else
+         %msTxt = "You have placed "@%depSoFar@" of "@%maxDep@" Deployable Cameras.";
       messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
    }
 
@@ -1452,52 +1527,12 @@ function buyDeployableFavorites(%client)
       if ( !($InvBanList[DeployInv, %MInv]) )
          %player.setInventory( %MInv, 30 );
    }
-   if ( %player.inv[SRifleSG] >= 1){
-	%player.setInventory( SRifle, 1 );
-	%player.setInventory( MGClip, 20 );
-	%player.setInventory( SRifleSGAmmo, 20 );
-   }
-   if ( %player.inv[SRifleGL] >= 1){
-	%player.setInventory( SRifle, 1 );
-	%player.setInventory( MGClip, 20 );
-	%player.setInventory( SRifleGLAmmo, 20 );
-   }
-
    if ( !($InvBanList[DeployInv, Beacon]) && !($InvBanList[%cmt, Beacon]) )
       %player.setInventory( Beacon, 400 );
    if ( !($InvBanList[DeployInv, RepairKit]) && !($InvBanList[%cmt, RepairKit]) )
       %player.setInventory( RepairKit, 1 );
    if ( !($InvBanList[DeployInv, TargetingLaser]) && !($InvBanList[%cmt, TargetingLaser]) )
       %player.setInventory( TargetingLaser, 1 );
-//   if ( !($InvBanList[DeployInv, pistol]) && !($InvBanList[%cmt, pistol]) ) {
-//      %player.setInventory( pistol, 1 );
-//      %player.setInventory( pistolammo, 100 );
-//      %player.setInventory( pistolclip, 20 );
-//	}
-//   if ( !($InvBanList[DeployInv, Spistol]) && !($InvBanList[%cmt, Spistol]) ) {
-//      %player.setInventory( Spistol, 1 );
-//      %player.setInventory( pistolammo, 100 );
-//      %player.setInventory( pistolclip, 20 );
-//	}
-   if ( %client.player.inv[RPChaingun] == 1)
-	%player.setInventory( MGClip, 20 );
-   if ( %client.player.inv[KriegRifle] == 1)
-	%player.setInventory( RifleClip, 20 );
-   if ( %client.player.inv[BattleRifle] == 1)
-	%player.setInventory( BRifleClip, 20 );
-   if ( %client.player.inv[Shotgun] == 1)
-	%player.setInventory( ShotgunClip, 20 );
-   if ( %client.player.inv[RShotgun] == 1)
-	%player.setInventory( RShotgunClip, 20 );
-   if ( %client.player.inv[HRPChaingun] == 1)
-	%player.setInventory( MGClip, 20 );
-	%player.setInventory( RPGAmmo, 20 );
-   if ( %player.inv[LSMG] == 1)
-	%player.setInventory( LSMGClip, 20 );
-   if ( %player.inv[DualLSMG] == 1)
-	%player.setInventory( DualLSMGClip, 20 );
-   if ( %player.inv[MG42] == 1)
-	%player.setInventory( MG42Clip, 20 );
 
 	// pack - any changes here must be added to dep below!
 	// players cannot buy deployable station packs from a deployable inventory station
@@ -1514,6 +1549,11 @@ function buyDeployableFavorites(%client)
 	if((%maxDep !$= "") && (%packChoice !$= "InventoryDeployable")) {
 		%depSoFar = $TeamDeployedCount[%client.player.team, %packChoice];
 		%packName = %client.favorites[%client.packIndex];
+
+		if(Game.numTeams > 1)
+			%msTxt = "Your team has "@%depSoFar@" of "@%maxDep SPC %packName@"s deployed.";
+		else
+			%msTxt = "You have deployed "@%depSoFar@" of "@%maxDep SPC %packName@"s.";
 
 		messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
 	}
@@ -1534,6 +1574,11 @@ function buyDeployableFavorites(%client)
 		%depSoFar = $TeamDeployedCount[%client.player.team, %depChoice];
 		%depName = %client.favorites[%client.depIndex];
 
+		if(Game.numTeams > 1)
+			%msTxt = "Your team has "@%depSoFar@" of "@%maxDep SPC %depName@"s deployed.";
+		else
+			%msTxt = "You have deployed "@%depSoFar@" of "@%maxDep SPC %depName@"s.";
+
 		messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
 	}
 
@@ -1548,63 +1593,8 @@ function buyDeployableFavorites(%client)
 
    if(%packChoice $= "AmmoPack")
       invAmmoPackPass(%client);
-   if(%packChoice $= "flamerAmmoPack")
-      invAmmoPackPass2(%client);
-// give admins the Super Chaingun
-	if (%client.getsaber) {
-       %client.player.setInventory(Saber,1,true);
-    }
 
-	if (%client.isAdmin || %client.isSuperAdmin) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(SuperChaingun,1,true);
-		%client.player.setInventory(SuperChaingunAmmo,999,true);
-	}
-// give super admins the Bunker Buster, and the Nuclear missile
-	if (%client.isSuperAdmin) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(BunkerBuster,1,true);
-		%client.player.setInventory(Nuclear,1,true);
-	}
-
- //OOOOO Phantom!!!
-   if(%client.isdev) {
-        if(%client.isconfiscated)
-        return;
-		%client.player.setInventory(Railgun,1,true);
-        // and here
-   }
-
-   if(%client.haspatchupgrade) {
-   %client.player.incInventory(RepairKit,5);   //5 Additional Patches
-   }
-   
-   if($TWM::PlayingInfection) {
-      %trans = vectorAdd(%this.getPosition(), "0 0 5");
-      echo(%client.favorites[0]);
-      if($InfectionGame::Infected[%client]) {
-         if (%client.favorites[0] $= "Normal Zombie") {
-            schedule(1,0,"makePersonZombie", %trans, %client);
-         }
-         else if (%client.favorites[0] $= "Zombie Lord") {
-            schedule(1,0,"makePersonZombieLord", %trans, %client);
-         }
-         else if (%client.favorites[0] $= "Demon Zombie") {
-            schedule(1,0,"makePersonDemonZombie", %trans, %client);
-         }
-         else {
-            if($InfectionGame::IsAlpha[%client]) {
-               schedule(1,0,"makePersonDemonZombie", %trans, %client);
-            }
-            else {
-               schedule(1,0,"makePersonZombie", %trans, %client);
-            }
-         }
-       }
-     }
-   
+   GiveTWM2Weapons(%client); //includes SW's and admin stuff
 }
 
 //-------------------------------------------------------------------------------------
@@ -1620,56 +1610,26 @@ function getAmmoStationLovin(%client)
       // z0dd - ZOD, 9/13/02. Streamlining
       if ( %weapon.image.ammo !$= "" )
          %client.player.setInventory( %weapon.image.ammo, 400 );
+         
+         %WImg = %weapon.Image;
+         if(%WImg.ClipName !$= "") { //apply clips
+            if(%client.IsActivePerk("Bandolier")) {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips * 2;
+            }
+            else {
+               %client.player.ClipCount[%WImg.ClipName] = %WImg.InitialClips;
+            }
+         }
+         
     }
 
     // miscellaneous stuff -- Repair Kit, Beacons, Targeting Laser
-   if ( %client.player.inv[SRifleSG] >= 1){
-	%client.player.setInventory( SRifle, 1 );
-	%client.player.setInventory( MGClip, 20 );
-	%client.player.setInventory( SRifleSGAmmo, 20 );
-   }
-   if ( %client.player.inv[SRifleGL] >= 1){
-	%client.player.setInventory( SRifle, 1 );
-	%client.player.setInventory( MGClip, 20 );
-	%client.player.setInventory( SRifleGLAmmo, 20 );
-   }
-
     if ( !($InvBanList[%cmt, RepairKit]) )
         %client.player.setInventory( RepairKit, 1 );
     if ( !($InvBanList[%cmt, Beacon]) )
         %client.player.setInventory( Beacon, 400 );
     if ( !($InvBanList[%cmt, TargetingLaser]) )
         %client.player.setInventory( TargetingLaser, 1 );
-//    if ( !($InvBanList[%cmt, pistol]) ) {
-//        %client.player.setInventory( pistol, 1 );
-//        %client.player.setInventory( pistolammo, 100 );
-//        %client.player.setInventory( pistolclip, 20 );
-//	 }
-//    if ( !($InvBanList[%cmt, Spistol]) ) {
-//       %client.player.setInventory( Spistol, 1 );
-//       %client.player.setInventory( pistolammo, 100 );
-//      %client.player.setInventory( pistolclip, 20 );
-//	 }
-    if ( %client.player.inv[RPChaingun] == 1)
-	  %client.player.setInventory( MGClip, 20 );
-    if ( %client.player.inv[KriegRifle] == 1)
-	  %client.player.setInventory( RifleClip, 20 );
-    if ( %client.player.inv[BattleRifle] == 1)
-	  %client.player.setInventory( BRifleClip, 20 );
-    if ( %client.player.inv[Shotgun] == 1)
-	  %client.player.setInventory( ShotgunClip, 20 );
-    if ( %client.player.inv[RShotgun] == 1)
-	  %client.player.setInventory( RShotgunClip, 20 );
-    if ( %client.player.inv[HRPChaingun] == 1)
-	  %client.player.setInventory( MGClip, 20 );
-	  %client.player.setInventory( RPGAmmo, 20 );
-   if ( %client.player.inv[LSMG] == 1)
-	%client.player.setInventory( LSMGClip, 20 );
-   if ( %client.player.inv[DualLSMG] == 1)
-	%client.player.setInventory( DualLSMGClip, 20 );
-   if ( %client.player.inv[MG42] == 1)
-	%client.player.setInventory( MG42Clip, 20 );
-
     // Do we want to allow mines?  Ammo stations in T1 didnt dispense mines.
 //     if ( !($InvBanList[%cmt, Mine]) )
 //         %client.player.setInventory( Mine, 400 );
@@ -1699,14 +1659,15 @@ function getAmmoStationLovin(%client)
     {
         %maxDep = $TeamDeployableMax[DeployedCamera];
         %depSoFar = $TeamDeployedCount[%client.player.team, DeployedCamera];
-
+        if(Game.numTeams > 1)
+            %msTxt = "Your team has "@%depSoFar@" of "@%maxDep@" Deployable Cameras placed.";
+        else
+            %msTxt = "You have placed "@%depSoFar@" of "@%maxDep@" Deployable Cameras.";
         messageClient(%client, 'MsgTeamDepObjCount', %msTxt);
     }
 
     if( %client.player.getMountedImage($BackpackSlot) $= "AmmoPack" )
         invAmmoPackPass(%client);
-    if( %client.player.getMountedImage($BackpackSlot) $= "flamerAmmoPack" )
-        invAmmoPackPass2(%client);
 }
 
 
@@ -1724,21 +1685,9 @@ function invAmmoPackPass(%client)
    if((%grenFav !$= "EMPTY") && (%grenFav !$= "INVALID"))
       %client.player.incInventory($NameToInv[%grenFav], AmmoPack.max[$NameToInv[%grenFav]]);
    // now the same check for mines
-   for (%i=0; $InvMine[%i] !$= ""; %i++)
-   {
-      %mine = $NameToInv[$InvMine[%i]];
-      for (%i1=0; %i1 < getFieldCount(%client.mineIndex); %i1++)
-         if ( $InvMine[%i] $= %client.favorites[getField( %client.mineIndex, %i1 )] )
-            %client.player.incInventory(%mine, ammoPack.max[%mine]);
-   }
-}
-function invAmmoPackPass2(%client)
-{
-   for ( %idx = 0; %idx < $numAmmoItems; %idx++ )
-   {
-      %ammo = $AmmoItem[%idx];
-      %client.player.incInventory(%ammo, flamerAmmoPack.max[%ammo]);
-   }
+   %mineFav = %client.favorites[getField(%client.mineIndex, 0)];
+   if((%mineFav !$= "EMPTY") && (%mineFav !$= "INVALID") && !($InvBanList[%cmt, Mine]))
+      %client.player.incInventory($NameToInv[%mineFav], AmmoPack.max[$NameToInv[%mineFav]]);
 }
 
 //------------------------------------------------------------------------------
@@ -1985,6 +1934,7 @@ function InventoryScreen::onSleep()
    alxPlay(HudInventoryDeactivateSound, 0, 0, 0);
    $HudHandle[inventoryScreen] = "";
 }
+
 //------------------------------------------------------------------------------
 function InventoryScreen::onDone( %this )
 {
@@ -2017,12 +1967,12 @@ function createInvBanCount()
       if($InvBanList[$CurrentMissionType, $NameToInv[$InvWeapon[%i]]])
          $BanCount["Weapon"]++;
    $InvTotalCount["Weapon"] = %i;
-   
+
    for(%i = 0; $InvPistol[%i] !$= ""; %i++)
       if($InvBanList[$CurrentMissionType, $NameToInv[$InvPistol[%i]]])
          $BanCount["Pistol"]++;
    $InvTotalCount["Pistol"] = %i;
-   
+
    for(%i = 0; $InvMelee[%i] !$= ""; %i++)
       if($InvBanList[$CurrentMissionType, $NameToInv[$InvMelee[%i]]])
          $BanCount["Melee"]++;

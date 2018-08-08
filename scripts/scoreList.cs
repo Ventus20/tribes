@@ -38,50 +38,40 @@ function updateScores()
 
 
 //------------------------------------------------------------------------------
-function serverCmdGetScores( %client )
-{
+function serverCmdGetScores( %client ) {
    // Client has requested the score list, so give it to 'em...
-   if (isObject(Game))   
-   {
+   if (isObject(Game)) {
       updateScores();
       %teamCount = Game.numTeams;
 
-      if (%teamCount > 1)
-      {
+      if (%teamCount > 1) {
          // Send team messages:
          for (%team = 1; %team <= %teamCount; %team++)
             messageClient(%client, 'MsgTeamScore', "", %team, $teamScore[%team]);
 
 			//send the player scores in order of their team rank...
-			for (%team = 1; %team <= %teamCount; %team++)
-			{
-				for (%i = 0; %i < $TeamRank[%team, count]; %i++)
-            {
-               %cl = $TeamRank[%team, %i];
-                if(!isobject(%cl) || !isObject(%client)) {
-                return;
-                }
-	            messageClient( %client, 'MsgPlayerScore', "", %cl, %cl.score, %cl.getPing(), %cl.getPacketLoss());
-            }
+			for (%team = 1; %team <= %teamCount; %team++) {
+			   for (%i = 0; %i < $TeamRank[%team, count]; %i++){
+                  %cl = $TeamRank[%team, %i];
+                  if(isobject(%cl)) {
+	                 messageClient( %client, 'MsgPlayerScore', "", %cl, %cl.score, %cl.getPing(), %cl.getPacketLoss());
+                  }
+               }
 			}
       }
-		else
-		{
-			//send the player scores in order of their rank...
-			for (%i = 0; %i < $TeamRank[0, count]; %i++)
-         {
+      else {
+      //send the player scores in order of their rank...
+         for (%i = 0; %i < $TeamRank[0, count]; %i++) {
             %cl = $TeamRank[0, %i];
-            if(!isobject(%cl) || !isObject(%client)) {
-            return;
+            if(isobject(%cl)) {
+               messageClient( %client, 'MsgPlayerScore', "", %cl, %cl.score, %cl.getPing(), %cl.getPacketLoss());
             }
-            messageClient( %client, 'MsgPlayerScore', "", %cl, %cl.score, %cl.getPing(), %cl.getPacketLoss());
          }
-		}
+      }
 
 		//now send the observers over
 		%count = ClientGroup.getCount();
-		for (%i = 0; %i < %count; %i++)
-		{
+		for (%i = 0; %i < %count; %i++) {
 			%cl = ClientGroup.getObject(%i);
 			if (%cl.team <= 0) {
                if(!isobject(%cl) || !isObject(%client)) {

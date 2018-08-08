@@ -2,8 +2,6 @@
 
 //--- GAME RULES BEGIN ---
 // Build
-// Battle
-// And Zombies, The All in one Game Mode
 //--- GAME RULES END ---
 
 // spam fix
@@ -17,30 +15,11 @@ function ConstructionGame::allowsProtectedStatics(%game) {
 }
 
 function ConstructionGame::clientMissionDropReady(%game, %client) {
-    messageClient(%client, 'MsgClientReady',"", "SinglePlayerGame");
-    messageClient(%client, 'MsgSPCurrentObjective1' ,"", $TWM::Ticker[1]);
-    messageClient(%client, 'MsgSPCurrentObjective2' ,"", $TWM::Ticker[2]);
-    %cl.TickerLoop = PlayNewsTicker(%client, $TWM::Ticker[1], $TWM::Ticker[2]);
-    %cl.tickerCount = 2; //we are on 2
+	messageClient(%client, 'MsgClientReady',"", "SinglePlayerGame");
+    messageClient(%client, 'MsgSPCurrentObjective1' ,"", "Welcome to TWM2!");
+    messageClient(%client, 'MsgSPCurrentObjective2' ,"", "Phantom139, DoL, Signal360");
 	messageClient(%client, 'MsgMissionDropInfo', '\c0You are in mission %1 (%2).', $MissionDisplayName, $MissionTypeDisplayName, $ServerName );
 	DefaultGame::clientMissionDropReady(%game, %client);
-}
-
-function PlayNewsTicker(%cl, %m1, %m2) {
-   messageClient(%cl, 'MsgSPCurrentObjective1' ,"", %m1);
-   messageClient(%cl, 'MsgSPCurrentObjective2' ,"", %m2);
-   if(%cl.tickerCount > $TWM::Ticks) {
-      %cl.tickerCount = 1;
-   }
-   else {
-      %cl.tickerCount++;
-   }
-   %next = $TWM::Ticker[%cl.tickerCount];
-   %cl.TickerLoop = schedule(5000,0,"PlayNewsTicker", %cl, %m2, %next);
-}
-
-function EndNewsTicker(%cl) {
-   cancel(%cl.TickerLoop);
 }
 
 function ConstructionGame::onAIRespawn(%game, %client)
@@ -113,7 +92,6 @@ function ConstructionGame::gameOver(%game) {
 	for(%i = 0; %i < ClientGroup.getCount(); %i ++) {
 		%client = ClientGroup.getObject(%i);
 		%game.resetScore(%client);
-        EndNewsTicker(%client);
 	}
 	for(%j = 1; %j <= %game.numTeams; %j++)
 		$TeamScore[%j] = 0;
@@ -122,92 +100,95 @@ function ConstructionGame::gameOver(%game) {
 function ConstructionGame::vehicleDestroyed(%game, %vehicle, %destroyer) {
 }
 
-function ConstructionGame::awardScoreVehicleDestroyed(%game, %client, %vehicleType, %mult, %passengers)  //added
-{
-    if(isDemo())
-        return 0;
 
-    if(%vehicleType $= "Interceptor") {
-        %base = %game.SCORE_PER_DESTROY_SHRIKE;
-        %XPForVKill = 10;
-        }
-    else if(%vehicleType $= "Fighter") {
-        %base = %game.SCORE_PER_DESTROY_STRIKEFIGHTER;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Assault Chopper") {
-        %base = %game.SCORE_PER_DESTROY_HELICOPTER;
-        %XPForVKill = 5;
-        }
-    else if(%vehicleType $= "AWACS") {
-        %base = %game.SCORE_PER_DESTROY_AWACS;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "Bomber") {
-        %base = %game.SCORE_PER_DESTROY_BOMBER;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Gunship") {
-        %base = %game.SCORE_PER_DESTROY_GUNSHIP;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "Transport Chopper") {
-        %base = %game.SCORE_PER_DESTROY_HEAVYHELICOPTER;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Heavy Transport") {
-        %base = %game.SCORE_PER_DESTROY_TRANSPORT;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "Grav Cycle") {
-        %base = %game.SCORE_PER_DESTROY_WILDCAT;
-        %XPForVKill = 5;
-        }
-    else if(%vehicleType $= "Light Tank") {
-        %base = %game.SCORE_PER_DESTROY_TANK;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Assault Tank") {
-        %base = %game.SCORE_PER_DESTROY_HEAVYTANK;
-        %XPForVKill = 30;
-        }
-    else if(%vehicleType $= "chaingun tank") {
-        %base = %game.SCORE_PER_DESTROY_CGTANK;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "APC") {
-        %base = %game.SCORE_PER_DESTROY_FFTRANSPORT;
-        %XPForVKill = 20;
-        }
-    else if(%vehicleType $= "Heavy Artillery") {
-        %base = %game.SCORE_PER_DESTROY_ARTILLERY;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "MPB") {
-        %base = %game.SCORE_PER_DESTROY_MPB;
-        %XPForVKill = 25;
-        }
-    else if(%vehicleType $= "Boat") {
-        %base = %game.SCORE_PER_DESTROY_TRANSBOAT;
-        %XPForVKill = 10;
-        }
-    else if(%vehicleType $= "Submarine") {
-        %base = %game.SCORE_PER_DESTROY_SUB;
-        %XPForVKill = 50;
-        }
-    else if(%vehicleType $= "GunBoat") {
-        %base = %game.SCORE_PER_DESTROY_BOAT;
-        %XPForVKill = 100;
-        }
-
-    %total = ( %base * %mult ) + ( %passengers * %game.SCORE_PER_PASSENGER );
-
-    %client.vehicleScore += %total;
-    %client.XP = %client.XP + %XPForVKill;
-
-     messageClient(%client, 'msgVehicleScore', '\c0You received a %1 point bonus for destroying an enemy %2.', %total, %vehicleType);
-     messageClient(%client, 'msgVehicleScore', '\c0You received %1XP for destroying an enemy %2.', %XPForVKill, %vehicleType);
-   %game.recalcScore(%client);
-    return %total;
+function ConstructionGame::ToggleModifiers(%game, %modifier, %toggleTo) {
+   switch$(%modifier) {
+      case "Titan":
+         %ModifierDesc = "Death is quite costly... it ends the bonus strike";
+         $HellJump::Modifier["Titan"] = %toggleTo;
+      case "Super-Lunge":
+         %ModifierDesc = "Normal Zombies lunge at 3X normal distance";
+         $HellJump::Modifier["SuperLunge"] = %toggleTo;
+      case "Kamakaziiiii":
+         %ModifierDesc = "Volatile Ravenger's move at 5X Speed... be cautious...";
+         $HellJump::Modifier["Kamakazi"] = %toggleTo;
+      case "Where's My Head":
+         %ModifierDesc = "Zombies cannot be killed by a headshot";
+         $HellJump::Modifier["WheresMyHead"] = %toggleTo;
+      case "You can't see me":
+         %ModifierDesc = "Normal zombies are now cloaked... mwuhahaha!!!";
+         $HellJump::Modifier["YouCantSeeMe"] = %toggleTo;
+      case "Oh Lordy":
+         %ModifierDesc = "Zombie lords shoot 4 pulses instead of 2";
+         $HellJump::Modifier["OhLordy"] = %toggleTo;
+      case "It BURNS!":
+         %ModifierDesc = "Demon Zombie Fireballs now cause Burns";
+         $HellJump::Modifier["ItBurns"] = %toggleTo;
+      case "The Destiny":
+         %ModifierDesc = "Volatile Ravengers explosive power is doubled";
+         $HellJump::Modifier["TheDestiny"] = %toggleTo;
+      case "Scrambler":
+         %ModifierDesc = "Zombie lords jam helicopter signals blocking you from calling them in";
+         $HellJump::Modifier["Scrambler"] = %toggleTo;
+      case "Demonic":
+         %ModifierDesc = "All zombies take 50% of normal damage, thus doubling their HP";
+         $HellJump::Modifier["Demonic"] = %toggleTo;
+      case "All On":
+         %ModifierDesc = "All Modifiers on";
+         $HellJump::Modifier["SuperLunge"] = 1;
+         $HellJump::Modifier["Kamakazi"] = 1;
+         $HellJump::Modifier["WheresMyHead"] = 1;
+         $HellJump::Modifier["YouCantSeeMe"] = 1;
+         $HellJump::Modifier["OhLordy"] = 1;
+         $HellJump::Modifier["ItBurns"] = 1;
+         $HellJump::Modifier["TheDestiny"] = 1;
+         $HellJump::Modifier["Scrambler"] = 1;
+         $HellJump::Modifier["Demonic"] = 1;
+         %game.schedule(2100, "ToggleModifiers", "Titan", 1);
+      case "All Off":
+         %ModifierDesc = "All Modifiers Off";
+         $HellJump::Modifier["SuperLunge"] = 0;
+         $HellJump::Modifier["Kamakazi"] = 0;
+         $HellJump::Modifier["WheresMyHead"] = 0;
+         $HellJump::Modifier["YouCantSeeMe"] = 0;
+         $HellJump::Modifier["OhLordy"] = 0;
+         $HellJump::Modifier["ItBurns"] = 0;
+         $HellJump::Modifier["TheDestiny"] = 0;
+         $HellJump::Modifier["Scrambler"] = 0;
+         $HellJump::Modifier["Demonic"] = 0;
+         $HellJump::Modifier["Titan"] = 0;
+   }
+   if(%modifier !$= "All On" && %modifier !$= "All Off") {
+      if(%toggleTo == 1) {
+         %toDisp = "On";
+      }
+      else {
+         %toDisp = "Off";
+      }
+      //and now lets display our message
+      for(%i = 0; %i < ClientGroup.getCount(); %i++) {
+         %cl = ClientGroup.getObject(%i);
+         bottomPrint(%cl, ""@%modifier@" - "@%toDisp@" \n "@%ModifierDesc@"", 2, 2);
+         messageClient(%cl, 'MsgClient', "\c5HELLJUMP: "@%modifier@" - "@%toDisp@" : "@%ModifierDesc@"");
+      }
+   }
+   else {
+      //and now lets display our message
+      for(%i = 0; %i < ClientGroup.getCount(); %i++) {
+         %cl = ClientGroup.getObject(%i);
+         bottomPrint(%cl, ""@%modifier@" \n "@%ModifierDesc@"", 2, 2);
+         messageClient(%cl, 'MsgClient', "\c5HELLJUMP: "@%modifier@" : "@%ModifierDesc@"");
+      }
+   }
 }
+
+function ConstructionGame::CheckModifier(%game, %mod) {
+   return $HellJump::Modifier[""@%mod@""];
+}
+
+function ConstructionGame::onClientKilled(%game, %clVictim, %clKiller, %damageType, %implement, %damageLocation) {
+   DefaultGame::onClientKilled(%game, %clVictim, %clKiller, %damageType, %implement, %damageLocation);
+   DoTWM2MissionChecks(%clVictim);
+}
+
 
